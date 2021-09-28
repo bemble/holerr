@@ -9,4 +9,4 @@ server/main
 
 front/.eslintcache
 front/node_modules
-public/
+/public/
