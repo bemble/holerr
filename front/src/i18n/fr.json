@@ -1,0 +1,18 @@
+{
+  "downloads_title": "Téléchargements",
+  "downloads_refresh": "Actualiser",
+  "downloads_clear_all": "Nettoyer complétés",
+  "downloads_delete": "Supprimer",
+  "downloads_preset": "Réglage",
+  "downloads_add_torrents": "Ajouter des torrents",
+  "downloads_add_torrents_title": "Ajouter des torrents",
+  "downloads_add_torrents_action": "Télécharger",
+  "downloads_add_torrents_action_plural": "Télécharger {{count}} torrents",
+  "downloads_add_torrents_browse": "Parcourir",
+  "downloads_add_torrents_drag_drop_files": "Déposez des fichiers pour les importer",
+  "downloads_add_torrents_drop_files": "Relâcher pour importer les fichiers",
+  "downloads_add_torrents_loading": "Veuillez patienter",
+  "settings_title": "Paramètres",
+  "settings_language": "Langue",
+  "or": "ou"
+}

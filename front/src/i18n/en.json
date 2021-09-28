@@ -1,0 +1,18 @@
+{
+  "downloads_title": "Downloads",
+  "downloads_add_torrent": "Add a torrent",
+  "downloads_refresh": "Refresh",
+  "downloads_clear_all": "Clear all",
+  "downloads_delete": "Delete",
+  "downloads_add_torrents": "Add torrents",
+  "downloads_add_torrents_title": "Add torrents",
+  "downloads_add_torrents_action": "Download",
+  "downloads_add_torrents_action_plural": "Download {{count}} torrents",
+  "downloads_add_torrents_browse": "Browse",
+  "downloads_add_torrents_drag_drop_files": "Drop files to import them",
+  "downloads_add_torrents_drop_files": "Release to import the files",
+  "downloads_add_torrents_loading": "Please wait",
+  "settings_title": "Settings",
+  "settings_language": "Language",
+  "or": "or"
+}

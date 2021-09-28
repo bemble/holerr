@@ -1,0 +1,12 @@
+
+.idea
+test
+.env
+.DS_Store
+data
+server/build
+server/main
+
+front/.eslintcache
+front/node_modules
+public/
