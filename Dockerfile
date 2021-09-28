@@ -21,7 +21,7 @@ RUN apk add tzdata
 ADD . /app
 WORKDIR /app/front
 RUN npm ci install
-RUN CI=false GENERATE_SOURCEMAP=false npm run build
+RUN CI=false GENERATE_SOURCEMAP=false npm run build:docker
 
 # Final image
 FROM scratch
