@@ -1,6 +1,7 @@
 import { AppBar, makeStyles, Toolbar, Typography } from "@material-ui/core";
 import React from "react";
 import { Helmet } from "react-helmet-async";
+import Logo from "../logo.svg";
 
 const useStyles = makeStyles((theme) => ({
     logo: {
@@ -25,7 +26,7 @@ const AppTopBar: React.FC<AppTopBarProps> = ({ children, title }) => {
       </Helmet>
       <AppBar position="relative">
         <Toolbar>
-            <img className={classes.logo} src={process.env.PUBLIC_URL + "/icon/apple-touch-icon.png"} alt="Holerr" />
+            <img className={classes.logo} src={Logo} alt="Holerr" />
           {children || (
             <Typography variant="h6" className={classes.title}>
               {title || "App"}
