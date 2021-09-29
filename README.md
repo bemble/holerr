@@ -64,13 +64,17 @@ type Configuration = {
 
 ### Requirements
 
-* Golang version 1.15 minimum must be installed
+* Golang version 1.17 minimum must be installed
 
 ### Folder structure
 
 * Create a `data` folder at project root
+* Add a configuration file
+* :warning: while developing, you should not use a `base_path`
 
 ### Running the server
+
+#### For server development
 
 Server will run on port `8781`
 
@@ -79,9 +83,31 @@ cd server
 go run main.go
 ```
 
-### Front
+#### For front-end development
 
-A minimal web interface is given to monitor what happens. Open your browser and navigate to `http://localhost:8781`
+You might want to run the server just to develop on the front.
+You can use previous method or use `Docker` to run it (and do not install all go environment etc).
+
+```
+docker build . -f Dockerfile.server -t holerr/server
+docker run --rm -p8781:8781 -v"$(pwd)/data:/app/data" holerr/server
+```
+
+Don't forget to rebuild on update.
+
+### Running the front-end
+
+Front-end is developed in React. You need to have the server running.
+
+To run the front:
+
+```bash
+cd front
+npm i
+npm run start
+```
+
+Your web browser should open on `http://localhost:3000`. The app is configured to proxy the server for development purpose (ie. api is also reachable on `http://localhost:3000/api`).
 
 ## API documentation
 

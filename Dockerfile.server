@@ -8,26 +8,15 @@ RUN apk add --no-cache \
 
 # Force the go compiler to use modules
 ENV GO111MODULE=on
+ENV CGO_ENABLED=0
+ENV GOOS=linux
 
-ADD . /app
 WORKDIR /app/server
-RUN CGO_ENABLED=0 GOOS=linux go build -a -o holerr .
-
-# Front build
-FROM node:14-alpine as front-builder
-
-RUN apk add tzdata
-
-ADD . /app
-WORKDIR /app/front
-RUN npm ci install
-RUN CI=false GENERATE_SOURCEMAP=false npm run build:docker
+ADD ./server .
+RUN go build -a -o holerr .
 
 # Final image
 FROM scratch
-
-# copy front files
-COPY --from=front-builder /app/public /app/public
 
 # copy server files
 COPY --from=server-builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
