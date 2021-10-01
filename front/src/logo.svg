@@ -1,76 +1,103 @@
-<svg id="Groupe_2" data-name="Groupe 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1024" height="1024" viewBox="0 0 1024 1024">
+<svg id="Back" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1024" height="1024" viewBox="0 0 1024 1024">
   <defs>
     <style>
       .cls-1 {
-        filter: url(#filter);
+        fill: #ffdd3c;
       }
 
-      .cls-2, .cls-3, .cls-4, .cls-5, .cls-6, .cls-7 {
-        fill: none;
-        stroke: #000;
-        fill-rule: evenodd;
-      }
-
-      .cls-2, .cls-3, .cls-4, .cls-5, .cls-6, .cls-7, .cls-8 {
+      .cls-1, .cls-10, .cls-2, .cls-4, .cls-5, .cls-8 {
+        stroke: #09172e;
         stroke-linecap: round;
       }
 
-      .cls-2 {
-        stroke-width: 60px;
+      .cls-1, .cls-2, .cls-4, .cls-5 {
+        stroke-width: 20px;
       }
 
-      .cls-3 {
-        stroke-width: 55px;
+      .cls-10, .cls-2, .cls-5 {
+        fill: #376082;
+      }
+
+      .cls-10, .cls-2, .cls-4, .cls-5, .cls-8 {
+        stroke-linejoin: round;
+      }
+
+      .cls-3, .cls-6 {
+        fill: #112a3f;
       }
 
       .cls-4 {
-        stroke-width: 50px;
+        fill: #ff9000;
       }
 
-      .cls-5 {
-        stroke-width: 65px;
-      }
-
-      .cls-6 {
-        stroke-width: 70px;
+      .cls-4, .cls-5, .cls-6, .cls-8 {
+        fill-rule: evenodd;
       }
 
       .cls-7 {
-        stroke-width: 75px;
+        filter: url(#filter);
       }
 
       .cls-8 {
-        fill: #f7f7f7;
-        stroke: #ae0a45;
-        stroke-width: 100px;
+        fill: none;
+      }
+
+      .cls-10, .cls-8 {
+        stroke-width: 10px;
+      }
+
+      .cls-9 {
         filter: url(#filter-2);
       }
     </style>
     <filter id="filter" filterUnits="userSpaceOnUse">
-      <feFlood result="flood" flood-color="#ae0a45"/>
+      <feFlood result="flood" flood-color="#fef1b5"/>
       <feComposite result="composite" operator="in" in2="SourceGraphic"/>
       <feBlend result="blend" in2="SourceGraphic"/>
     </filter>
-    <filter id="filter-2" x="164.812" y="166.281" width="648.813" height="648.719" filterUnits="userSpaceOnUse">
-      <feFlood result="flood" flood-color="#150626"/>
+    <filter id="filter-2" filterUnits="userSpaceOnUse">
+      <feFlood result="flood" flood-color="#fdc276"/>
       <feComposite result="composite" operator="in" in2="SourceGraphic"/>
       <feBlend result="blend" in2="SourceGraphic"/>
     </filter>
   </defs>
-  <g id="Groupe_1" data-name="Groupe 1" class="cls-1">
-    <path id="Forme_1" data-name="Forme 1" class="cls-2" d="M606.792,56.005s58.025,59.235,88.039,136.036c29,74.194,30.013,166.043,30.013,166.043"/>
-    <path id="Forme_1_copie" data-name="Forme 1 copie" class="cls-3" d="M330.18,84.531s81.768,13.822,151.2,58.317c67.076,42.984,121.9,116.694,121.9,116.694"/>
-    <path id="Forme_1_copie_2" data-name="Forme 1 copie 2" class="cls-4" d="M92.726,276.5S167,239.631,249.333,234.824C328.869,230.18,416.554,257.6,416.554,257.6"/>
-    <path id="Forme_1_copie_3" data-name="Forme 1 copie 3" class="cls-3" d="M45,559.674s38.416-73.48,102.2-125.752c61.616-50.5,148.671-79.849,148.671-79.849"/>
-    <path id="Forme_1_copie_4" data-name="Forme 1 copie 4" class="cls-2" d="M170.412,843.818s-12.12-82.022,8.749-161.793C199.322,604.961,252.5,530.054,252.5,530.054"/>
-    <path id="Forme_1_copie_5" data-name="Forme 1 copie 5" class="cls-5" d="M439.214,970.988s-58.026-59.236-88.04-136.036c-29-74.194-30.013-166.044-30.013-166.044"/>
-    <path id="Forme_1_copie_6" data-name="Forme 1 copie 6" class="cls-6" d="M746.886,931.315S665.118,917.494,595.686,873c-67.076-42.985-121.9-116.694-121.9-116.694"/>
-    <path id="Forme_1_copie_7" data-name="Forme 1 copie 7" class="cls-7" d="M965.307,713.223S891.021,750.1,808.68,754.9c-79.547,4.642-167.244-22.78-167.244-22.78"/>
-    <path id="Forme_1_copie_8" data-name="Forme 1 copie 8" class="cls-6" d="M983,430.041S944.583,503.53,880.793,555.807c-61.626,50.5-148.7,79.856-148.7,79.856"/>
-    <path id="Forme_1_copie_9" data-name="Forme 1 copie 9" class="cls-5" d="M851.576,179.907s12.121,82.032-8.754,161.813c-20.165,77.074-73.35,151.99-73.35,151.99"/>
+  <circle id="Back-2" data-name="Back" class="cls-1" cx="502.094" cy="510.906" r="330.344"/>
+  <circle id="Center-1" class="cls-2" cx="500.5" cy="512.5" r="236.5"/>
+  <circle id="Center-2" class="cls-3" cx="501" cy="512" r="129"/>
+  <path id="Back-3" data-name="Back" class="cls-4" d="M997,351L16,690s91.846-35.968,124-161,99.337-286.477,267.5-336S677.426,214.134,780,292,997,351,997,351Z"/>
+  <path id="Center-1-2" data-name="Center-1" class="cls-5" d="M689.564,360.516s-104.379-112.7-250.266-68.9c-165.456,49.68-173.29,214.057-173.29,214.057Z"/>
+  <path id="Center-2-2" data-name="Center-2" class="cls-6" d="M558.13,395.562L388.116,453.538s17.952-48.643,74.889-64.317S558.13,395.562,558.13,395.562Z"/>
+  <g id="Bottom" class="cls-7">
+    <path id="Stroke-1" class="cls-8" d="M778.957,442.192s1.984,8.39,3.258,17.127l2.828,19.39"/>
+    <path id="Stroke-2" class="cls-8" d="M787.325,506.1s-0.357,56.091-12.172,92.814c-15.758,48.978-43.364,82.164-43.364,82.164"/>
+    <path id="Stroke-3" class="cls-8" d="M712.769,705.42s-4.237,4.814-8.542,8.931c-4.442,4.249-8.955,7.806-8.955,7.806"/>
+    <path id="Stroke-4" class="cls-8" d="M676.252,738.133s-95.949,81.359-232.8,55.536S247.176,646.84,247.176,646.84"/>
   </g>
-  <g style="fill: #f7f7f7; filter: url(#filter-2)">
-    <circle id="Ellipse_2_copie" data-name="Ellipse 2 copie" class="cls-8" cx="489.219" cy="490.641" r="274.406" style="stroke: inherit; filter: none; fill: inherit"/>
+  <g id="Top-2" data-name="Top" class="cls-9">
+    <path id="Strike-1" class="cls-8" d="M721.181,316.9s24.868,20.721,58.024,33.229C809.439,361.537,845,367,845,367"/>
+    <path id="Strike-2" class="cls-8" d="M693.75,294.6s-7.371-7.9-24.641-19.028-27.091-15.207-27.091-15.207"/>
+    <path id="Strike-3" class="cls-8" d="M616.151,249.716s-24.541-10.681-51.416-16.2c-28.607-5.878-59.657-6.62-59.657-6.62"/>
+    <path id="Strike-4" class="cls-8" d="M474.647,226.893s-90.032,5.357-167.654,73.6-98.617,158.44-98.617,158.44"/>
+    <path id="Forme_5" data-name="Forme 5" class="cls-8" d="M203.051,486.317s-2.883,14.455-5.592,24.472A145.55,145.55,0,0,1,190,531"/>
+    <path id="Strike-6" class="cls-8" d="M179.467,552.5s-8.71,17.745-17.168,32.756A166.646,166.646,0,0,1,142,613"/>
+    <path id="Strike-7" class="cls-8" d="M198,575l66.751-23.092"/>
+    <path id="Strike-8" class="cls-8" d="M310.874,535.951L506.66,468.219"/>
+    <path id="Strike-9" class="cls-8" d="M544.362,455.178L753,383"/>
   </g>
-  <use xlink:href="#Ellipse_2_copie" style="stroke: #ae0a45; filter: none; fill: none"/>
+  <g id="Bottom-2" data-name="Bottom">
+    <path id="Stroke-1-2" data-name="Stroke-1" class="cls-8" d="M868,421s2.608,11.028,4.283,22.513C874.1,455.987,876,469,876,469"/>
+    <path id="Stroke-2-2" data-name="Stroke-2" class="cls-8" d="M879,505s-0.47,73.73-16,122c-20.713,64.378-57,108-57,108"/>
+    <path id="Stroke-3-2" data-name="Stroke-3" class="cls-8" d="M781,767s-5.57,6.328-11.228,11.74C763.933,784.325,758,789,758,789"/>
+    <path id="Stroke-4-2" data-name="Stroke-4" class="cls-8" d="M733,810S606.88,916.943,427,883,169,690,169,690"/>
+  </g>
+  <g id="Top-3" data-name="Top">
+    <path id="Strike-1-2" data-name="Strike-1" class="cls-8" d="M796,255s32.688,27.236,76.27,43.677C912.011,313.669,960,317,960,317"/>
+    <path id="Strike-2-2" data-name="Strike-2" class="cls-8" d="M756,227s-9.689-10.382-32.39-25.011S688,182,688,182"/>
+    <path id="Strike-3-2" data-name="Strike-3" class="cls-8" d="M654,168s-32.258-14.039-67.585-21.3C548.813,138.975,508,138,508,138"/>
+    <path id="Strike-4-2" data-name="Strike-4" class="cls-8" d="M468,138s-118.343,7.042-220.373,96.739S118,443,118,443"/>
+    <path id="Forme_5-2" data-name="Forme 5" class="cls-8" d="M110,479s-5.5,19.891-9.35,32.167S90,540,90,540"/>
+    <path id="Strike-6-2" data-name="Strike-6" class="cls-8" d="M80,566s-7.161,24-22.566,43.056C43.4,626.416,21,639,21,639"/>
+  </g>
+  <circle id="Orbit-1" class="cls-10" cx="118" cy="795" r="42.531"/>
+  <circle id="Orbit-2" class="cls-10" cx="863.234" cy="220.766" r="28.422"/>
 </svg>
