@@ -3,21 +3,17 @@ package synologyDownloadStation
 import (
 	"encoding/json"
 	"errors"
-	"io/ioutil"
-	"net/http"
-	"net/url"
-	"strings"
 	"holerr/core/config"
 	"holerr/core/db"
 	"holerr/core/log"
 	"holerr/downloaders/downloader"
+	"io/ioutil"
+	"net/http"
+	"net/url"
+	"strings"
 
 	"github.com/monaco-io/request"
 )
-
-var cfg = config.Get()
-var synoCfg = cfg.Downloaders.SynologyDownloadStation
-var ENDPOINT = synoCfg.Endpoint
 
 type SynologyDownloadStation struct {
 	downloader.Downloader
@@ -27,13 +23,14 @@ func New() SynologyDownloadStation {
 	s := SynologyDownloadStation{}
 	sid, err := connect("DownloadStation")
 	if err != nil {
-		log.Fatal(err)
+		log.Error(err)
+	} else {
+		log.Info("DownloadStation session ID: " + sid)
 	}
-	log.Info("DownloadStation session ID: " + sid)
 	return s
 }
 
-func (r SynologyDownloadStation) IsConnected() bool {
+func (s SynologyDownloadStation) IsConnected() bool {
 	sid, err := connect("DownloadStation")
 	return err == nil && sid != ""
 }
@@ -41,7 +38,8 @@ func (r SynologyDownloadStation) IsConnected() bool {
 func (s SynologyDownloadStation) AddDownload(uri string, name string, preset config.Preset) (string, error) {
 	sid, err := connect("DownloadStation")
 	if err != nil {
-		log.Fatal(err)
+		log.Error(err)
+		return "", err
 	}
 
 	req, err := http.NewRequest(http.MethodGet, getApiUrl("/DownloadStation/task.cgi"), nil)
@@ -91,7 +89,8 @@ func (s SynologyDownloadStation) AddDownload(uri string, name string, preset con
 func (s SynologyDownloadStation) GetTaskStatus(id string) (int, int, error) {
 	sid, err := connect("DownloadStation")
 	if err != nil {
-		log.Fatal(err)
+		log.Error(err)
+		return 0, 0, err
 	}
 	client := request.Client{
 		URL: "/DownloadStation/task.cgi",
@@ -139,7 +138,8 @@ func (s SynologyDownloadStation) GetTaskStatus(id string) (int, int, error) {
 func (s SynologyDownloadStation) DeleteDownload(id string) error {
 	sid, err := connect("DownloadStation")
 	if err != nil {
-		log.Fatal(err)
+		log.Error(err)
+		return err
 	}
 
 	client := request.Client{
@@ -165,7 +165,7 @@ func (s SynologyDownloadStation) DeleteDownload(id string) error {
 }
 
 func prepareClient(client *request.Client) {
-	client.URL = ENDPOINT + "/webapi" + client.URL
+	client.URL = getApiUrl(client.URL)
 
 	if client.Method == "" {
 		client.Method = "GET"
@@ -173,10 +173,13 @@ func prepareClient(client *request.Client) {
 }
 
 func getApiUrl(path string) string {
-	return ENDPOINT + "/webapi" + path
+	synoCfg, _ := config.GetSynologyDownloadStation()
+	return synoCfg.Endpoint + "/webapi" + path
 }
 
 func connect(session string) (string, error) {
+	synoCfg, _ := config.GetSynologyDownloadStation()
+
 	req, err := http.NewRequest(http.MethodGet, getApiUrl("/auth.cgi"), nil)
 	if err != nil {
 		return "", err
@@ -229,7 +232,8 @@ func makeRequest(req *http.Request) (int, []byte, error) {
 func getId(uri string) (string, error) {
 	sid, err := connect("DownloadStation")
 	if err != nil {
-		log.Fatal(err)
+		log.Error(err)
+		return "", err
 	}
 
 	client := request.Client{
@@ -268,11 +272,11 @@ func getId(uri string) (string, error) {
 	return "", errors.New("Download not found")
 }
 
-
 func createOutputDir(parent string, name string) error {
 	sid, err := connect("FileStation")
 	if err != nil {
-		log.Fatal(err)
+		log.Error(err)
+		return err
 	}
 
 	req, err := http.NewRequest(http.MethodGet, getApiUrl("/entry.cgi"), nil)
@@ -281,7 +285,7 @@ func createOutputDir(parent string, name string) error {
 	}
 
 	folder_path := parent
-	if(folder_path[0] != '/') {
+	if folder_path[0] != '/' {
 		folder_path = "/" + folder_path
 	}
 

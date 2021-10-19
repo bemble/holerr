@@ -5,7 +5,7 @@ import Main from "./Main";
 import store, { persistor } from "./store";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { CssBaseline, ThemeProvider, useMediaQuery } from "@material-ui/core";
-import { pink } from "@material-ui/core/colors";
+import {lightBlue, orange} from "@material-ui/core/colors";
 import { useMemo } from "react";
 import { I18nextProvider } from "react-i18next";
 import i18n from "./i18n";
@@ -17,12 +17,7 @@ const App = () => {
       createMuiTheme({
         spacing: 4,
         palette: {
-          primary: {
-            light: "#7fb0ef",
-            main: "#4b81bc",
-            dark: "#03558c",
-            contrastText: "#ffffff",
-          },
+          primary: orange,
           success: {
             light: "#B8D995",
             main: "#90c45a",
@@ -35,7 +30,7 @@ const App = () => {
             dark: "#9e3428",
             contrastText: "#ffffff",
           },
-          secondary: pink,
+          secondary: lightBlue,
           type: prefersDarkMode ? "dark" : "light",
         },
         shape: {

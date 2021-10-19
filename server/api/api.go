@@ -9,6 +9,10 @@ func Router(r chi.Router) {
 	r.Use(middleware.SetHeader("Content-Type", "application/json"))
 
 	r.Get(`/status`, StatusList)
+	r.Post(`/server/restart`, ServerRestart)
+
+	r.Get(`/configuration`, ConfigList)
+	r.Patch(`/configuration`, ConfigUpdate)
 
 	r.Get(`/downloads`, DownloadsList)
 	r.Post(`/downloads`, DownloadsAdd)
@@ -18,6 +22,9 @@ func Router(r chi.Router) {
 	r.Get(`/ws`, Websocket)
 
 	r.Get(`/presets`, PresetsList)
+	r.Post(`/presets`, PresetsAdd)
+	r.Patch(`/presets/{name}`, PresetsUpdate)
+	r.Delete(`/presets/{name}`, PresetsDelete)
 
 	r.Get(`/constants`, ConstantsList)
 }

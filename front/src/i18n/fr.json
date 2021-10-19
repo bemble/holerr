@@ -1,9 +1,13 @@
 {
+  "languages": {
+    "en": "English",
+    "fr": "Français"
+  },
   "downloads_title": "Téléchargements",
   "downloads_refresh": "Actualiser",
   "downloads_clear_all": "Nettoyer complétés",
   "downloads_delete": "Supprimer",
-  "downloads_preset": "Réglage",
+  "downloads_preset": "Préréglage",
   "downloads_add_torrents": "Ajouter des torrents",
   "downloads_add_torrents_title": "Ajouter des torrents",
   "downloads_add_torrents_action": "Télécharger",
@@ -12,7 +16,37 @@
   "downloads_add_torrents_drag_drop_files": "Déposez des fichiers pour les importer",
   "downloads_add_torrents_drop_files": "Relâcher pour importer les fichiers",
   "downloads_add_torrents_loading": "Veuillez patienter",
-  "settings_title": "Paramètres",
-  "settings_language": "Langue",
-  "or": "ou"
+  "or": "ou",
+  "presets": {
+    "title": "Préréglages",
+    "watch_dir": "Dossier surveillé : ",
+    "output_dir": "Dossier de sortie : ",
+    "file_extensions": "Extensions à télécharger : ",
+    "min_file_size": "Taille minimum des fichiers : ",
+    "create_sub_dir": "Télécharger dans un sous-dossier : ",
+    "all": "toutes"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "language": "Langue",
+    "configuration_subtitle": "Configuration",
+    "configuration_debug": "Debug",
+    "configuration_base_path": "Chemin de base",
+    "configuration_api_key": "Clé API",
+    "configuration_endpoint": "Endpoint",
+    "configuration_username": "Nom d'utilisateur",
+    "configuration_password": "Mot de passe",
+    "configuration_save": "Enregistrer",
+    "configuration_restart_required": "Un redémarrage sera nécessaire pour que les changements soient effectifs."
+  },
+  "status": {
+    "title": "États",
+    "websocket": "Websocket : ",
+    "debrider": "Débrideur : ",
+    "downloader": "Téléchargeur : ",
+    "connected": "connecté",
+    "not_connected": "non connecté",
+    "restart": "Redémarrer",
+    "restart_information": "Le rédemarrage ne fonctionne que lorsque Holerr is exécuté via Docker avec la bonne option de redémarrage, sinon il sera juste arrêté."
+  }
 }

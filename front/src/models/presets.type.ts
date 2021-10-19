@@ -9,4 +9,6 @@ export type Preset = {
   file_extensions: string[] | null;
   // Minimum file size to download [optional, default: 0]
   min_file_size: number;
+  // Whether downloader should download in subdir
+  create_sub_dir?: boolean;
 };

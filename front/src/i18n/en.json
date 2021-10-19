@@ -1,4 +1,8 @@
 {
+  "languages": {
+    "en": "English",
+    "fr": "Français"
+  },
   "downloads_title": "Downloads",
   "downloads_add_torrent": "Add a torrent",
   "downloads_refresh": "Refresh",
@@ -12,7 +16,37 @@
   "downloads_add_torrents_drag_drop_files": "Drop files to import them",
   "downloads_add_torrents_drop_files": "Release to import the files",
   "downloads_add_torrents_loading": "Please wait",
-  "settings_title": "Settings",
-  "settings_language": "Language",
-  "or": "or"
+  "or": "or",
+  "presets": {
+    "title": "Presets",
+    "watch_dir": "Watched directory: ",
+    "output_dir": "Output directory: ",
+    "file_extensions": "Downloaded extensions: ",
+    "min_file_size": "Minimum file size: ",
+    "create_sub_dir": "Download in subdirectory: ",
+    "all": "all"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "configuration_subtitle": "Configuration",
+    "configuration_debug": "Debug",
+    "configuration_base_path": "Base path",
+    "configuration_api_key": "API key",
+    "configuration_endpoint": "Endpoint",
+    "configuration_username": "Username",
+    "configuration_password": "Password",
+    "configuration_save": "Save",
+    "configuration_restart_required": "A restart will be necessary for the changes to take effect."
+  },
+  "status": {
+    "title": "Status",
+    "websocket": "Websocket: ",
+    "debrider": "Debrider: ",
+    "downloader": "Downloader: ",
+    "connected": "connected",
+    "not_connected": "not connected",
+    "restart": "Restart",
+    "restart_information": "Restart works only when Holerr is running using Docker with the right restart option, otherwise it will only be stopped."
+  }
 }

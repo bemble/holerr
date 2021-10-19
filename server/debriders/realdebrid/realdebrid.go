@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/monaco-io/request"
+	"holerr/core/config"
+	"holerr/debriders/debrider"
 	"io/ioutil"
 	"net/url"
 	"strings"
-	"holerr/core/config"
-	"holerr/debriders/debrider"
 )
 
 const ENDPOINT = "https://api.real-debrid.com/rest/1.0"
@@ -34,12 +34,12 @@ func prepareClient(client *request.Client) {
 	}
 
 	if client.Header["Authorization"] == "" {
-		Config := config.Get()
-		client.Header["Authorization"] = "Bearer " + Config.Debriders.RealDebrid.ApiKey
+		realDebridConf, _ := config.GetRealDebrid()
+		client.Header["Authorization"] = "Bearer " + realDebridConf.ApiKey
 	}
 }
 
-func (r RealDebrid) IsConnected() (bool) {
+func (r RealDebrid) IsConnected() bool {
 	me, err := r.Me()
 	return err == nil && me != ""
 }

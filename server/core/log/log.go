@@ -1,13 +1,12 @@
 package log
 
 import (
-	"log"
 	"holerr/core/config"
+	"log"
 )
 
 func Info(msg ...interface{}) {
-	Config := config.Get()
-	if Config.Debug {
+	if config.IsDebug() {
 		log.Println(msg)
 	}
 }

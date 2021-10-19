@@ -1,29 +1,29 @@
 package config
 
 type Config struct {
-	BasePath    string      `mapstructure:"base_path"`
-	Debug       bool        `mapstructure:"debug"`
-	Debriders   Debriders   `mapstructure:"debriders"`
-	Downloaders Downloaders `mapstructure:"downloaders"`
-	Presets     []Preset    `mapstructure:"presets"`
+	BasePath    string      `mapstructure:"base_path"json:"base_path"`
+	Debug       bool        `mapstructure:"debug"json:"debug"`
+	Debriders   Debriders   `mapstructure:"debriders"json:"debriders"`
+	Downloaders Downloaders `mapstructure:"downloaders"json:"downloaders"`
+	Presets     []Preset    `mapstructure:"presets"json:"downloaders"`
 }
 
 type Debriders struct {
-	RealDebrid RealDebrid `mapstructure:"real_debrid"`
+	RealDebrid RealDebrid `mapstructure:"real_debrid"json:"real_debrid"`
 }
 
 type RealDebrid struct {
-	ApiKey string `mapstructure:"api_key"`
+	ApiKey string `mapstructure:"api_key"json:"api_key"`
 }
 
 type Downloaders struct {
-	SynologyDownloadStation SynologyDownloadStation `mapstructure:"synology_download_station"`
+	SynologyDownloadStation SynologyDownloadStation `mapstructure:"synology_download_station"json:"synology_download_station"`
 }
 
 type SynologyDownloadStation struct {
-	Endpoint string `mapstructure:"endpoint"`
-	Username string `mapstructure:"username"`
-	Password string `mapstructure:"password"`
+	Endpoint string `mapstructure:"endpoint"json:"endpoint"`
+	Username string `mapstructure:"username"json:"username"`
+	Password string `mapstructure:"password"json:"password"`
 }
 
 type Preset struct {

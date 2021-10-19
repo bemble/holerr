@@ -12,7 +12,10 @@ import webSocket from "./api/websocket";
 import useSocketMessage from "./hooks/useSocketMessage";
 import AppBottomBar from "./layouts/AppBottomBar";
 import Downloads from "./pages/downloads/Downloads";
+import Presets from "./pages/Presets";
 import Settings from "./pages/Settings";
+import Status from "./pages/Status";
+
 import {
   addDownload,
   removeDownload,
@@ -56,7 +59,9 @@ const Main = () => {
       <Router basename={process.env.PUBLIC_URL}>
         <Switch>
           <Route path="/downloads" component={Downloads} />
+          <Route path="/presets" component={Presets} />
           <Route path="/settings" component={Settings} />
+          <Route path="/status" component={Status} />
           <Redirect to="/downloads" />
         </Switch>
         <AppBottomBar />

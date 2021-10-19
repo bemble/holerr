@@ -2,21 +2,27 @@ package api
 
 import (
 	"encoding/json"
-	"net/http"
 	"holerr/debriders"
 	"holerr/downloaders"
+	"net/http"
 )
 
 func StatusList(w http.ResponseWriter, r *http.Request) {
+	debriderStatus := false
 	debrider := debriders.Get()
-	debriderStatus := debrider.IsConnected()
+	if debrider != nil {
+		debriderStatus = debrider.IsConnected()
+	}
 
+	downloaderStatus := false
 	downloader := downloaders.Get()
-	downloaderStatus := downloader.IsConnected()
+	if downloader != nil {
+		downloaderStatus = downloader.IsConnected()
+	}
 
 	var list = map[string]interface{}{
-		"debrider_connected": debriderStatus,
-		"downloader_connected":  downloaderStatus,
+		"debrider_connected":   debriderStatus,
+		"downloader_connected": downloaderStatus,
 	}
 	body, _ := json.Marshal(list)
 	w.Write(body)

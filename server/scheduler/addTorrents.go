@@ -3,17 +3,17 @@ package scheduler
 import (
 	"crypto/sha1"
 	"fmt"
-	"os"
-	"path/filepath"
-	"reflect"
-	"strings"
-	"time"
 	"holerr/api"
 	"holerr/core/config"
 	"holerr/core/db"
 	"holerr/core/log"
 	"holerr/debriders"
 	debriderInterface "holerr/debriders/debrider"
+	"os"
+	"path/filepath"
+	"reflect"
+	"strings"
+	"time"
 )
 
 func AddTorrents() {
@@ -60,7 +60,7 @@ func handleTorrent(path string) {
 	}
 }
 
-func computeTorrentInfo(path string) (string, string ){
+func computeTorrentInfo(path string) (string, string) {
 	basename := filepath.Base(path)
 	// Remove .torrent in file name
 	name := basename[0 : len(basename)-8]
@@ -75,13 +75,13 @@ func handleNewTorrentFound(id string, name string, preset config.Preset) db.Down
 	dbi := db.Get()
 	now := time.Now()
 	down := db.Download{
-		Id:            id,
-		Title:         name,
-		Preset:        preset.Name,
-		Status:        db.DownloadStatus["TORRENT_FOUND"],
-		TorrentInfo:   debriderInterface.TorrentInfo{},
-		CreatedAt:     now,
-		UpdatedAt:     now,
+		Id:          id,
+		Title:       name,
+		Preset:      preset.Name,
+		Status:      db.DownloadStatus["TORRENT_FOUND"],
+		TorrentInfo: debriderInterface.TorrentInfo{},
+		CreatedAt:   now,
+		UpdatedAt:   now,
 	}
 	down.StatusDetails = db.DownloadStatusDetail[down.Status]
 	if writeErr := dbi.Write("downloads", id, down); writeErr != nil {
@@ -94,6 +94,11 @@ func handleNewTorrentFound(id string, name string, preset config.Preset) db.Down
 func sendToDebrider(path string, down *db.Download) {
 	dbi := db.Get()
 	debrider := debriders.Get()
+
+	if debrider == nil {
+		log.Error("No debrider configured")
+		return
+	}
 
 	torrentId, err := debrider.AddTorrent(path)
 	if err != nil {

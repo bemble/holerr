@@ -10,6 +10,11 @@ import (
 
 func DownloadFiles(download *db.Download) {
 	downloader := downloaders.Get()
+	if downloader == nil {
+		log.Error("No downloader configured")
+		return
+	}
+
 	preset, err := config.GetPresetByName(download.Preset)
 	if err != nil {
 		log.Error(err)
