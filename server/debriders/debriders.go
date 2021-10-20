@@ -2,7 +2,6 @@ package debriders
 
 import (
 	"holerr/core/config"
-	"holerr/core/log"
 	"holerr/debriders/debrider"
 	"holerr/debriders/realdebrid"
 )
@@ -11,9 +10,8 @@ var d debrider.Debrider = nil
 
 func Get() debrider.Debrider {
 	if d == nil {
-		_, confError := config.GetRealDebrid()
-		if !confError {
-			log.Info("Using real-debrid as torrent downloader/debrider")
+		_, err := config.GetRealDebrid()
+		if err == nil {
 			d = realdebrid.New()
 		}
 	}

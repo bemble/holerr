@@ -1,16 +1,20 @@
 package scheduler
 
 import (
-	"time"
 	"holerr/core/db"
 	"holerr/core/log"
 	"holerr/downloaders"
+	"time"
 )
 
 func UpdateDownloaderInfo(download *db.Download) {
 	previousUpdatedAt := download.UpdatedAt
 
 	downloader := downloaders.Get()
+	if downloader == nil {
+		log.Info("No downloader set")
+		return
+	}
 	dbi := db.Get()
 
 	// Do not ask all at once, status is messy (first is a valid status, others are int)

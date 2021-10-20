@@ -11,7 +11,7 @@ import (
 func DownloadFiles(download *db.Download) {
 	downloader := downloaders.Get()
 	if downloader == nil {
-		log.Error("No downloader configured")
+		log.Info("No downloader set")
 		return
 	}
 
@@ -36,6 +36,10 @@ func DownloadFiles(download *db.Download) {
 	}
 
 	debrider := debriders.Get()
+	if debrider == nil {
+		log.Info("No debrider set")
+		return
+	}
 	err = debrider.DeleteTorrent(download.TorrentInfo.Id)
 	if err != nil {
 		log.Error(err)

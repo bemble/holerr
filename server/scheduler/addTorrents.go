@@ -94,9 +94,8 @@ func handleNewTorrentFound(id string, name string, preset config.Preset) db.Down
 func sendToDebrider(path string, down *db.Download) {
 	dbi := db.Get()
 	debrider := debriders.Get()
-
 	if debrider == nil {
-		log.Error("No debrider configured")
+		log.Info("No debrider set")
 		return
 	}
 

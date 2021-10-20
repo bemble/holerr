@@ -20,7 +20,7 @@ func ConfigList(w http.ResponseWriter, r *http.Request) {
 	}
 
 	debriders, debridersErr := config.GetDebriders()
-	if !debridersErr {
+	if debridersErr != nil {
 		if debriders.RealDebrid.ApiKey != "" {
 			debriders.RealDebrid.ApiKey = hideSecret(debriders.RealDebrid.ApiKey)
 		}
@@ -28,7 +28,7 @@ func ConfigList(w http.ResponseWriter, r *http.Request) {
 	}
 
 	downloaders, downloadersErr := config.GetDownloaders()
-	if !downloadersErr {
+	if downloadersErr != nil {
 		if downloaders.SynologyDownloadStation.Password != "" {
 			downloaders.SynologyDownloadStation.Password = hideSecret(downloaders.SynologyDownloadStation.Password)
 		}

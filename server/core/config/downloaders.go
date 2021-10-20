@@ -1,32 +1,26 @@
 package config
 
 import (
+	"errors"
 	"github.com/spf13/viper"
 	"reflect"
 )
 
-func GetDownloaders() (Downloaders, bool) {
+func GetDownloaders() (Downloaders, error) {
 	if viper.IsSet(ConfKeyDownloaders) {
 		downloaders := Downloaders{}
 		err := viper.UnmarshalKey(ConfKeyDownloaders, &downloaders)
 		if err == nil {
-			return downloaders, false
+			return downloaders, nil
 		}
 	}
-	return Downloaders{}, true
+	return Downloaders{}, errors.New("No downloader set")
 }
 
-func GetSynologyDownloadStation() (SynologyDownloadStation, bool) {
+func GetSynologyDownloadStation() (SynologyDownloadStation, error) {
 	downloaders, err := GetDownloaders()
-	if !(err || reflect.DeepEqual(downloaders.SynologyDownloadStation, SynologyDownloadStation{})) {
-		return downloaders.SynologyDownloadStation, false
+	if err == nil && !(reflect.DeepEqual(downloaders.SynologyDownloadStation, SynologyDownloadStation{})) {
+		return downloaders.SynologyDownloadStation, nil
 	}
-	return SynologyDownloadStation{}, true
-}
-
-func SetSynologyDownloadStation(downloader SynologyDownloadStation) {
-	downloaders, _ := GetDownloaders()
-	downloaders.SynologyDownloadStation = downloader
-	viper.Set(ConfKeyDownloaders, downloaders)
-	viper.WriteConfig()
+	return SynologyDownloadStation{}, errors.New("Synology downloader not set")
 }

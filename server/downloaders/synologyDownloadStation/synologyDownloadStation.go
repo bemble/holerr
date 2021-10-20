@@ -30,6 +30,10 @@ func New() SynologyDownloadStation {
 	return s
 }
 
+func (s SynologyDownloadStation) GetName() string {
+	return "Synology Download Station"
+}
+
 func (s SynologyDownloadStation) IsConnected() bool {
 	sid, err := connect("DownloadStation")
 	return err == nil && sid != ""

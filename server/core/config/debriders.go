@@ -1,32 +1,26 @@
 package config
 
 import (
+	"errors"
 	"github.com/spf13/viper"
 	"reflect"
 )
 
-func GetDebriders() (Debriders, bool) {
+func GetDebriders() (Debriders, error) {
 	if viper.IsSet(ConfKeyDebriders) {
 		debriders := Debriders{}
 		err := viper.UnmarshalKey(ConfKeyDebriders, &debriders)
 		if err == nil {
-			return debriders, false
+			return debriders, nil
 		}
 	}
-	return Debriders{}, true
+	return Debriders{}, errors.New("No debrider set")
 }
 
-func GetRealDebrid() (RealDebrid, bool) {
+func GetRealDebrid() (RealDebrid, error) {
 	debriders, err := GetDebriders()
-	if !(err || reflect.DeepEqual(debriders.RealDebrid, RealDebrid{})) {
-		return debriders.RealDebrid, false
+	if err == nil && !(reflect.DeepEqual(debriders.RealDebrid, RealDebrid{})) {
+		return debriders.RealDebrid, nil
 	}
-	return RealDebrid{}, true
-}
-
-func SetRealDebrid(debrid RealDebrid) {
-	debriders, _ := GetDebriders()
-	debriders.RealDebrid = debrid
-	viper.Set(ConfKeyDebriders, debriders)
-	viper.WriteConfig()
+	return RealDebrid{}, errors.New("Real-Debrid not set")
 }

@@ -3,17 +3,17 @@ package api
 import (
 	"encoding/json"
 	"fmt"
+	"holerr/core/config"
+	"holerr/core/db"
+	"holerr/core/log"
+	"holerr/debriders"
+	"holerr/downloaders"
 	"io"
 	"net/http"
 	"os"
 	"path/filepath"
 	"reflect"
 	"strings"
-	"holerr/core/config"
-	"holerr/core/db"
-	"holerr/core/log"
-	"holerr/debriders"
-	"holerr/downloaders"
 
 	"github.com/go-chi/chi"
 )
@@ -104,12 +104,18 @@ func DownloadsDelete(w http.ResponseWriter, r *http.Request) {
 	// Debrider
 	if down.Status >= db.DownloadStatus["TORRENT_SENT_TO_DEBRIDER"] && down.Status <= db.DownloadStatus["DEBRIDER_DOWNLOADED"] {
 		debrider := debriders.Get()
-		err := debrider.DeleteTorrent(down.TorrentInfo.Id)
-		if err != nil {
+		if debrider != nil {
+			err := debrider.DeleteTorrent(down.TorrentInfo.Id)
+			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				body, _ := json.Marshal(map[string]string{"message": "Could not delete torrent on debrider"})
+				w.Write(body)
+				return
+			}
+		} else {
 			w.WriteHeader(http.StatusInternalServerError)
-			body, _ := json.Marshal(map[string]string{"message": "Could not delete torrent on debrider"})
+			body, _ := json.Marshal(map[string]string{"message": "No debrider set"})
 			w.Write(body)
-			return
 		}
 	}
 
@@ -128,12 +134,18 @@ func DownloadsDelete(w http.ResponseWriter, r *http.Request) {
 		}
 
 		downloader := downloaders.Get()
-		err := downloader.DeleteDownload(strings.Join(ids, ","))
-		if err != nil {
+		if downloader != nil {
+			err := downloader.DeleteDownload(strings.Join(ids, ","))
+			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				body, _ := json.Marshal(map[string]string{"message": "Could not delete download task on downloader"})
+				w.Write(body)
+				return
+			}
+		} else {
 			w.WriteHeader(http.StatusInternalServerError)
-			body, _ := json.Marshal(map[string]string{"message": "Could not delete download task on downloader"})
+			body, _ := json.Marshal(map[string]string{"message": "No downloader set"})
 			w.Write(body)
-			return
 		}
 	}
 

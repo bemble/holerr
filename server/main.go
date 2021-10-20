@@ -6,6 +6,8 @@ import (
 	"holerr/api"
 	"holerr/core/config"
 	"holerr/core/log"
+	"holerr/debriders"
+	"holerr/downloaders"
 	"holerr/scheduler"
 	"net/http"
 	"os"
@@ -19,27 +21,15 @@ func init() {
 
 	log.Info("Service RUN on DEBUG mode")
 
-/*	if reflect.DeepEqual(Config.Presets, []int{}) || Config.Presets == nil {
-		log.Fatal("No preset configured")
-	}
-
-	db.Get()
-
 	debrider := debriders.Get()
-	if reflect.DeepEqual(Config.Debriders, config.Debriders{}) || debrider == nil {
-		log.Fatal("No debrider configured")
+	if debrider != nil {
+		log.Info("Using debrider " + debrider.GetName() + "")
 	}
-	myProfile, err := debrider.Me()
-	if err != nil {
-		panic(err)
-	}
-	log.Info("Debrider user: " + myProfile)
 
 	downloader := downloaders.Get()
-	if reflect.DeepEqual(Config.Downloaders, config.Downloaders{}) || downloader == nil {
-		log.Fatal("No downloader configured")
+	if downloader != nil {
+		log.Info("Using downloader " + downloader.GetName())
 	}
- */
 }
 
 func main() {

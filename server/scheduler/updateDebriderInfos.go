@@ -1,16 +1,21 @@
 package scheduler
 
 import (
-	"time"
 	"holerr/core/db"
 	"holerr/core/log"
 	"holerr/debriders"
 	debriderInterface "holerr/debriders/debrider"
+	"time"
 )
 
 func UpdateDebriderInfos(download *db.Download) {
-	dbi := db.Get()
 	debrider := debriders.Get()
+	if debrider == nil {
+		log.Info("No debrider set")
+		return
+	}
+
+	dbi := db.Get()
 
 	previousStatus := download.Status
 

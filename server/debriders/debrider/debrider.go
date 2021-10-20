@@ -1,6 +1,7 @@
 package debrider
 
 type Debrider interface {
+	GetName() string
 	IsConnected() bool
 	Me() (string, error)
 	GetSlotsAvailable() (int, error)

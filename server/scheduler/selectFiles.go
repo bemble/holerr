@@ -2,17 +2,20 @@ package scheduler
 
 import (
 	"fmt"
-	"strings"
 	"holerr/core/config"
 	"holerr/core/db"
 	"holerr/core/log"
 	"holerr/debriders"
+	"strings"
 )
 
 func SelectFiles(download *db.Download) {
-	if download.Preset != "" && len(download.TorrentInfo.Files) >= 1 {
-		debrider := debriders.Get()
+	debrider := debriders.Get()
+	if debrider != nil {
+		log.Info("No debrider set")
+	}
 
+	if download.Preset != "" && len(download.TorrentInfo.Files) >= 1 {
 		preset, err := config.GetPresetByName(download.Preset)
 		if err != nil {
 			log.Error(err)

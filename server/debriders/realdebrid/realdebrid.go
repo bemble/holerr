@@ -39,6 +39,10 @@ func prepareClient(client *request.Client) {
 	}
 }
 
+func (r RealDebrid) GetName() string {
+	return "Real-Debrid"
+}
+
 func (r RealDebrid) IsConnected() bool {
 	me, err := r.Me()
 	return err == nil && me != ""
@@ -73,7 +77,7 @@ func (r RealDebrid) GetSlotsAvailable() (int, error) {
 }
 
 func (r RealDebrid) GetActiveDownloads() {
-	// TODO
+	// TODO: get active downloads
 }
 
 func (r RealDebrid) AddTorrent(torrent string) (string, error) {
