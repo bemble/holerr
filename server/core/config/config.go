@@ -44,6 +44,8 @@ func InitFromFile() {
 
 	handleFrontBasePath()
 	createPresetDirs()
+
+	// Check downloader and debrider
 }
 
 func GetServerDir() (string, error) {

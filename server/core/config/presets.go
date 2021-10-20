@@ -3,6 +3,7 @@ package config
 import (
 	"errors"
 	"fmt"
+	"github.com/imdario/mergo"
 	"github.com/spf13/viper"
 	"os"
 	"path/filepath"
@@ -42,28 +43,40 @@ func GetPresetByName(name string) (Preset, error) {
 	return Preset{}, errors.New("No preset found for name " + name)
 }
 
-func AddPreset(preset Preset) {
+func AddPreset(preset Preset) error {
+	_, err := GetPresetByName(preset.Name)
+	if err == nil {
+		return errors.New("Preset " + preset.Name + " already exists")
+	}
+
 	presets, _ := GetPresets()
 	presets = append(presets, preset)
 	viper.Set(ConfKeyPresets, presets)
 	createPresetDirs()
 	viper.WriteConfig()
+	return nil
 }
 
-func SetPreset(name string, preset Preset) {
+func UpdatePreset(name string, preset Preset) error {
+	_, err := GetPresetByName(preset.Name)
+	if err == nil {
+		return errors.New("Preset " + name + " not found")
+	}
+
 	presets, _ := GetPresets()
 	for i, a := range presets {
 		if a.Name == name {
-			presets[i] = preset
+			mergo.Merge(&presets[i], preset, mergo.WithOverride)
 		}
 	}
 	viper.Set(ConfKeyPresets, presets)
 	createPresetDirs()
 	viper.WriteConfig()
+	return nil
 }
 
 func RemovePreset(name string) {
-	presets,_ := GetPresets()
+	presets, _ := GetPresets()
 	index := -1
 	for i, a := range presets {
 		if a.Name == name {

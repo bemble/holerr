@@ -160,7 +160,12 @@ type WebsocketInputMessage = {
 
 ### HTTP
 
-#### Constants
+#### Configuration
+
+* __List:__ `[GET] /api/configuration` get the configuration (passwords and API keys are obfuscated)
+* __Update:__ `[PATCH] /api/configuration` update configuration parts
+
+#### Status
 
 * __Get:__ `[GET] /api/status` get the status
 
@@ -170,7 +175,10 @@ type WebsocketInputMessage = {
 
 #### Presets
 
-* __List:__ `[GET] /api/presets` get the list of presets (configured in `config.json`)
+* __List:__ `[GET] /api/presets` get the list of presets
+* __Add:__ `[POST] /api/presets` add the given preset, replies with the preset added
+* __Update:__ `[PATCH] /api/presets/:name` update the preset given by its name, replies with the updated preset
+* __Delete:__ `[DELETE] /api/presets/:name` delete the preset given by its name
 
 #### Downloads
 
@@ -205,14 +213,55 @@ type WebsocketInputMessage = {
 
 ## Data structure
 
+### Configuration
+
+```typescript
+type Configuration = {
+    // If necessary, the base_path to fetch the front [optional, default: "/"] example: "/holerr"
+    base_path: string,
+    // Set holerr in debug (default: false)
+    debug: boolean,
+    // Debriders, providers that will download the torrent
+    debriders?: Debriders,
+    // Downloaders, providers that will download the files downloaded by the debrider
+    downloaders?: Downloaders,
+    // Download presets
+    presets?: Preset[]
+};
+
+type Debriders = {
+    // Real-Debrid
+    real_debrid: RealDebrid;
+}
+
+type RealDebrid = {
+    // Real-Debrid private API token: https://real-debrid.com/apitoken
+    api_key: string;
+}
+
+type Downloaders = {
+    // Synology
+    synology_download_station: SynologyDownloadStation;
+};
+
+type SynologyDownloadStation = {
+    // Your Synology endpoint (example: "http://192.168.1.1:5000")
+    endpoint: string;
+    // DSM username (this user must not have 2FA)
+    username: string;
+    // DSM password
+    password: string;
+};
+```
+
 ### Status
 
 ```typescript
 type Status = {
     // Is connected to debrider
-    debrider_connected: bool,
+    debrider_connected: bool;
     // Is connected to downloader
-    downloader_connected: bool
+    downloader_connected: bool;
 }
 ```
 
@@ -221,9 +270,9 @@ type Status = {
 ```typescript
 type Constants = {
     // Global download task status
-    download_status: Record<string, number>,
+    download_status: Record<string, number>;
     // Torrent status from debrider
-    torrent_status: Record<string, number>
+    torrent_status: Record<string, number>;
 }
 ```
 
@@ -232,17 +281,19 @@ type Constants = {
 ```typescript
 type Preset = {
     // Human readable name
-    name: string,
+    name: string;
     // Where holerr will watch torrents, relative to data dir
-    watch_dir: string,
+    watch_dir: string;
     // Downloader output directory [optional] (in Synology, must start with a shared folder)
-    output_dir: string,
+    output_dir: string;
     // If true, create a sub directory, into output_dir, per download task and download files in it [optional, default: false]
-    create_sub_dir: bool,
+    create_sub_dir: bool;
     // Accepted file extensions [optional]
-    file_extensions: string[] | null,
+    file_extensions: string[] | null;
     // Minimum file size to download [optional, default: 0]
-    min_file_size: number
+    min_file_size: number;
+  // Whether downloader should download in subdir
+  create_sub_dir?: boolean;
 }
 ```
 
@@ -272,30 +323,30 @@ type Download = {
 
 type TorrentInfo = {
     // Debrider torrent ID
-    id: string,
+    id: string;
     // Torrent filename
-    filename: string,
+    filename: string;
     // Size of selected files only
-    bytes: int,
+    bytes: int;
     // Download progress [0...100]
-    progress: int,
+    progress: int;
     // Current status of the torrent
-    status: string,
+    status: string;
     // List of file available in the torrent
-    files: DownloadFile[],
+    files: DownloadFile[];
     // When torrent is downloaded, list of files
-    links: string[] | null
+    links: string[] | null;
 };
 
 type DownloadFile = {
     // Debrider file ID
-    id: int,
+    id: int;
     // Path to the file inside the torrent, starting with "/"
-    path: string,
+    path: string;
     // Size of the file
-    bytes: int,
+    bytes: int;
     // Whether the file is selected for download or not [0,1]
-    selected: int
+    selected: int;
 };
 
 type DownloadInfo = {
@@ -304,7 +355,7 @@ type DownloadInfo = {
     // Total files size
     bytes: number;
     // Key are links
-    tasks: Record<string, DownloadInfoTask>
+    tasks: Record<string, DownloadInfoTask>;
 };
 
 type DownloadInfoTask = {
