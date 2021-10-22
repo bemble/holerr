@@ -1,8 +1,9 @@
 package config
 
 type Config struct {
-	BasePath    string      `mapstructure:"base_path"json:"base_path"`
 	Debug       bool        `mapstructure:"debug"json:"debug"`
+	ApiKey      string      `mapstructure:"api_key"json:"api_key"`
+	BasePath    string      `mapstructure:"base_path"json:"base_path"`
 	Debriders   Debriders   `mapstructure:"debriders"json:"debriders"`
 	Downloaders Downloaders `mapstructure:"downloaders"json:"downloaders"`
 	Presets     []Preset    `mapstructure:"presets"json:"downloaders"`

@@ -7,6 +7,7 @@ import (
 
 func Router(r chi.Router) {
 	r.Use(middleware.SetHeader("Content-Type", "application/json"))
+	r.Use(CheckApiKey)
 
 	r.Get(`/status`, StatusList)
 	r.Post(`/server/restart`, ServerRestart)

@@ -7,9 +7,3 @@ import (
 func IsDebug() bool {
 	return viper.GetBool(ConfKeyDebug)
 }
-
-func SetDebug(debug bool) {
-	viper.Set(ConfKeyDebug, debug)
-	viper.WriteConfig()
-}
-

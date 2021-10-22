@@ -20,7 +20,12 @@ func PresetsAdd(w http.ResponseWriter, r *http.Request) {
 
 	if decodeErr != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("Decode error: " + decodeErr.Error()))
+
+		content := map[string]string {
+			"message" : "Decode error: " + decodeErr.Error(),
+		}
+		body, _ := json.Marshal(content)
+		w.Write(body)
 		return
 	}
 
@@ -44,7 +49,11 @@ func PresetsUpdate(w http.ResponseWriter, r *http.Request) {
 
 	if decodeErr != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("Decode error: " + decodeErr.Error()))
+		content := map[string]string {
+			"message" : "Decode error: " + decodeErr.Error(),
+		}
+		body, _ := json.Marshal(content)
+		w.Write(body)
 		return
 	}
 

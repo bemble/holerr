@@ -16,11 +16,12 @@ func hideSecret(s string) string {
 func ConfigList(w http.ResponseWriter, r *http.Request) {
 	list := map[string]interface{}{
 		config.ConfKeyDebug:    config.IsDebug(),
+		config.ConfKeyApiKey:   config.GetApiKey(),
 		config.ConfKeyBasePath: config.GetBasePath(),
 	}
 
 	debriders, debridersErr := config.GetDebriders()
-	if debridersErr != nil {
+	if debridersErr == nil {
 		if debriders.RealDebrid.ApiKey != "" {
 			debriders.RealDebrid.ApiKey = hideSecret(debriders.RealDebrid.ApiKey)
 		}
@@ -28,7 +29,7 @@ func ConfigList(w http.ResponseWriter, r *http.Request) {
 	}
 
 	downloaders, downloadersErr := config.GetDownloaders()
-	if downloadersErr != nil {
+	if downloadersErr == nil {
 		if downloaders.SynologyDownloadStation.Password != "" {
 			downloaders.SynologyDownloadStation.Password = hideSecret(downloaders.SynologyDownloadStation.Password)
 		}
@@ -51,6 +52,8 @@ func ConfigUpdate(w http.ResponseWriter, r *http.Request) {
 		w.Write(body)
 	} else {
 		viper.WriteConfig()
+		config.SetBasePath(config.GetBasePath())
+		config.SetApiKey(config.GetApiKey())
 		ConfigList(w, r)
 	}
 }

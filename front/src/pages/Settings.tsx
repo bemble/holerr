@@ -14,6 +14,7 @@ import AppTopBar from "../layouts/AppTopBar";
 import {ChangeEvent, useEffect, useState} from "react";
 import httpApi from "../api/http";
 import {Configuration} from "../models/configuration.type";
+import store, {useAppDispatch} from "../store";
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -26,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "column",
         padding: theme.spacing(4),
     },
-    spacer : {
+    spacer: {
         height: theme.spacing(4),
         width: "1px"
     }
@@ -41,6 +42,8 @@ const Settings = () => {
     const [restartRequired, setRestartRequired] = useState(false);
     const {t, i18n} = useTranslation();
     const languages = (i18n.options.supportedLngs || []).filter(l => l !== "cimode");
+
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         (async () => {
@@ -66,6 +69,19 @@ const Settings = () => {
             tmpNewConfig.debug = tmpConf.debug;
 
             setRestartRequired(true);
+            setConfig(tmpConf);
+            setNewConfig(tmpNewConfig);
+        }
+    };
+
+    const handleChangeApiKey = ({target}: ChangeEvent<HTMLInputElement>) => {
+        if (config) {
+            const tmpConf = Object.assign({}, config);
+            tmpConf.api_key = target.value;
+
+            const tmpNewConfig = Object.assign({}, newConfig);
+            tmpNewConfig.api_key = tmpConf.api_key;
+
             setConfig(tmpConf);
             setNewConfig(tmpNewConfig);
         }
@@ -163,6 +179,9 @@ const Settings = () => {
             setIsLoading(true);
             const {data} = await httpApi.patch<Configuration>(`/configuration`, newConfig);
             setConfig(data);
+            if (data.api_key.length) {
+                dispatch({type: "appConfig/set", payload: {apiKey: data.api_key}});
+            }
             setIsLoading(false);
         })();
     };
@@ -196,6 +215,8 @@ const Settings = () => {
                         <InputLabel><Checkbox checked={config.debug} disabled={isLoading}
                                               onChange={handleChangeDebug}/> {t("settings.configuration_debug")}
                         </InputLabel>
+                        <TextField value={config.api_key} label={t("settings.configuration_api_key")}
+                                   onChange={handleChangeApiKey}/>
                         <TextField value={config.base_path} label={t("settings.configuration_base_path")}
                                    onChange={handleChangeBasePath}/>
                         <h3>Real-Debrid</h3>
@@ -213,7 +234,7 @@ const Settings = () => {
                         <TextField value={config.downloaders?.synology_download_station.password}
                                    onChange={handleChangeSynoPassword}
                                    label={t("settings.configuration_password")}/>
-                        <div className={classes.spacer} />
+                        <div className={classes.spacer}/>
                         <Button variant="contained" color="primary" disabled={!hasChange || isLoading}
                                 onClick={handleSave}>{t("settings.configuration_save")}</Button>
                         {restartRequired ? <p>{t("settings.configuration_restart_required")}</p> : null}

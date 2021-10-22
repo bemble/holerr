@@ -90,10 +90,10 @@ You can use previous method or use `Docker` to run it (and do not install all go
 
 ```
 docker build . -f Dockerfile.server -t holerr/server
-docker run --rm -p8781:8781 -v"$(pwd)/data:/app/data" holerr/server
+docker run -t -i --rm -p8781:8781 -v"$(pwd)/data:/app/data" -v"$(pwd)/server:/app/server" holerr/server
 ```
 
-Don't forget to rebuild on update.
+You should rebuild on update.
 
 ### Running the front-end
 
@@ -108,6 +108,8 @@ npm run start
 ```
 
 Your web browser should open on `http://localhost:3000`. The app is configured to proxy the server for development purpose (ie. api is also reachable on `http://localhost:3000/api`).
+
+**Note:** if you set an API key in your configuration, you must set it when running front: `REACT_APP_API_KEY=<yourkey> npm run start`
 
 ## API documentation
 
@@ -217,16 +219,18 @@ type WebsocketInputMessage = {
 
 ```typescript
 type Configuration = {
-    // If necessary, the base_path to fetch the front [optional, default: "/"] example: "/holerr"
-    base_path: string,
+    // API key used to communicate with the server [default: ""]
+    api_key: string;
     // Set holerr in debug (default: false)
-    debug: boolean,
+    debug: boolean;
+    // If necessary, the base_path to fetch the front [optional, default: "/"] example: "/holerr"
+    base_path: string;
     // Debriders, providers that will download the torrent
-    debriders?: Debriders,
+    debriders?: Debriders;
     // Downloaders, providers that will download the files downloaded by the debrider
-    downloaders?: Downloaders,
+    downloaders?: Downloaders;
     // Download presets
-    presets?: Preset[]
+    presets?: Preset[];
 };
 
 type Debriders = {

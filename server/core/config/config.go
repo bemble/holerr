@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"github.com/spf13/viper"
+	"holerr/core/tools/placeholder"
 	"log"
 	"os"
 	"path"
@@ -10,6 +11,7 @@ import (
 	"runtime"
 )
 
+const ConfKeyApiKey = "api_key"
 const ConfKeyBasePath = "base_path"
 const ConfKeyDebriders = "debriders"
 const ConfKeyDebug = "debug"
@@ -40,12 +42,26 @@ func InitFromFile() {
 		panic(err)
 	}
 
-	os.MkdirAll(GetPublicDir(), os.ModePerm)
+	publicDir := GetPublicDir()
+	os.MkdirAll(publicDir, os.ModePerm)
 
-	handleFrontBasePath()
+	basePathReplacer := placeholder.Replacer{
+		Placeholder: BasePathPlaceholder,
+		Replacement: GetBasePath(),
+		IsURLPath: true,
+	}
+	placeholder.SetReplacer(basePathReplacer)
+
+	apiKeyReplacer := placeholder.Replacer{
+		Placeholder: ApiKeyPlaceholder,
+		Replacement: GetApiKey(),
+		IsURLPath: false,
+	}
+	placeholder.SetReplacer(apiKeyReplacer)
+
+	placeholder.ReplaceInFiles(publicDir)
+
 	createPresetDirs()
-
-	// Check downloader and debrider
 }
 
 func GetServerDir() (string, error) {
