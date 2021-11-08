@@ -1,0 +1,69 @@
+@import "theme";
+
+.root {
+    width: 32px;
+    height: 32px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.torrent, .download {
+    color: $grey-300 !important;
+
+    &.progress {
+        color: $blue-500 !important;
+    }
+
+    &.done {
+        color: $green-200 !important;
+    }
+
+    &.error {
+        color: $red-500 !important;
+    }
+}
+
+.torrent, .torrentBottom {
+    width: 70% !important;
+    height: 70% !important;
+    position: absolute;
+}
+
+.download, .downloadBottom {
+    width: 100% !important;
+    height: 100% !important;
+    position: absolute;
+}
+
+.torrentBottom, .downloadBottom {
+    color: $grey-200 !important;
+}
+
+.icon {
+    width: 30% !important;
+    height: 30% !important;
+    position: absolute;
+    color: $grey-400 !important;
+
+    &.done {
+        color: $green-200 !important;
+    }
+
+    &.error {
+        color: $red-500 !important;
+    }
+
+    &.animated {
+        animation: flickerAnimation 1s infinite;
+    }
+}
+
+
+
+@keyframes flickerAnimation {
+  0%   { opacity:1; }
+  50%  { opacity:0; }
+  100% { opacity:1; }
+}

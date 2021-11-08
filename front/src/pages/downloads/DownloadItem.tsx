@@ -1,110 +1,60 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  IconButton,
-  ListItemText,
-  makeStyles,
-  Menu,
-  MenuItem
-} from "@material-ui/core";
+import {Card, CardContent, Grid, IconButton, makeStyles,} from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/DeleteOutlined";
-import MoreIcon from "@material-ui/icons/MoreVertOutlined";
-import { useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import ProgressBar from "../../components/ProgressBar";
-import { Download, DownloadStatus } from "../../models/downloads.type";
-import {
-  DEFAULT_STATUS_CONFIG,
-  downloadStatusConfig
-} from "../../models/downloads.utils";
-import { deleteDownload } from "../../store/downloads/downloads.thunk";
+import {useDispatch} from "react-redux";
+import {Download} from "../../models/downloads.type";
+import {DEFAULT_STATUS_CONFIG, downloadStatusConfig} from "../../models/downloads.utils";
+import {deleteDownload} from "../../store/downloads/downloads.thunk";
 import DownloadItemChips from "./DownloadItemChips";
+import StateProgress from "../../components/StateProgress";
+import {blue} from "@material-ui/core/colors";
+import {FunctionComponent} from "react";
 
 type DownloadItemProps = {
-  item: Download;
+    item: Download;
 };
 
-const useStyles = makeStyles((theme) => ({
-  header: {
-    wordBreak: "break-all",
-    paddingBottom: 0,
-  },
+const useStyles = makeStyles(({spacing}) => ({
+    content: {
+        padding: `${spacing(2)}px !important`
+    },
+    status: {
+        paddingRight: spacing(2)
+    },
+    title: {
+        flex: 1,
+        color: blue[900]
+    },
 }));
 
-const DownloadItem: React.FC<DownloadItemProps> = ({ item }) => {
-  const { type, step } =
-    downloadStatusConfig.get(item.status) || DEFAULT_STATUS_CONFIG;
-  const classes = useStyles();
+const DownloadItem: FunctionComponent<DownloadItemProps> = ({item}) => {
+    const {status, step} = downloadStatusConfig.get(item.status) || DEFAULT_STATUS_CONFIG;
+    const dispatch = useDispatch();
+    const classes = useStyles();
 
-  const dispatch = useDispatch();
+    const handleDeleteClick = () => {
+        dispatch(deleteDownload(item.id));
+    };
 
-  const handleDeleteClick = () => {
-    setMenuOpen(false);
-    dispatch(deleteDownload(item.id));
-  };
+    const torrentProgress = item.torrent_info?.progress || 0;
+    const downloadProgress = item.download_info?.progress || 0;
 
-  const moreRef = useRef<any>(null);
-  const [isMenuOpen, setMenuOpen] = useState<boolean>(false);
-
-  const { t } = useTranslation();
-  const handleMoreClick = () => {
-    setMenuOpen(true);
-  };
-  const handleMenuClose = () => {
-    setMenuOpen(false);
-  };
-
-  let progress = undefined;
-  if(item.status === DownloadStatus.DEBRIDER_DOWNLOADING) {
-    progress = item.torrent_info?.progress;
-  }
-  else if(item.status === DownloadStatus.DOWNLOADER_DOWNLOADING && item.download_info?.progress !== 100) {
-    progress = item.download_info?.progress;
-  }
-
-  return (
-    <>
-      <Card elevation={1}>
-        <ProgressBar
-          stepCount={3}
-          step={step}
-          type={type}
-          progress={progress}
-        />
-        <CardHeader
-          className={classes.header}
-          disableTypography
-          action={
-            <IconButton
-              aria-label="settings"
-              onClick={handleMoreClick}
-              ref={moreRef}
-            >
-              <MoreIcon />
-            </IconButton>
-          }
-          title={item.title}
-        />
-        <CardContent>
-          <DownloadItemChips item={item} />
+    return <Card elevation={1}>
+        <CardContent className={classes.content} >
+            <Grid container alignItems="center">
+                <Grid item className={classes.status}>
+                    <StateProgress torrentProgress={torrentProgress} downloadProgress={downloadProgress} step={step}
+                                   status={status}/>
+                </Grid>
+                <Grid item className={classes.title}>
+                    <span>{item.title}</span>
+                </Grid>
+                <Grid item>
+                    <IconButton onClick={handleDeleteClick} size="small"><DeleteIcon/></IconButton>
+                </Grid>
+            </Grid>
+            <DownloadItemChips item={item}/>
         </CardContent>
-      </Card>
-
-      <Menu
-        anchorEl={moreRef.current}
-        keepMounted
-        open={isMenuOpen}
-        onClose={handleMenuClose}
-      >
-        <MenuItem onClick={handleDeleteClick}>
-          <DeleteIcon />
-          <ListItemText primary={t("downloads_delete")} />
-        </MenuItem>
-      </Menu>
-    </>
-  );
+    </Card>;
 };
 
 export default DownloadItem;
