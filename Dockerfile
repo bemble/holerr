@@ -16,7 +16,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -o holerr .
 # Front build
 FROM node:14-alpine as front-builder
 
-RUN apk add tzdata
+RUN apk add --no-cache make gcc g++ python tzdata
 
 ADD . /app
 WORKDIR /app/front
