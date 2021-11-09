@@ -26,9 +26,11 @@
 }
 
 .torrent, .torrentBottom {
-    width: 70% !important;
-    height: 70% !important;
+    width: 22px !important;
+    height: 22px !important;
     position: absolute;
+    top: 5px;
+    left: 5px;
 }
 
 .download, .downloadBottom {
@@ -42,9 +44,11 @@
 }
 
 .icon {
-    width: 30% !important;
-    height: 30% !important;
+    width: 10px !important;
+    height: 10px !important;
     position: absolute;
+    top: 11px;
+    left: 11px;
     color: $grey-400 !important;
 
     &.done {

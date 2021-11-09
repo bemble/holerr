@@ -22,6 +22,7 @@ const useStyles = makeStyles(({spacing}) => ({
     },
     title: {
         flex: 1,
+        wordBreak: "break-all",
         color: blue[900]
     },
 }));
@@ -46,7 +47,7 @@ const DownloadItem: FunctionComponent<DownloadItemProps> = ({item}) => {
                                    status={status}/>
                 </Grid>
                 <Grid item className={classes.title}>
-                    <span>{item.title}</span>
+                    {item.title}
                 </Grid>
                 <Grid item>
                     <IconButton onClick={handleDeleteClick} size="small"><DeleteIcon/></IconButton>
