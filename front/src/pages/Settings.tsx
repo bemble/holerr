@@ -22,8 +22,8 @@ const useStyles = makeStyles((theme) => ({
     },
     root: {
         margin: theme.spacing(2) + "px auto",
-        minWidth: theme.breakpoints.values.sm,
-        maxWidth: theme.breakpoints.values.md,
+        minWidth: `min(calc(100% - ${theme.spacing(4)}px), ${theme.breakpoints.values.sm}px)`,
+        maxWidth: `min(calc(100% - ${theme.spacing(4)}px), ${theme.breakpoints.values.md}px)`,
         display: "flex",
         flexDirection: "column",
         padding: theme.spacing(4),
