@@ -20,10 +20,10 @@
   "or": "ou",
   "presets": {
     "title": "Préréglages",
-    "watch_dir": "Dossier surveillé : ",
-    "output_dir": "Dossier de sortie : ",
-    "file_extensions": "Extensions à télécharger : ",
-    "min_file_size": "Taille minimum des fichiers : ",
+    "watch_dir": "Dossier surveillé",
+    "output_dir": "Dossier de sortie",
+    "file_extensions": "Extensions à télécharger",
+    "min_file_size": "Taille minimum des fichiers",
     "create_sub_dir": "Télécharger dans un sous-dossier",
     "all": "toutes"
   },

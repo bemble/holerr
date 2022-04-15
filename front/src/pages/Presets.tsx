@@ -1,4 +1,4 @@
-import {Card, CardContent, CardHeader, Checkbox, IconButton, InputLabel, makeStyles,} from "@material-ui/core";
+import {Card, CardContent, CardHeader, Checkbox, Chip, FormControl, IconButton, Input, InputLabel, makeStyles, TextField,} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 import AppContent from "../layouts/AppContent";
 import AppTopBar from "../layouts/AppTopBar";
@@ -18,6 +18,17 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         flexDirection: "column",
         padding: theme.spacing(2),
+    },
+    cardContent: {
+        "& > *:not(:first-child)": {
+            marginTop: theme.spacing(4)
+        }
+    },
+    chipsContainer: {
+        padding: theme.spacing(1)+"px 0",
+        "& > *:not(:first-child)": {
+            marginLeft: theme.spacing(2)
+        }
     }
 }));
 
@@ -34,6 +45,8 @@ const Presets = () => {
         // TODO: reload preset list
     };
 
+    const handleDeleteExtension = () => {};
+
     // TODO: Better display
     return (
         <>
@@ -48,13 +61,39 @@ const Presets = () => {
                             </IconButton>}
                         >
                         </CardHeader>
-                        <CardContent>
-                            <div>{t("presets.watch_dir")} {p.watch_dir}</div>
-                            <div>{t("presets.output_dir")} {p.output_dir}</div>
-                            <div>{t("presets.file_extensions")} {p.file_extensions?.join(',') || t("presets.all")}</div>
-                            <div>{t("presets.min_file_size")} {p.min_file_size}</div>
-                            <InputLabel><Checkbox checked={p.create_sub_dir}
-                                                    readOnly={true}/> {t("presets.create_sub_dir")}</InputLabel>
+                        <CardContent className={classes.cardContent}>
+                            <TextField
+                                label={t("presets.watch_dir")}
+                                defaultValue={p.watch_dir}
+                                fullWidth={true}
+                                InputProps={{
+                                    readOnly: true,
+                                }} />
+                            <TextField
+                                label={t("presets.output_dir")}
+                                defaultValue={p.output_dir}
+                                fullWidth={true}
+                                InputProps={{
+                                    readOnly: true,
+                                }} />
+                            <div className="MuiFormControl-root MuiTextField-root MuiFormControl-fullWidth">
+                                <label className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiFormLabel-filled" data-shrink="true">
+                                    {t("presets.file_extensions")}
+                                </label>
+                                <div className={"MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl " + classes.chipsContainer}>
+                                    {(p.file_extensions || [t("presets.all")]).map(e => <Chip key={e} label={e} onDelete={handleDeleteExtension} size="small" />)}
+                                </div>
+                            </div>
+                            <TextField
+                                label={t("presets.min_file_size")}
+                                defaultValue={p.min_file_size}
+                                fullWidth={true}
+                                InputProps={{
+                                    readOnly: true,
+                                }} />
+                            <InputLabel>
+                                <Checkbox checked={p.create_sub_dir} readOnly={true}/> {t("presets.create_sub_dir")}
+                            </InputLabel>
                         </CardContent>
                     </Card>)}
                 </div>

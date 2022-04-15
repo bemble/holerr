@@ -20,10 +20,10 @@
   "or": "or",
   "presets": {
     "title": "Presets",
-    "watch_dir": "Watched directory: ",
-    "output_dir": "Output directory: ",
-    "file_extensions": "Downloaded extensions: ",
-    "min_file_size": "Minimum file size: ",
+    "watch_dir": "Watched directory",
+    "output_dir": "Output directory",
+    "file_extensions": "Downloaded extensions",
+    "min_file_size": "Minimum file size",
     "create_sub_dir": "Download in subdirectory",
     "all": "all"
   },
