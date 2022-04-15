@@ -14,7 +14,7 @@ docker run -v "/local/data:/app/data" -p8781:8781 ghcr.io/bemble/holerr:develop
 
 ```yml
   holerr:
-    image: pierrecle/holerr:latest
+    image: ghcr.io/bemble/holerr:develop
     container_name: holerr
     restart: unless-stopped
     ports:
