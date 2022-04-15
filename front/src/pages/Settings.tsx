@@ -1,7 +1,7 @@
 import {
     Button,
+    Card,
     Checkbox,
-    CircularProgress,
     FormControl,
     InputLabel,
     makeStyles,
@@ -14,15 +14,16 @@ import AppTopBar from "../layouts/AppTopBar";
 import {ChangeEvent, useEffect, useState} from "react";
 import httpApi from "../api/http";
 import {Configuration} from "../models/configuration.type";
-import store, {useAppDispatch} from "../store";
+import {useAppDispatch} from "../store";
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
         margin: theme.spacing(1),
     },
     root: {
-        margin: "0 auto",
-        maxWidth: theme.breakpoints.width("sm"),
+        margin: theme.spacing(2) + "px auto",
+        minWidth: theme.breakpoints.values.sm,
+        maxWidth: theme.breakpoints.values.md,
         display: "flex",
         flexDirection: "column",
         padding: theme.spacing(4),
@@ -30,6 +31,9 @@ const useStyles = makeStyles((theme) => ({
     spacer: {
         height: theme.spacing(4),
         width: "1px"
+    },
+    link: {
+        color: theme.palette.type === "light" ?  theme.palette.primary.dark : theme.palette.primary.light
     }
 }));
 
@@ -188,61 +192,60 @@ const Settings = () => {
 
     const classes = useStyles();
 
-    return (
-        <>
-            <AppTopBar title={t("settings.title")}/>
-            <AppContent>
-                <div className={classes.root}>
-                    <FormControl variant="outlined" className={classes.formControl}>
-                        <InputLabel htmlFor="language">{t("settings.language")}</InputLabel>
-                        <Select
-                            native
-                            value={i18n.language}
-                            label={t("settings.language")}
-                            onChange={(e) => i18n.changeLanguage(e.target.value as string)}
-                            inputProps={{
-                                name: "language",
-                                id: "language",
-                            }}
-                        >
-                            {languages.map(l => <option value={l} key={l}>
-                                {t(`languages.${l}`)}
-                            </option>)}
-                        </Select>
-                    </FormControl>
-                    <h2>{t("settings.configuration_subtitle")} {isLoading ? <CircularProgress/> : null}</h2>
-                    {config ? <>
-                        <InputLabel><Checkbox checked={config.debug} disabled={isLoading}
-                                              onChange={handleChangeDebug}/> {t("settings.configuration_debug")}
-                        </InputLabel>
-                        <TextField value={config.api_key} label={t("settings.configuration_api_key")}
-                                   onChange={handleChangeApiKey}/>
-                        <TextField value={config.base_path} label={t("settings.configuration_base_path")}
-                                   onChange={handleChangeBasePath}/>
-                        <h3>Real-Debrid</h3>
-                        <TextField value={config.debriders?.real_debrid.api_key} onChange={handleChangeRealDebridApiKey}
-                                   label={t("settings.configuration_api_key")}/>
-                        Retrieve your API key here: <a href="https://real-debrid.com/apitoken"
-                                                       title="Real-Debrid APi Key link">Real-debrid website</a>
-                        <h3>Synology Download Station</h3>
-                        <TextField value={config.downloaders?.synology_download_station.endpoint}
-                                   onChange={handleChangeSynoEndpoint}
-                                   label={t("settings.configuration_endpoint")}/>
-                        <TextField value={config.downloaders?.synology_download_station.username}
-                                   onChange={handleChangeSynoUsername}
-                                   label={t("settings.configuration_username")}/>
-                        <TextField value={config.downloaders?.synology_download_station.password}
-                                   onChange={handleChangeSynoPassword}
-                                   label={t("settings.configuration_password")}/>
-                        <div className={classes.spacer}/>
-                        <Button variant="contained" color="primary" disabled={!hasChange || isLoading}
-                                onClick={handleSave}>{t("settings.configuration_save")}</Button>
-                        {restartRequired ? <p>{t("settings.configuration_restart_required")}</p> : null}
-                    </> : null}
-                </div>
-            </AppContent>
-        </>
-    );
+    return <>
+        <AppTopBar title={t("settings.title")} isLoading={isLoading}/>
+        <AppContent>
+            <Card className={classes.root}>
+                <FormControl variant="outlined" className={classes.formControl}>
+                    <InputLabel htmlFor="language">{t("settings.language")}</InputLabel>
+                    <Select
+                        native
+                        value={i18n.language}
+                        label={t("settings.language")}
+                        onChange={(e) => i18n.changeLanguage(e.target.value as string)}
+                        inputProps={{
+                            name: "language",
+                            id: "language",
+                        }}
+                    >
+                        {languages.map(l => <option value={l} key={l}>
+                            {t(`languages.${l}`)}
+                        </option>)}
+                    </Select>
+                </FormControl>
+                <h2>{t("settings.configuration_subtitle")}</h2>
+                {config ? <>
+                    <InputLabel><Checkbox checked={config.debug} disabled={isLoading}
+                                            onChange={handleChangeDebug}/> {t("settings.configuration_debug")}
+                    </InputLabel>
+                    <TextField value={config.api_key} label={t("settings.configuration_api_key")}
+                                onChange={handleChangeApiKey}/>
+                    <TextField value={config.base_path} label={t("settings.configuration_base_path")}
+                                onChange={handleChangeBasePath}/>
+                    <h3>Real-Debrid</h3>
+                    <TextField value={config.debriders?.real_debrid.api_key} onChange={handleChangeRealDebridApiKey}
+                                label={t("settings.configuration_api_key")}/>
+                    <div>
+                        {t("settings.retrieve_real_debrid_token")} <a href="https://real-debrid.com/apitoken" className={classes.link} title="Real-Debrid APi Key link">{t("settings.real_debrid_website")}</a>
+                    </div>
+                    <h3>Synology Download Station</h3>
+                    <TextField value={config.downloaders?.synology_download_station.endpoint}
+                                onChange={handleChangeSynoEndpoint}
+                                label={t("settings.configuration_endpoint")}/>
+                    <TextField value={config.downloaders?.synology_download_station.username}
+                                onChange={handleChangeSynoUsername}
+                                label={t("settings.configuration_username")}/>
+                    <TextField value={config.downloaders?.synology_download_station.password}
+                                onChange={handleChangeSynoPassword}
+                                label={t("settings.configuration_password")}/>
+                    <div className={classes.spacer}/>
+                    <Button variant="contained" color="primary" disabled={!hasChange || isLoading}
+                            onClick={handleSave}>{t("settings.configuration_save")}</Button>
+                    {restartRequired ? <p>{t("settings.configuration_restart_required")}</p> : null}
+                </> : null}
+            </Card>
+        </AppContent>
+    </>;
 };
 
 export default Settings;

@@ -1,10 +1,12 @@
-import {Preset} from "./presets.type";
+import { Preset } from "./presets.type";
 
 export type Configuration = {
     // API key used to communicate with the server [default: ""]
     api_key: string;
     // Set holerr in debug (default: false)
     debug: boolean;
+    // Wether holerr is running using docker or not
+    is_in_docker: boolean;
     // If necessary, the base_path to fetch the front [optional, default: "/"] example: "/holerr"
     base_path: string;
     // Debriders, providers that will download the torrent

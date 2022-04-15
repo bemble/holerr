@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import Main from "./Main";
 import store, { persistor } from "./store";
-import { createMuiTheme } from "@material-ui/core/styles";
+import { createTheme } from '@material-ui/core/styles';
 import { CssBaseline, ThemeProvider, useMediaQuery } from "@material-ui/core";
 import {lightBlue, orange} from "@material-ui/core/colors";
 import { useMemo } from "react";
@@ -14,7 +14,7 @@ const App = () => {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   const theme = useMemo(
     () =>
-      createMuiTheme({
+    createTheme({
         spacing: 4,
         palette: {
           primary: orange,

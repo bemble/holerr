@@ -7,7 +7,7 @@
 ### Docker
 
 ```bash
-docker run -v "/local/data:/app/data" -p8781:8781 pierrecle/holerr:latest 
+docker run -v "/local/data:/app/data" -p8781:8781 ghcr.io/bemble/holerr:develop 
 ```
 
 ### Docker compose

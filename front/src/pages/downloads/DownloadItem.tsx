@@ -13,7 +13,7 @@ type DownloadItemProps = {
     item: Download;
 };
 
-const useStyles = makeStyles(({spacing}) => ({
+const useStyles = makeStyles(({palette, spacing}) => ({
     content: {
         padding: `${spacing(2)}px !important`
     },
@@ -23,7 +23,7 @@ const useStyles = makeStyles(({spacing}) => ({
     title: {
         flex: 1,
         wordBreak: "break-all",
-        color: blue[900]
+        color: palette.type === "light" ?  blue[900] :blue[300]
     },
 }));
 

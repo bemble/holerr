@@ -2,11 +2,12 @@ package api
 
 import (
 	"encoding/json"
-	"github.com/spf13/viper"
 	"holerr/core/config"
 	"log"
 	"net/http"
 	"strings"
+
+	"github.com/spf13/viper"
 )
 
 func hideSecret(s string) string {
@@ -15,9 +16,10 @@ func hideSecret(s string) string {
 
 func ConfigList(w http.ResponseWriter, r *http.Request) {
 	list := map[string]interface{}{
-		config.ConfKeyDebug:    config.IsDebug(),
-		config.ConfKeyApiKey:   config.GetApiKey(),
-		config.ConfKeyBasePath: config.GetBasePath(),
+		config.ConfKeyDebug:      config.IsDebug(),
+		config.ConfKeyIsInDocker: config.IsInDocker(),
+		config.ConfKeyApiKey:     config.GetApiKey(),
+		config.ConfKeyBasePath:   config.GetBasePath(),
 	}
 
 	debriders, debridersErr := config.GetDebriders()

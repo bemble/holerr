@@ -3,6 +3,7 @@
     "en": "English",
     "fr": "Français"
   },
+  "loading": "Loading...",
   "downloads_title": "Downloads",
   "downloads_add_torrent": "Add a torrent",
   "downloads_refresh": "Refresh",
@@ -23,7 +24,7 @@
     "output_dir": "Output directory: ",
     "file_extensions": "Downloaded extensions: ",
     "min_file_size": "Minimum file size: ",
-    "create_sub_dir": "Download in subdirectory: ",
+    "create_sub_dir": "Download in subdirectory",
     "all": "all"
   },
   "settings": {
@@ -33,6 +34,8 @@
     "configuration_debug": "Debug",
     "configuration_base_path": "Base path",
     "configuration_api_key": "API key",
+    "retrieve_real_debrid_token": "Retrieve your API key here:",
+    "real_debrid_website": "Real-debrid website",
     "configuration_endpoint": "Endpoint",
     "configuration_username": "Username",
     "configuration_password": "Password",

@@ -1,4 +1,4 @@
-import {Checkbox, InputLabel, makeStyles,} from "@material-ui/core";
+import {Card, CardContent, CardHeader, Checkbox, IconButton, InputLabel, makeStyles,} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 import AppContent from "../layouts/AppContent";
 import AppTopBar from "../layouts/AppTopBar";
@@ -12,12 +12,13 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(1),
     },
     root: {
-        margin: "0 auto",
-        maxWidth: theme.breakpoints.width("sm"),
+        margin: theme.spacing(2) + "px auto",
+        minWidth: theme.breakpoints.values.sm,
+        maxWidth: theme.breakpoints.values.md,
         display: "flex",
         flexDirection: "column",
-        padding: theme.spacing(4),
-    },
+        padding: theme.spacing(2),
+    }
 }));
 
 const Presets = () => {
@@ -39,17 +40,23 @@ const Presets = () => {
             <AppTopBar title={t("presets.title")}/>
             <AppContent>
                 <div className={classes.root}>
-                    {allPresets.map(p => <div key={p.name}>
-                        <h4>{p.name} <DeleteIcon onClick={() => handleDelete(p.name)}/></h4>
-                        <ul>
-                            <li>{t("presets.watch_dir")} {p.watch_dir}</li>
-                            <li>{t("presets.output_dir")} {p.output_dir}</li>
-                            <li>{t("presets.file_extensions")} {p.file_extensions?.join(',') || t("presets.all")}</li>
-                            <li>{t("presets.min_file_size")} {p.min_file_size}</li>
-                            <li><InputLabel><Checkbox checked={p.create_sub_dir}
-                                                      readOnly={true}/> {t("presets.create_sub_dir")}</InputLabel></li>
-                        </ul>
-                    </div>)}
+                    {allPresets.map(p => <Card key={p.name} className={classes.root}>
+                        <CardHeader
+                            title={p.name}
+                            action={<IconButton aria-label="Delete" onClick={() => handleDelete(p.name)}>
+                                <DeleteIcon />
+                            </IconButton>}
+                        >
+                        </CardHeader>
+                        <CardContent>
+                            <div>{t("presets.watch_dir")} {p.watch_dir}</div>
+                            <div>{t("presets.output_dir")} {p.output_dir}</div>
+                            <div>{t("presets.file_extensions")} {p.file_extensions?.join(',') || t("presets.all")}</div>
+                            <div>{t("presets.min_file_size")} {p.min_file_size}</div>
+                            <InputLabel><Checkbox checked={p.create_sub_dir}
+                                                    readOnly={true}/> {t("presets.create_sub_dir")}</InputLabel>
+                        </CardContent>
+                    </Card>)}
                 </div>
             </AppContent>
         </>

@@ -3,6 +3,7 @@
     "en": "English",
     "fr": "Français"
   },
+  "loading": "Chargement...",
   "downloads_title": "Téléchargements",
   "downloads_refresh": "Actualiser",
   "downloads_clear_all": "Nettoyer complétés",
@@ -23,7 +24,7 @@
     "output_dir": "Dossier de sortie : ",
     "file_extensions": "Extensions à télécharger : ",
     "min_file_size": "Taille minimum des fichiers : ",
-    "create_sub_dir": "Télécharger dans un sous-dossier : ",
+    "create_sub_dir": "Télécharger dans un sous-dossier",
     "all": "toutes"
   },
   "settings": {
@@ -33,6 +34,8 @@
     "configuration_debug": "Debug",
     "configuration_base_path": "Chemin de base",
     "configuration_api_key": "Clé API",
+    "retrieve_real_debrid_token": "Retrouvez votre clé API ici :",
+    "real_debrid_website": "site de Real-debrid",
     "configuration_endpoint": "Endpoint",
     "configuration_username": "Nom d'utilisateur",
     "configuration_password": "Mot de passe",
@@ -47,6 +50,6 @@
     "connected": "connecté",
     "not_connected": "non connecté",
     "restart": "Redémarrer",
-    "restart_information": "Le rédemarrage ne fonctionne que lorsque Holerr is exécuté via Docker avec la bonne option de redémarrage, sinon il sera juste arrêté."
+    "restart_information": "Le rédemarrage ne fonctionne que lorsque Holerr est exécuté via Docker avec la bonne option de redémarrage (unless-stopped ou always), sinon il sera juste arrêté."
   }
 }

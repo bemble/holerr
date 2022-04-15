@@ -26,6 +26,8 @@ RUN CI=false GENERATE_SOURCEMAP=false npm run build:docker
 # Final image
 FROM scratch
 
+ENV IS_IN_DOCKER=1
+
 # copy front files
 COPY --from=front-builder /app/public /app/public
 

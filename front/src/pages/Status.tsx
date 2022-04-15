@@ -1,5 +1,6 @@
 import {
     Button,
+    Card,
     CircularProgress,
     makeStyles,
 } from "@material-ui/core";
@@ -10,14 +11,16 @@ import {useEffect, useState} from "react";
 import httpApi from "../api/http";
 import {Status as StatusType} from "../models/status.type";
 import webSocket from "../api/websocket";
+import { Configuration } from "../models/configuration.type";
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
         margin: theme.spacing(1),
     },
     root: {
-        margin: "0 auto",
-        maxWidth: theme.breakpoints.width("sm"),
+        margin: theme.spacing(2) + "px auto",
+        minWidth: theme.breakpoints.values.sm,
+        maxWidth: theme.breakpoints.values.md,
         display: "flex",
         flexDirection: "column",
         padding: theme.spacing(4),
@@ -26,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Status = () => {
     const [isLoading, setIsLoading] = useState(false);
+    const [isInDocker, setIsInDocker] = useState(false);
     const [status, setStatus] = useState<StatusType>();
     const {t} = useTranslation();
 
@@ -35,6 +39,8 @@ const Status = () => {
         (async () => {
             setIsLoading(true);
             const {data} = await httpApi.get<StatusType>("/status");
+            const {data: {is_in_docker}} = await httpApi.get<Configuration>("/configuration");
+            setIsInDocker(is_in_docker);
             setStatus(data);
             setIsLoading(false);
         })();
@@ -43,26 +49,25 @@ const Status = () => {
     const classes = useStyles();
 
     const handleRestart = () => {
-        (async () => {
-            await httpApi.post("/server/restart");
-        })();
+        void httpApi.post("/server/restart");
     };
 
-    return (
-        <>
-            <AppTopBar title={t("status.title")}/>
-            <AppContent>
-                <div className={classes.root}>
-                    <p>{t("status.websocket")} {webSocket.isConnected() ? t("status.connected") : t("status.not_connected")}</p>
-                    {isLoading ? <CircularProgress /> : null}
-                    <p>{t("status.debrider")} {status?.debrider_connected ? t("status.connected") : t("status.not_connected")}</p>
-                    <p>{t("status.downloader")} {status?.downloader_connected ? t("status.connected") : t("status.not_connected")}</p>
+    return <>
+        <AppTopBar title={t("status.title")} isLoading={isLoading} />
+        <AppContent>
+            <Card className={classes.root}>
+                <div>{t("status.websocket")} {webSocket.isConnected() ? t("status.connected") : t("status.not_connected")}</div>
+                {isLoading ? <p>{t("loading")}</p> : null}
+                {!isLoading ? <div>{t("status.debrider")} {status?.debrider_connected ? t("status.connected") : t("status.not_connected")}</div> : null}
+                {!isLoading ? <div>{t("status.downloader")} {status?.downloader_connected ? t("status.connected") : t("status.not_connected")}</div> : null}
+                {isInDocker ? <>
+                    <br />
                     <Button variant="contained" color="secondary" onClick={handleRestart}>{t("status.restart")}</Button>
                     <p>{t("status.restart_information")}</p>
-                </div>
-            </AppContent>
-        </>
-    );
+                </> : null}
+            </Card>
+        </AppContent>
+    </>;
 };
 
 export default Status;

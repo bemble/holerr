@@ -11,6 +11,8 @@ ENV GO111MODULE=on
 ENV CGO_ENABLED=0
 ENV GOOS=linux
 
+ENV IS_IN_DOCKER=1
+
 WORKDIR /app/server
 ENTRYPOINT ["go", "run", "main.go"]
 

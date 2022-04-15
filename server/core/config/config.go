@@ -2,19 +2,21 @@ package config
 
 import (
 	"fmt"
-	"github.com/spf13/viper"
 	"holerr/core/tools/placeholder"
 	"log"
 	"os"
 	"path"
 	"path/filepath"
 	"runtime"
+
+	"github.com/spf13/viper"
 )
 
 const ConfKeyApiKey = "api_key"
 const ConfKeyBasePath = "base_path"
 const ConfKeyDebriders = "debriders"
 const ConfKeyDebug = "debug"
+const ConfKeyIsInDocker = "is_in_docker"
 const ConfKeyDownloaders = "downloaders"
 const ConfKeyPresets = "presets"
 
@@ -48,14 +50,14 @@ func InitFromFile() {
 	basePathReplacer := placeholder.Replacer{
 		Placeholder: BasePathPlaceholder,
 		Replacement: GetBasePath(),
-		IsURLPath: true,
+		IsURLPath:   true,
 	}
 	placeholder.SetReplacer(basePathReplacer)
 
 	apiKeyReplacer := placeholder.Replacer{
 		Placeholder: ApiKeyPlaceholder,
 		Replacement: GetApiKey(),
-		IsURLPath: false,
+		IsURLPath:   false,
 	}
 	placeholder.SetReplacer(apiKeyReplacer)
 
