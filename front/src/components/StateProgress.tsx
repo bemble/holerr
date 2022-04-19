@@ -1,10 +1,9 @@
-import {FunctionComponent} from "react";
-import classes from "./styles.module.scss";
+import classes from "./StateProgress.module.scss";
 import {CircularProgress} from "@material-ui/core";
 import classnames from "classnames";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCheck, faClock, faCloudUploadAlt, faExclamation, faFileDownload} from "@fortawesome/free-solid-svg-icons";
-import {DownloadStep, DownloadStepStatus} from "../../models/downloads.utils";
+import {DownloadStep, DownloadStepStatus} from "../models/downloads.utils";
 
 type StateProgressProps = {
     status?: DownloadStepStatus;
@@ -13,7 +12,7 @@ type StateProgressProps = {
     downloadProgress: number
 };
 
-const StateProgress: FunctionComponent<StateProgressProps> = ({status, step, torrentProgress, downloadProgress}) => {
+const StateProgress: React.FC<StateProgressProps> = ({status, step, torrentProgress, downloadProgress}) => {
     let icon = faClock;
     let animateIcon = true;
     let iconColor = undefined;

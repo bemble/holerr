@@ -3,10 +3,11 @@ package config
 import (
 	"errors"
 	"fmt"
-	"github.com/imdario/mergo"
-	"github.com/spf13/viper"
 	"os"
 	"path/filepath"
+
+	"github.com/imdario/mergo"
+	"github.com/spf13/viper"
 )
 
 func GetPresets() ([]Preset, bool) {
@@ -58,17 +59,25 @@ func AddPreset(preset Preset) error {
 }
 
 func UpdatePreset(name string, preset Preset) error {
-	_, err := GetPresetByName(preset.Name)
-	if err == nil {
-		return errors.New("Preset " + name + " not found")
+	_, err := GetPresetByName(name)
+	if err != nil {
+		return err
 	}
 
 	presets, _ := GetPresets()
 	for i, a := range presets {
 		if a.Name == name {
 			mergo.Merge(&presets[i], preset, mergo.WithOverride)
+			// Fix falsy values with mergo
+			if preset.CreateSubDir != nil {
+				presets[i].CreateSubDir = preset.CreateSubDir
+			}
+			if preset.MinFileSize != nil {
+				presets[i].MinFileSize = preset.MinFileSize
+			}
 		}
 	}
+
 	viper.Set(ConfKeyPresets, presets)
 	createPresetDirs()
 	viper.WriteConfig()

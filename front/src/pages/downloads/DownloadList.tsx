@@ -25,9 +25,7 @@ const DownloadList: React.FC<DownloadListProps> = ({ items }) => {
 
   return (
     <div className={classes.root}>
-      {items.map((item) => (
-        <DownloadItem key={item.id} item={item} />
-      ))}
+      {items.map((item) => <DownloadItem key={item.id} item={item} />)}
     </div>
   );
 };

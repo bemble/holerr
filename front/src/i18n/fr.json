@@ -20,12 +20,21 @@
   "or": "ou",
   "presets": {
     "title": "Préréglages",
+    "name": "Nom",
     "watch_dir": "Dossier surveillé",
     "output_dir": "Dossier de sortie",
     "file_extensions": "Extensions à télécharger",
     "min_file_size": "Taille minimum des fichiers",
+    "min_file_size_hint": "0 = pas de vérification sur la taille",
     "create_sub_dir": "Télécharger dans un sous-dossier",
     "all": "toutes"
+  },
+  "units": {
+    "TB": "To",
+    "GB": "Go",
+    "MB": "Mo",
+    "KB": "Ko",
+    "B": "o"
   },
   "settings": {
     "title": "Paramètres",

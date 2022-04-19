@@ -1,0 +1,21 @@
+@import "src/theme";
+
+.root {
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-color: $grey-400;
+  border-style: dashed;
+  border-radius: $border-radius;
+  box-sizing: border-box;
+  padding: spacing(8);
+  text-align: center;
+}
+
+.dragAnDrop {
+  p {
+    margin: spacing(2);
+  }
+}

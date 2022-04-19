@@ -60,7 +60,7 @@ func (s SynologyDownloadStation) AddDownload(uri string, name string, preset con
 
 	destination := preset.OutputDir
 	if destination != "" {
-		if preset.CreateSubDir {
+		if *preset.CreateSubDir {
 			err := createOutputDir(destination, name)
 			if err != nil {
 				return "", err

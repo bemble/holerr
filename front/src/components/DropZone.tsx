@@ -1,26 +1,6 @@
-import { makeStyles } from "@material-ui/core";
+import classes from "./DropZone.module.scss";
 import { ReactNode } from "react";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    height: 200,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    borderColor: theme.palette.divider,
-    borderStyle: "dashed",
-    borderRadius: theme.shape.borderRadius,
-    boxSizing: "border-box",
-    padding: theme.spacing(8),
-    textAlign: "center",
-  },
-  dragAnDrop: {
-    "& p": {
-      margin: theme.spacing(2),
-    },
-  },
-}));
 
 type DropZoneProps = {
   isDragActive?: boolean;
@@ -40,7 +20,6 @@ const DropZone = ({
   orText,
   children,
 }: DropZoneProps) => {
-  const classes = useStyles();
 
   return (
     <div className={classes.root}>

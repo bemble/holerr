@@ -1,0 +1,14 @@
+@import "src/theme";
+
+.cardContent {
+  & > *:not(:first-child) {
+    margin-top: spacing(4);
+  }
+}
+
+.chipsContainer {
+  padding: spacing(1, 0);
+  & > *:not(:first-child) {
+    margin-left: spacing(2);
+  }
+}

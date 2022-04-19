@@ -15,16 +15,19 @@
     "@testing-library/react": "^12.1.1",
     "@testing-library/user-event": "^13.2.1",
     "@types/jest": "^27.0.2",
+    "@types/luxon": "^2.0.4",
     "@types/node": "^16.10.2",
-    "@types/react": "^17.0.25",
-    "@types/react-dom": "^17.0.9",
+    "@types/react": "^17.0.44",
+    "@types/react-dom": "^18.0.1",
     "@types/react-redux": "^7.1.18",
+    "@types/react-router-dom": "^5.3.0",
     "axios": "^0.21.4",
     "classnames": "^2.3.1",
     "http-proxy-middleware": "^2.0.1",
     "i18next": "^21.2.0",
     "i18next-browser-languagedetector": "^6.1.2",
     "luxon": "^2.0.2",
+    "node-sass": "^7.0.1",
     "pretty-bytes": "^5.6.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -33,9 +36,9 @@
     "react-i18next": "^11.12.0",
     "react-redux": "^7.2.5",
     "react-router-dom": "^5.3.0",
-    "react-scripts": "4.0.3",
+    "react-scripts": "^5.0.1",
     "redux-persist": "^6.0.0",
-    "typescript": "^4.4.3"
+    "typescript": "^4.6.3"
   },
   "scripts": {
     "start": "PUBLIC_URL=. react-scripts start",
@@ -56,10 +59,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@types/luxon": "^2.0.4",
-    "@types/react-router-dom": "^5.3.0",
-    "node-sass": "^6.0.1"
   }
 }

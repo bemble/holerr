@@ -2,9 +2,10 @@ package api
 
 import (
 	"encoding/json"
-	"github.com/go-chi/chi"
 	"holerr/core/config"
 	"net/http"
+
+	"github.com/go-chi/chi"
 )
 
 func PresetsList(w http.ResponseWriter, r *http.Request) {
@@ -21,8 +22,8 @@ func PresetsAdd(w http.ResponseWriter, r *http.Request) {
 	if decodeErr != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 
-		content := map[string]string {
-			"message" : "Decode error: " + decodeErr.Error(),
+		content := map[string]string{
+			"message": "Decode error: " + decodeErr.Error(),
 		}
 		body, _ := json.Marshal(content)
 		w.Write(body)
@@ -49,8 +50,8 @@ func PresetsUpdate(w http.ResponseWriter, r *http.Request) {
 
 	if decodeErr != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		content := map[string]string {
-			"message" : "Decode error: " + decodeErr.Error(),
+		content := map[string]string{
+			"message": "Decode error: " + decodeErr.Error(),
 		}
 		body, _ := json.Marshal(content)
 		w.Write(body)

@@ -11,8 +11,8 @@ import { Download } from "./models/downloads.type";
 import webSocket from "./api/websocket";
 import useSocketMessage from "./hooks/useSocketMessage";
 import AppBottomBar from "./layouts/AppBottomBar";
-import Downloads from "./pages/downloads/Downloads";
-import Presets from "./pages/Presets";
+import Downloads from "./pages/Downloads/Downloads";
+import Presets from "./pages/Presets/Presets";
 import Settings from "./pages/Settings";
 import Status from "./pages/Status";
 
@@ -31,6 +31,7 @@ export const useAppStyles = makeStyles((theme) => ({
   },
 }));
 
+// TODO: create onboarding when no configuration
 const Main = () => {
   const dispatch = useDispatch();
 

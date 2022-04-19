@@ -20,12 +20,21 @@
   "or": "or",
   "presets": {
     "title": "Presets",
+    "name": "Name",
     "watch_dir": "Watched directory",
     "output_dir": "Output directory",
     "file_extensions": "Downloaded extensions",
     "min_file_size": "Minimum file size",
+    "min_file_size_hint": "0 = no file size check",
     "create_sub_dir": "Download in subdirectory",
     "all": "all"
+  },
+  "units": {
+    "TB": "TB",
+    "GB": "GB",
+    "MB": "MB",
+    "KB": "KB",
+    "B": "B"
   },
   "settings": {
     "title": "Settings",
