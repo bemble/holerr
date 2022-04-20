@@ -5,6 +5,8 @@ export type Configuration = {
     api_key: string;
     // Set holerr in debug (default: false)
     debug: boolean;
+    // Current app version
+    app_version: string;
     // Wether holerr is running using docker or not
     is_in_docker: boolean;
     // If necessary, the base_path to fetch the front [optional, default: "/"] example: "/holerr"

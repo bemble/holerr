@@ -53,11 +53,10 @@
   },
   "status": {
     "title": "Status",
-    "websocket": "Websocket: ",
-    "debrider": "Debrider: ",
-    "downloader": "Downloader: ",
-    "connected": "connected",
-    "not_connected": "not connected",
+    "websocket": "Websocket",
+    "app_version": "Application version: ",
+    "debrider": "Debrider",
+    "downloader": "Downloader",
     "restart": "Restart",
     "restart_information": "Restart works only when Holerr is running using Docker with the right restart option, otherwise it will only be stopped."
   }

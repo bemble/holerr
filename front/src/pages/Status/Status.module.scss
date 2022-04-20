@@ -1,0 +1,9 @@
+@import "src/theme";
+
+.root {
+  padding: spacing(4);
+}
+
+.pending {
+  @include pending;
+}

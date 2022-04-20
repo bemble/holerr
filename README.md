@@ -76,11 +76,18 @@ type Configuration = {
 
 #### For server development
 
-Server will run on port `8781`
+Server will run on port `8781`:
 
 ```bash
 cd server
 go run main.go
+```
+
+Alternatively, you can use `nodemon` to get server restart on file change:
+
+```bash
+npm i -g nodemon
+nodemon --exec go run main.go --signal SIGTERM
 ```
 
 #### For front-end development

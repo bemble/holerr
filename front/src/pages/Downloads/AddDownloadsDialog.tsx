@@ -27,8 +27,7 @@ import { FC, forwardRef, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useTranslation } from "react-i18next";
 import httpApi from "../../api/http";
-import DropZone from "../../components/DropZone";
-import FilesInput from "../../components/FilesInput";
+import {DropZone, FilesInput} from "../../components";
 import { useAppSelector } from "../../store";
 import { presetsSelector } from "../../store/presets/presets.selectors";
 

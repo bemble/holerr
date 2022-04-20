@@ -5,7 +5,7 @@ import {Download} from "../../models/downloads.type";
 import {DEFAULT_STATUS_CONFIG, downloadStatusConfig} from "../../models/downloads.utils";
 import {deleteDownload} from "../../store/downloads/downloads.thunk";
 import DownloadItemChips from "./DownloadItemChips";
-import StateProgress from "../../components/StateProgress";
+import {StateProgress} from "../../components";
 import {blue} from "@material-ui/core/colors";
 import {FunctionComponent} from "react";
 

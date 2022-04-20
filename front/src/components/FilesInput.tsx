@@ -5,7 +5,7 @@ type FilesInputProps = {
   onNewFiles?: (files: File[]) => any;
   children: ReactNode;
 };
-const FilesInput = ({ onNewFiles, children }: FilesInputProps) => {
+const FilesInput:React.FC<FilesInputProps> = ({ onNewFiles, children }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const onFilesAdded = (e: ChangeEvent<HTMLInputElement>) => {

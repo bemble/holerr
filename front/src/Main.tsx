@@ -11,10 +11,7 @@ import { Download } from "./models/downloads.type";
 import webSocket from "./api/websocket";
 import useSocketMessage from "./hooks/useSocketMessage";
 import AppBottomBar from "./layouts/AppBottomBar";
-import Downloads from "./pages/Downloads/Downloads";
-import Presets from "./pages/Presets/Presets";
-import Settings from "./pages/Settings";
-import Status from "./pages/Status";
+import {Downloads, Presets, Settings, Status} from "./pages";
 
 import {
   addDownload,

@@ -1,0 +1,24 @@
+@import "src/theme";
+
+.root {
+  padding: spacing(4);
+}
+
+.formControl {
+  margin: spacing(1);
+}
+
+.spacer {
+  height: spacing(4);
+  width: 1px;
+}
+
+.link {
+  @media (prefers-color-scheme: dark) {
+    color: $primary-light;
+  }
+
+  @media (prefers-color-scheme: light) {
+    color: $primary-dark;
+  }
+}

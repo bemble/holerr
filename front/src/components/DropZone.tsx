@@ -11,7 +11,7 @@ type DropZoneProps = {
   orText?: string;
   children?: ReactNode;
 };
-const DropZone = ({
+const DropZone:React.FC<DropZoneProps> = ({
   isDragActive = false,
   isLoading = false,
   loadingText,
@@ -19,7 +19,7 @@ const DropZone = ({
   dropText,
   orText,
   children,
-}: DropZoneProps) => {
+}) => {
 
   return (
     <div className={classes.root}>

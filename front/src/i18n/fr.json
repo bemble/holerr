@@ -53,11 +53,10 @@
   },
   "status": {
     "title": "États",
-    "websocket": "Websocket : ",
-    "debrider": "Débrideur : ",
-    "downloader": "Téléchargeur : ",
-    "connected": "connecté",
-    "not_connected": "non connecté",
+    "websocket": "Websocket",
+    "app_version": "Version de l'application : ",
+    "debrider": "Débrideur",
+    "downloader": "Téléchargeur",
     "restart": "Redémarrer",
     "restart_information": "Le rédemarrage ne fonctionne que lorsque Holerr est exécuté via Docker avec la bonne option de redémarrage (unless-stopped ou always), sinon il sera juste arrêté."
   }
