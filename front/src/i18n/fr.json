@@ -4,6 +4,8 @@
     "fr": "Français"
   },
   "loading": "Chargement...",
+  "cancel": "Annuler",
+  "confirm": "Confirmer",
   "downloads_title": "Téléchargements",
   "downloads_refresh": "Actualiser",
   "downloads_clear_all": "Nettoyer complétés",
@@ -27,7 +29,9 @@
     "min_file_size": "Taille minimum des fichiers",
     "min_file_size_hint": "0 = pas de vérification sur la taille",
     "create_sub_dir": "Télécharger dans un sous-dossier",
-    "all": "toutes"
+    "all": "toutes",
+    "delete_title": "Supprimer un préréglage",
+    "delete_content": "Êtes-vous sûr de vouloir supprimer le préréglage \"{{presetName}}\" ?"
   },
   "units": {
     "TB": "To",

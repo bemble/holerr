@@ -4,6 +4,8 @@
     "fr": "Français"
   },
   "loading": "Loading...",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
   "downloads_title": "Downloads",
   "downloads_add_torrent": "Add a torrent",
   "downloads_refresh": "Refresh",
@@ -27,7 +29,9 @@
     "min_file_size": "Minimum file size",
     "min_file_size_hint": "0 = no file size check",
     "create_sub_dir": "Download in subdirectory",
-    "all": "all"
+    "all": "all",
+    "delete_title": "Delete a preset",
+    "delete_content": "Do you really want to delete \"{{presetName}}\" preset?"
   },
   "units": {
     "TB": "TB",

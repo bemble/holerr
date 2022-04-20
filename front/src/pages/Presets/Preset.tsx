@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import httpApi from "../../api/http";
 import {Delete as DeleteIcon, Save as SaveIcon} from "@material-ui/icons";
 import { Preset as PresetType } from "../../models/presets.type";
+import DeletePresetDialog from "./DeletePresetDialog";
 
 type PresetProps = {
     preset: PresetType,
@@ -22,6 +23,7 @@ const Preset:React.FC<PresetProps>= ({preset, onDelete}) => {
     const [minFileSizeStr, setMinFileSizeStr] = useState(""+preset.min_file_size);
     const [minFileSizeUnit, setMinFileSizeUnit] = useState(1);
     const [createSubDir, setCreateSubDir] = useState(preset.create_sub_dir);
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
     const cleanMinFileSize = () => {
         const minFileSize = minFileSizeStr.length > 0 ? parseInt(minFileSizeStr, 10) :  0;
@@ -45,13 +47,14 @@ const Preset:React.FC<PresetProps>= ({preset, onDelete}) => {
     useEffect(cleanMinFileSize, [preset.min_file_size]);
 
     const handleDelete = async () => {
-        await httpApi.delete(`/presets/${preset.name}`);
+        setShowDeleteDialog(false);
+        await httpApi.delete(`/presets/${displayName.replace("/", "%2F")}`);
         onDelete();
     };
 
     const handleUpdate = async () => {
         const minFileSize = minFileSizeStr.length > 0 ? parseInt(minFileSizeStr, 10) :  0;
-        await httpApi.patch(`/presets/${displayName}`, {
+        await httpApi.patch(`/presets/${displayName.replace("/", "%2F")}`, {
             name,
             watch_dir: watchDir,
             output_dir: outputDir,
@@ -100,10 +103,10 @@ const Preset:React.FC<PresetProps>= ({preset, onDelete}) => {
     <CardHeader
         title={displayName}
         action={<div>
-            {changed ? <IconButton aria-label="Save" onClick={handleUpdate}>
+            {changed ? <IconButton aria-label="Save" onClick={handleUpdate} color="secondary" size="small">
                 <SaveIcon />
             </IconButton> : null}
-            <IconButton aria-label="Delete" onClick={handleDelete}>
+            <IconButton aria-label="Delete" onClick={() => setShowDeleteDialog(true)} size="small">
                 <DeleteIcon />
             </IconButton>
         </div>}
@@ -156,6 +159,7 @@ const Preset:React.FC<PresetProps>= ({preset, onDelete}) => {
             <Checkbox checked={createSubDir} onChange={handleUpdateCreateSubDir} /> {t("presets.create_sub_dir")}
         </InputLabel>
     </CardContent>
+    <DeletePresetDialog open={showDeleteDialog} onCancel={() => setShowDeleteDialog(false)} onConfirm={handleDelete} presetName={displayName} />
 </Card>;
 }
 

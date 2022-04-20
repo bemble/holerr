@@ -3,7 +3,9 @@ package api
 import (
 	"encoding/json"
 	"holerr/core/config"
+	"log"
 	"net/http"
+	"strings"
 
 	"github.com/go-chi/chi"
 )
@@ -43,7 +45,7 @@ func PresetsAdd(w http.ResponseWriter, r *http.Request) {
 }
 
 func PresetsUpdate(w http.ResponseWriter, r *http.Request) {
-	name := chi.URLParam(r, "name")
+	name := strings.Replace(chi.URLParam(r, "name"), "%2F", "/", -1)
 
 	preset := config.Preset{}
 	decodeErr := json.NewDecoder(r.Body).Decode(&preset)
@@ -75,7 +77,8 @@ func PresetsUpdate(w http.ResponseWriter, r *http.Request) {
 }
 
 func PresetsDelete(w http.ResponseWriter, r *http.Request) {
-	name := chi.URLParam(r, "name")
+	name := strings.Replace(chi.URLParam(r, "name"), "%2F", "/", -1)
+	log.Println(name)
 	config.RemovePreset(name)
 	w.WriteHeader(http.StatusNoContent)
 }
