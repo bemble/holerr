@@ -1,6 +1,6 @@
 # TODO: test on arm (raspberry pi)
-# TODO : split built to mutualise front
-# TODO : push on docker hub
+# TODO: split built to mutualise front when multiple platforms
+# TODO: sync readme to docker hub
 name: docker-image
 
 on:

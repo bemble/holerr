@@ -6,6 +6,8 @@
   "loading": "Loading...",
   "cancel": "Cancel",
   "confirm": "Confirm",
+  "delete": "Delete",
+  "add": "Add",
   "downloads_title": "Downloads",
   "downloads_add_torrent": "Add a torrent",
   "downloads_refresh": "Refresh",
@@ -21,6 +23,7 @@
   "downloads_add_torrents_loading": "Please wait",
   "or": "or",
   "presets": {
+    "add_preset": "Add a preset",
     "title": "Presets",
     "name": "Name",
     "watch_dir": "Watched directory",
@@ -31,7 +34,8 @@
     "create_sub_dir": "Download in subdirectory",
     "all": "all",
     "delete_title": "Delete a preset",
-    "delete_content": "Do you really want to delete \"{{presetName}}\" preset?"
+    "delete_content": "Do you really want to delete \"{{presetName}}\" preset?",
+    "add_title": "Add a preset"
   },
   "units": {
     "TB": "TB",

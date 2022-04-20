@@ -160,16 +160,16 @@ const Settings = () => {
         }
     };
 
-    const handleSave = () => {
-        (async () => {
-            setIsLoading(true);
-            const {data} = await httpApi.patch<Configuration>(`/configuration`, newConfig);
-            setConfig(data);
-            if (data.api_key.length) {
-                dispatch({type: "appConfig/set", payload: {apiKey: data.api_key}});
-            }
-            setIsLoading(false);
-        })();
+    const handleSave = async (e:React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        setIsLoading(true);
+        const {data} = await httpApi.patch<Configuration>(`/configuration`, newConfig);
+        setConfig(data);
+        if (data.api_key.length) {
+            dispatch({type: "appConfig/set", payload: {apiKey: data.api_key}});
+        }
+        setIsLoading(false);
     };
 
     return <>
@@ -179,55 +179,58 @@ const Settings = () => {
                 <Grid item xs={12} sm={6}>
                     <Card>
                         <CardContent>
-                            <Grid container direction="column">
-                                <FormControl variant="outlined" className={classes.formControl} fullWidth>
-                                    <InputLabel htmlFor="language">{t("settings.language")}</InputLabel>
-                                    <Select
-                                        native
-                                        value={i18n.language}
-                                        label={t("settings.language")}
-                                        onChange={(e) => i18n.changeLanguage(e.target.value as string)}
-                                        inputProps={{
-                                            name: "language",
-                                            id: "language",
-                                        }}
-                                    >
-                                        {languages.map(l => <option value={l} key={l}>
-                                            {t(`languages.${l}`)}
-                                        </option>)}
-                                    </Select>
-                                </FormControl>
-                                <h2>{t("settings.configuration_subtitle")}</h2>
-                                {config ? <>
-                                    <InputLabel><Checkbox checked={config.debug} disabled={isLoading}
-                                                            onChange={handleChangeDebug}/> {t("settings.configuration_debug")}
-                                    </InputLabel>
-                                    <TextField value={config.api_key} label={t("settings.configuration_api_key")}
-                                                onChange={handleChangeApiKey}/>
-                                    <TextField value={config.base_path} label={t("settings.configuration_base_path")}
-                                                onChange={handleChangeBasePath}/>
-                                    <h3>Real-Debrid</h3>
-                                    <TextField value={config.debriders?.real_debrid.api_key} onChange={handleChangeRealDebridApiKey}
-                                                label={t("settings.configuration_api_key")}/>
-                                    <div>
-                                        {t("settings.retrieve_real_debrid_token")} <a href="https://real-debrid.com/apitoken" className={classes.link} title="Real-Debrid APi Key link">{t("settings.real_debrid_website")}</a>
-                                    </div>
-                                    <h3>Synology Download Station</h3>
-                                    <TextField value={config.downloaders?.synology_download_station.endpoint}
-                                                onChange={handleChangeSynoEndpoint}
-                                                label={t("settings.configuration_endpoint")}/>
-                                    <TextField value={config.downloaders?.synology_download_station.username}
-                                                onChange={handleChangeSynoUsername}
-                                                label={t("settings.configuration_username")}/>
-                                    <TextField value={config.downloaders?.synology_download_station.password}
-                                                onChange={handleChangeSynoPassword}
-                                                label={t("settings.configuration_password")}/>
-                                    <div className={classes.spacer}/>
-                                    <Button variant="contained" color="primary" disabled={!hasChange || isLoading}
-                                            onClick={handleSave}>{t("settings.configuration_save")}</Button>
-                                    {restartRequired ? <p>{t("settings.configuration_restart_required")}</p> : null}
-                                </> : null}
-                            </Grid>
+                            <form onSubmit={handleSave}>
+                                <Grid container direction="column">
+                                    <FormControl variant="outlined" className={classes.formControl} fullWidth>
+                                        <InputLabel htmlFor="language">{t("settings.language")}</InputLabel>
+                                        <Select
+                                            native
+                                            value={i18n.language}
+                                            label={t("settings.language")}
+                                            onChange={(e) => i18n.changeLanguage(e.target.value as string)}
+                                            inputProps={{
+                                                name: "language",
+                                                id: "language",
+                                            }}
+                                        >
+                                            {languages.map(l => <option value={l} key={l}>
+                                                {t(`languages.${l}`)}
+                                            </option>)}
+                                        </Select>
+                                    </FormControl>
+                                    <h2>{t("settings.configuration_subtitle")}</h2>
+                                    {config ? <>
+                                        <InputLabel><Checkbox checked={config.debug} disabled={isLoading}
+                                                                onChange={handleChangeDebug}/> {t("settings.configuration_debug")}
+                                        </InputLabel>
+                                        <TextField value={config.api_key} label={t("settings.configuration_api_key")}
+                                                    onChange={handleChangeApiKey}/>
+                                        <TextField value={config.base_path} label={t("settings.configuration_base_path")}
+                                                    onChange={handleChangeBasePath}/>
+                                        <h3>Real-Debrid</h3>
+                                        <TextField value={config.debriders?.real_debrid.api_key} onChange={handleChangeRealDebridApiKey}
+                                                    label={t("settings.configuration_api_key")}/>
+                                        <div>
+                                            {t("settings.retrieve_real_debrid_token")} <a href="https://real-debrid.com/apitoken" className={classes.link} title="Real-Debrid APi Key link">{t("settings.real_debrid_website")}</a>
+                                        </div>
+                                        <h3>Synology Download Station</h3>
+                                        <TextField value={config.downloaders?.synology_download_station.endpoint}
+                                                    onChange={handleChangeSynoEndpoint}
+                                                    label={t("settings.configuration_endpoint")}/>
+                                        <TextField value={config.downloaders?.synology_download_station.username}
+                                                    onChange={handleChangeSynoUsername}
+                                                    label={t("settings.configuration_username")}/>
+                                        <TextField value={config.downloaders?.synology_download_station.password}
+                                                    onChange={handleChangeSynoPassword}
+                                                    label={t("settings.configuration_password")}/>
+                                        <div className={classes.spacer}/>
+                                        <Button type="submit" variant="contained" color="primary" disabled={!hasChange || isLoading}>
+                                            {t("settings.configuration_save")}
+                                        </Button>
+                                        {restartRequired ? <p>{t("settings.configuration_restart_required")}</p> : null}
+                                    </> : null}
+                                </Grid>
+                            </form>
                         </CardContent>
                     </Card>
                 </Grid>

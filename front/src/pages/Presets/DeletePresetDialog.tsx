@@ -21,7 +21,7 @@ const DeletePresetDialog:React.FC<DeletePresetDialogProps> = ({open, presetName,
             {t("cancel")}
         </Button>
         <Button onClick={onConfirm} color="primary" variant="contained">
-            {t("confirm")}
+            {t("delete")}
         </Button>
         </DialogActions>
     </Dialog>;

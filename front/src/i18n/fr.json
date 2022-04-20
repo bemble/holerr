@@ -6,6 +6,8 @@
   "loading": "Chargement...",
   "cancel": "Annuler",
   "confirm": "Confirmer",
+  "delete": "Supprimer",
+  "add": "Ajouter",
   "downloads_title": "Téléchargements",
   "downloads_refresh": "Actualiser",
   "downloads_clear_all": "Nettoyer complétés",
@@ -21,6 +23,7 @@
   "downloads_add_torrents_loading": "Veuillez patienter",
   "or": "ou",
   "presets": {
+    "add_preset": "Ajouter un préréglage",
     "title": "Préréglages",
     "name": "Nom",
     "watch_dir": "Dossier surveillé",
@@ -31,7 +34,8 @@
     "create_sub_dir": "Télécharger dans un sous-dossier",
     "all": "toutes",
     "delete_title": "Supprimer un préréglage",
-    "delete_content": "Êtes-vous sûr de vouloir supprimer le préréglage \"{{presetName}}\" ?"
+    "delete_content": "Êtes-vous sûr de vouloir supprimer le préréglage \"{{presetName}}\" ?",
+    "add_title": "Ajouter un préréglage"
   },
   "units": {
     "TB": "To",

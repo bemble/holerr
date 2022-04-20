@@ -2,4 +2,11 @@
 
 .root {
   padding: spacing(2);
+  margin-bottom: 56px !important;
+}
+
+.floatingButton {
+  position: absolute !important;
+  bottom: spacing(2);
+  right: spacing(2);
 }
