@@ -39,7 +39,7 @@ func SelectFiles(download *db.Download) {
 		}
 
 		filesMinSizeFiltred := []string{}
-		if *preset.MinFileSize > 0 {
+		if preset.MinFileSize != nil && *preset.MinFileSize > 0 {
 			for _, file := range download.TorrentInfo.Files {
 				if file.Bytes >= *preset.MinFileSize {
 					filesMinSizeFiltred = append(filesMinSizeFiltred, fmt.Sprintf("%d", file.Id))

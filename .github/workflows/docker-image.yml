@@ -40,9 +40,11 @@ jobs:
         id: compute-vars
         run: |
           if [[ "${{ github.event_name }}" == "release" ]]; then
+            echo "::set-output name=app-version::${{ github.event.release.tag_name }}"
             echo "::set-output name=docker-tag1::latest"
             echo "::set-output name=docker-tag2::${{ github.event.release.tag_name }}"
           else
+            echo "::set-output name=app-version::develop-${{ github.sha }}"
             echo "::set-output name=docker-tag1::develop"
             echo "::set-output name=docker-tag2::${{ github.sha }}"
           fi
@@ -58,6 +60,8 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:${{ steps.compute-vars.outputs.docker-tag1 }}
             ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:${{ steps.compute-vars.outputs.docker-tag2 }}
+          build-args: |
+            APP_VERSION=${{ steps.compute-vars.outputs.app-version }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}

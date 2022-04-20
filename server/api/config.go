@@ -17,6 +17,7 @@ func hideSecret(s string) string {
 func ConfigList(w http.ResponseWriter, r *http.Request) {
 	list := map[string]interface{}{
 		config.ConfKeyDebug:      config.IsDebug(),
+		config.ConfKeyAppVersion: config.AppVersion(),
 		config.ConfKeyIsInDocker: config.IsInDocker(),
 		config.ConfKeyApiKey:     config.GetApiKey(),
 		config.ConfKeyBasePath:   config.GetBasePath(),

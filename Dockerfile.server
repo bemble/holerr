@@ -12,6 +12,7 @@ ENV CGO_ENABLED=0
 ENV GOOS=linux
 
 ENV IS_IN_DOCKER=1
+ENV APP_VERSION=dev
 
 WORKDIR /app/server
 ENTRYPOINT ["go", "run", "main.go"]
