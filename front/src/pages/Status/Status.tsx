@@ -57,13 +57,29 @@ const Status = () => {
                     <Card>
                         <CardContent>
                             <div>{t("status.app_version")} <code className={classNames(classes.code, {[classes.pending]: isLoading})}>{isLoading ? t("loading") : appVersion}</code></div>
-                            <div><StatusDot status={webSocket.isConnected() ? "success" : "error"} /> {t("status.websocket")}</div>
-                            <div><StatusDot status={debriderStatus} /> {t("status.debrider")}</div>
-                            <div><StatusDot status={downloaderStatus} /> {t("status.downloader")}</div>
+                            <div className={classes.spacer} />
+                            <hr className={classes.separator} />
+                            <div className={classes.spacer} />
+                            <Grid container>
+                                <Grid item container xs={4} direction="column" alignItems="center">
+                                    <StatusDot status={webSocket.isConnected() ? "success" : "error"} /> {t("status.websocket")}
+                                </Grid>
+                                <Grid item container xs={4} direction="column" alignItems="center">
+                                    <StatusDot status={debriderStatus} /> {t("status.debrider")}
+                                </Grid>
+                                <Grid item container xs={4} direction="column" alignItems="center">
+                                    <StatusDot status={downloaderStatus} /> {t("status.downloader")}
+                                </Grid>
+                            </Grid>
                             {isInDocker ? <>
-                                <br />
-                                <Button variant="contained" color="secondary" onClick={handleRestart}>{t("status.restart")}</Button>
-                                <p>{t("status.restart_information")}</p>
+                                <div className={classes.spacer} />
+                                <hr className={classes.separator} />
+                                <div className={classes.spacer} />
+                                <Grid container justifyContent="center">
+                                    <Grid item><Button variant="contained" color="secondary" onClick={handleRestart}>{t("status.restart")}</Button></Grid>
+                                    <div className={classes.spacer} />
+                                    <Grid item>{t("status.restart_information")}</Grid>
+                                </Grid>
                             </> : null}
                         </CardContent>
                     </Card>

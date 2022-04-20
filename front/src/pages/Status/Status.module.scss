@@ -4,6 +4,16 @@
   padding: spacing(4);
 }
 
+.spacer {
+  height: spacing(4);
+  width: 100%;
+}
+
+.separator {
+  border: none;
+  border-top: 1px solid $grey-400;
+}
+
 .pending {
   @include pending;
 }

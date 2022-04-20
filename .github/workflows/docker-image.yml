@@ -44,7 +44,7 @@ jobs:
             echo "::set-output name=docker-tag1::latest"
             echo "::set-output name=docker-tag2::${{ github.event.release.tag_name }}"
           else
-            echo "::set-output name=app-version::develop-${{ github.sha }}"
+            echo "::set-output name=app-version::${{ github.sha }}"
             echo "::set-output name=docker-tag1::develop"
             echo "::set-output name=docker-tag2::${{ github.sha }}"
           fi
