@@ -1,7 +1,6 @@
 import {
     Button,
     Card,
-    CircularProgress,
     makeStyles,
 } from "@material-ui/core";
 import {useTranslation} from "react-i18next";
