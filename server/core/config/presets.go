@@ -75,6 +75,9 @@ func UpdatePreset(name string, preset Preset) error {
 			if preset.MinFileSize != nil {
 				presets[i].MinFileSize = preset.MinFileSize
 			}
+			if preset.FileExtensions == nil {
+				presets[i].FileExtensions = nil
+			}
 		}
 	}
 

@@ -6,13 +6,15 @@ import httpApi from "../../api/http";
 import {Delete as DeleteIcon, Save as SaveIcon} from "@material-ui/icons";
 import { Preset as PresetType } from "../../models/presets.type";
 import DeletePresetDialog from "./DeletePresetDialog";
+import { Autocomplete } from "@material-ui/lab";
 
 type PresetProps = {
     preset: PresetType,
     onDelete: () => void
 };
 
-// TODO: handle file extensions
+const ALL_EXTENSIONS = "___all___";
+
 const Preset:React.FC<PresetProps>= ({preset, onDelete}) => {
     const {t} = useTranslation();
     const [changed, setChanged] = useState(false);
@@ -23,6 +25,7 @@ const Preset:React.FC<PresetProps>= ({preset, onDelete}) => {
     const [minFileSizeStr, setMinFileSizeStr] = useState(""+preset.min_file_size);
     const [minFileSizeUnit, setMinFileSizeUnit] = useState(1);
     const [createSubDir, setCreateSubDir] = useState(preset.create_sub_dir);
+    const [extensions, setExtensions] = useState(preset.file_extensions || [ALL_EXTENSIONS]);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
     const cleanMinFileSize = () => {
@@ -54,12 +57,18 @@ const Preset:React.FC<PresetProps>= ({preset, onDelete}) => {
 
     const handleUpdate = async () => {
         const minFileSize = minFileSizeStr.length > 0 ? parseInt(minFileSizeStr, 10) :  0;
+        const exts = [...extensions];
+        if (exts.indexOf(ALL_EXTENSIONS) >= 0) {
+            exts.splice(exts.indexOf(ALL_EXTENSIONS), 1);
+        }
+
         await httpApi.patch(`/presets/${displayName.replace("/", "%2F")}`, {
             name,
             watch_dir: watchDir,
             output_dir: outputDir,
             min_file_size: minFileSize*minFileSizeUnit,
-            create_sub_dir: createSubDir
+            create_sub_dir: createSubDir,
+            file_extensions: exts.length ? exts : null
         });
         setDisplayName(name);
         setChanged(false);
@@ -97,7 +106,13 @@ const Preset:React.FC<PresetProps>= ({preset, onDelete}) => {
         setChanged(true);
     };
 
-    const handleDeleteExtension = () => {};
+    const handleUpdateExtensions = (e:ChangeEvent<{ }>, value: string[]) => {
+        if(value.indexOf(ALL_EXTENSIONS) >= 0) {
+            value.splice(value.indexOf(ALL_EXTENSIONS), 1);
+        }
+        setExtensions(value.length === 0 ? [ALL_EXTENSIONS] : value);
+        setChanged(true);
+    };
 
     return <Card>
     <CardHeader
@@ -128,14 +143,17 @@ const Preset:React.FC<PresetProps>= ({preset, onDelete}) => {
             defaultValue={outputDir}
             onChange={handleUpdateOutputDir}
             fullWidth={true} />
-        <div className="MuiFormControl-root MuiTextField-root MuiFormControl-fullWidth">
-            <label className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiFormLabel-filled" data-shrink="true">
-                {t("presets.file_extensions")}
-            </label>
-            <div className={"MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl " + classes.chipsContainer}>
-                {(preset.file_extensions || [t("presets.all")]).map(e => <Chip key={e} label={e} onDelete={handleDeleteExtension} size="small" />)}
-            </div>
-        </div>
+        <Autocomplete multiple
+            options={[] as string[]} freeSolo
+            value={extensions}
+            onChange={handleUpdateExtensions}
+            renderTags={(value: string[], getTagProps) =>
+                value.map((option: string, index: number) => option === ALL_EXTENSIONS ? <Chip variant="outlined" label={t("presets.all")} key={index} /> : <Chip variant="outlined" label={option} {...getTagProps({ index })} />)
+            }
+            renderInput={(params) => (
+                <TextField {...params} label={t("presets.file_extensions")} fullWidth />
+            )}
+        />
         <FormControl fullWidth={true} >
           <InputLabel htmlFor={`preset-min-file-size-${preset.name}`}>{t("presets.min_file_size")}</InputLabel>
           <Input
