@@ -96,21 +96,23 @@ jobs:
           ##########################
           # Hub login
           ##########################
-          intermediateHubToken=$(curl -s --request POST 'https://hub.docker.com/v2/users/login' \
+          hubToken=$(curl -s --request POST 'https://hub.docker.com/v2/users/login' \
               --header 'Content-Type: application/json' \
               --data-raw '{
                   "username": "'${HUB_USERNAME}'",
                   "password": "'${HUB_PASSWORD}'"
-              }' | jq '.token')
+              }' | jq -r '.token')
 
           # 2FA
-          totpCode=$(oathtool --base32 --totp ${HUB_TOTP_SECRET})
-          hubToken=$(curl -s --request POST 'https://hub.docker.com/v2/users/2fa-login' \
-              --header 'Content-Type: application/json' \
-              --data-raw '{
-                  "login_2fa_token": '${intermediateHubToken}',
-                  "code": "'${totpCode}'"
-              }' | jq -r '.token')
+          if [[ "${HUB_TOTP_SECRET}" != "" ]]; then
+            totpCode=$(oathtool --base32 --totp ${HUB_TOTP_SECRET})
+            hubToken=$(curl -s --request POST 'https://hub.docker.com/v2/users/2fa-login' \
+                --header 'Content-Type: application/json' \
+                --data-raw '{
+                    "login_2fa_token": "'${hubToken}'",
+                    "code": "'${totpCode}'"
+                }' | jq -r '.token')
+          fi
 
           ##########################
           # Sync itself
@@ -120,7 +122,6 @@ jobs:
               --header 'Authorization: Bearer '${hubToken} \
               --header 'Content-Type: application/json' \
               --data "@hub_tmp_body.json"  > /dev/null
-
           rm hub_tmp_body.json
         env:
           HUB_USERNAME: ${{ github.repository_owner }}
