@@ -119,7 +119,7 @@ jobs:
           # Sync itself
           ##########################
           jq -nM --arg d "${description}" --arg fd "${full_description}" '{full_description: $fd, description: $d}' > hub_tmp_body.json
-          curl -s --request PATCH 'https://hub.docker.com/v2/repositories/bemble/holerr/' \
+          curl -s --request PATCH 'https://hub.docker.com/v2/repositories/'${HUB_USERNAME}'/'${HUB_REPOSITORY}'/' \
               --header 'Authorization: Bearer '${hubToken} \
               --header 'Content-Type: application/json' \
               --data "@hub_tmp_body.json"  > /dev/null
@@ -128,3 +128,4 @@ jobs:
           HUB_USERNAME: ${{ github.repository_owner }}
           HUB_PASSWORD: ${{ secrets.HUB_TOKEN }}
           HUB_TOTP_SECRET: ${{ secrets.HUB_TOTP_SECRET }}
+          HUB_REPOSITORY: ${{ github.event.repository.name }}
