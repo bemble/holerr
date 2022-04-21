@@ -7,14 +7,14 @@
 ### Docker
 
 ```bash
-docker run -v "/local/data:/app/data" -p8781:8781 ghcr.io/bemble/holerr:develop 
+docker run -v "/local/data:/app/data" -p8781:8781 ghcr.io/bemble/holerr:latest 
 ```
 
 ### Docker compose
 
 ```yml
   holerr:
-    image: ghcr.io/bemble/holerr:develop
+    image: ghcr.io/bemble/holerr:latest
     container_name: holerr
     restart: unless-stopped
     ports:
