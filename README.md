@@ -176,7 +176,7 @@ type WebsocketInputMessage = {
 
 #### Status
 
-* __Get:__ `[GET] /api/status` get the status
+* __Get:__ `[GET] /api/status` get the status and other information
 
 #### Constants
 

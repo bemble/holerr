@@ -77,55 +77,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install deps
+      - name: Prepare README
         run: |
-          curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
-          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
-          sudo apt update
-          sudo apt install oathtool jq gh
+          cat README.md | sed -e 's/ghcr.io\///g' > README_hub.md
 
-      - name: Sync repository -> Docker Hub
-        run: |
-          echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
-
-          ##########################
-          # Retrieve info to sync
-          ##########################
-          description=$(gh repo view ${{ github.repository_owner }}/${{ github.event.repository.name }} --json description | jq -r '.description')
-          full_description=$(cat README.md | sed -e 's/ghcr.io\///g')
-
-          ##########################
-          # Hub login
-          ##########################
-          hubToken=$(curl -s --request POST 'https://hub.docker.com/v2/users/login' \
-              --header 'Content-Type: application/json' \
-              --data-raw '{
-                  "username": "'${HUB_USERNAME}'",
-                  "password": "'${HUB_PASSWORD}'"
-              }' | jq -r '.token')
-
-          # 2FA
-          if [[ "${HUB_TOTP_SECRET}" != "" ]]; then
-            totpCode=$(oathtool --base32 --totp ${HUB_TOTP_SECRET})
-            hubToken=$(curl -s --request POST 'https://hub.docker.com/v2/users/2fa-login' \
-                --header 'Content-Type: application/json' \
-                --data-raw '{
-                    "login_2fa_token": "'${hubToken}'",
-                    "code": "'${totpCode}'"
-                }' | jq -r '.token')
-          fi
-
-          ##########################
-          # Sync itself
-          ##########################
-          jq -nM --arg d "${description}" --arg fd "${full_description}" '{full_description: $fd, description: $d}' > hub_tmp_body.json
-          curl -s --request PATCH 'https://hub.docker.com/v2/repositories/'${HUB_USERNAME}'/'${HUB_REPOSITORY}'/' \
-              --header 'Authorization: Bearer '${hubToken} \
-              --header 'Content-Type: application/json' \
-              --data "@hub_tmp_body.json"  > /dev/null
-          rm hub_tmp_body.json
-        env:
-          HUB_USERNAME: ${{ github.repository_owner }}
-          HUB_PASSWORD: ${{ secrets.HUB_TOKEN }}
-          HUB_TOTP_SECRET: ${{ secrets.HUB_TOTP_SECRET }}
-          HUB_REPOSITORY: ${{ github.event.repository.name }}
+      - uses: bemble/sync-readme@master
+        with:
+          pass: ${{ secrets.HUB_TOKEN }}
+          totp_secret: ${{ secrets.HUB_TOTP_SECRET }}
+          description: true
+          readme: ./README_hub.md
