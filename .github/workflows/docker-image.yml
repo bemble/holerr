@@ -81,7 +81,8 @@ jobs:
         run: |
           cat README.md | sed -e 's/ghcr.io\///g' > README_hub.md
 
-      - uses: bemble/sync-readme@master
+      - name: Sync README and description
+        uses: bemble/sync-readme@master
         with:
           pass: ${{ secrets.HUB_TOKEN }}
           totp_secret: ${{ secrets.HUB_TOTP_SECRET }}
