@@ -1,4 +1,13 @@
-# Holerr
+# bemble/holerr
+
+[![gh_last_release_svg]][gh_last_release_url]
+[![tippin_svg]][tippin_url]
+
+[gh_last_release_svg]: https://img.shields.io/github/v/release/bemble/holerr?sort=semver
+[gh_last_release_url]: https://github.com/bemble/holerr/releases/latest
+
+[tippin_svg]: https://img.shields.io/badge/donate-BuyMeACoffee-ffdd00?logo=buymeacoffee&style=flat
+[tippin_url]: https://www.buymeacoffee.com/bemble
 
 > Torrent -> Real Debrid -> Downloader
 
