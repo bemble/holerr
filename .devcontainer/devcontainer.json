@@ -1,0 +1,25 @@
+{
+  "name": "Holerr",
+  "image": "mcr.microsoft.com/devcontainers/base:debian",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {},
+    "ghcr.io/devcontainers/features/go:1": {}
+  },
+  "postCreateCommand": "npm install -g nodemon && cd front && npm i && cd ..",
+  "forwardPorts": [8781, 3000],
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "editor.formatOnPaste": false,
+        "editor.formatOnSave": true,
+        "editor.formatOnType": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "[go]": {
+          "editor.defaultFormatter": "golang.go"
+        },
+        "files.trimTrailingWhitespace": true
+      },
+      "extensions": ["esbenp.prettier-vscode", "golang.go"]
+    }
+  }
+}

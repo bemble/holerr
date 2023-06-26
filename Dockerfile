@@ -1,5 +1,5 @@
 # Server build
-FROM golang:1.17-alpine as server-builder
+FROM golang:1.20-alpine as server-builder
 
 RUN apk add --no-cache \
     alpine-sdk \
