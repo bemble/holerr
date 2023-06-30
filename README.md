@@ -68,6 +68,20 @@ type Configuration = {
 };
 ```
 
+### Synology specifics
+
+You should have a user dedicated to this. Create a user (_Configuration_ > _Users and groups_), for this project it only needs access to DownloadStation application and write/read access to the output directories.
+
+User **must** not have two factor authentication enabled, API calls won't work otherwise.
+
+Before being able to start a download in Download Station you **must**:
+
+- allow access to DSM (_Configuration_ > _Users and groups_ > _[the user], edit_ > _Applications_ > _DSM_)
+- log in once in DSM
+- open Download Station in this user session once to select the default output directory
+- log out
+- remove access to DSM for this user (_Configuration_ > _Users and groups_ > _[the user], edit_ > _Applications_ > _DSM_)
+
 ## Development
 
 ### Folder structure
