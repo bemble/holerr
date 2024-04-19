@@ -1,20 +1,23 @@
 from core.config import config
+from db.db import db
+from workers.handler import handler as workers_handlers
 
 import sys
 import logging
 
 
-def init():
+def __init__():
     if config.debug:
         logging.basicConfig(level=logging.INFO)
-    print("coucou init")
 
 
 def main() -> int:
-    init()
-    print("coucous")
+    workers_handlers.start()
     return 0
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    try:
+        sys.exit(main())
+    except KeyboardInterrupt:
+        workers_handlers.stop()
