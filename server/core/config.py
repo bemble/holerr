@@ -1,4 +1,4 @@
-from .log import log
+from .log import Log, log
 from . import config_models
 
 import os
@@ -7,8 +7,6 @@ import yaml
 
 
 class Config:
-    _conf: config_models.Config
-
     @property
     def file_path(self) -> str:
         return os.path.abspath(self.data_dir + "/config.yaml")
@@ -26,7 +24,9 @@ class Config:
         return os.path.abspath(self.server_dir + "/../data")
 
     def __init__(self):
-        log.debug("Init config...")
+        self._conf: config_models.Config = None
+
+        log.info("Init config...")
         conf_file = os.path.abspath(self.data_dir + "/config.yaml")
         v1_conf_file = os.path.abspath(self.data_dir + "/config.json")
         if os.path.exists(v1_conf_file):
@@ -41,6 +41,8 @@ class Config:
             )
 
         self._load()
+        if self.debug:
+            Log.set_debug_regex(self.debug)
 
     def __getattr__(self, index):
         return self._conf[index]
@@ -54,6 +56,8 @@ class Config:
         json_file = open(json_path, "r")
         content = json.load(json_file)
 
+        if "debug" in content:
+            content["debug"] = ["holerr.*"]
         if "debriders" in content:
             content["debrider"] = content["debriders"]
             del content["debriders"]

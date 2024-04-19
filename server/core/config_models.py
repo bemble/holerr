@@ -56,7 +56,7 @@ class Downloader(BaseModel):
 
 
 class Config(BaseModel):
-    debug: bool
+    debug: Optional[list[str]] = None
     api_key: Optional[str] = None
     base_path: Optional[str] = None
     debrider: Debrider = None
@@ -65,52 +65,3 @@ class Config(BaseModel):
 
     def __getitem__(self, index):
         return getattr(self, index)
-
-
-#    _validation_schema = {
-#        "debug": "bool",
-#        "api_key": "str",
-#        "base_path": "str",
-#        "debrider": {
-#            "type": "object",
-#            "properties": {
-#                "real_debrid": {"type": "object", "properties": {"api_key": "str"}},
-#            },
-#            "anyOf": [
-#                {"required": ["real_debrid"]},
-#            ],
-#        },
-#        "downloader": {
-#            "type": "object",
-#            "properties": {
-#                "synology_download_station": {
-#                    "type": "object",
-#                    "properties": {
-#                        "endpoint": "str",
-#                        "username": "str",
-#                        "password": "str",
-#                    },
-#                },
-#            },
-#            "anyOf": [
-#                {"required": ["synology_download_station"]},
-#            ],
-#        },
-#        "presets": {
-#            "type": "array",
-#            "items": {
-#                "type": "object",
-#                "properties": {
-#                    "name": "str",
-#                    "watch_dir": "str",
-#                    "output_dir": "str",
-#                    "create_sub_dir": "bool",
-#                    "file_extensions": "str",
-#                    "min_file_size": "str",
-#                },
-#                "required": ["name", "watch_dir", "output_dir"],
-#            },
-#        },
-#        "required": ["debrider", "downloader"],
-#    }
-#
