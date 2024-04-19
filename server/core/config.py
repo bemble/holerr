@@ -1,7 +1,7 @@
 from .log import log
 from . import config_models
 
-from os import path
+import os
 import json
 import yaml
 
@@ -11,31 +11,31 @@ class Config:
 
     @property
     def file_path(self) -> str:
-        return path.abspath(self.data_dir + "/config.yaml")
+        return os.path.abspath(self.data_dir + "/config.yaml")
 
     @property
     def server_dir(self) -> str:
-        return path.abspath(path.dirname(__file__) + "/..")
+        return os.path.abspath(os.path.dirname(__file__) + "/..")
 
     @property
     def public_dir(self) -> str:
-        return path.abspath(self.server_dir + "/../public")
+        return os.path.abspath(self.server_dir + "/../public")
 
     @property
     def data_dir(self) -> str:
-        return path.abspath(self.server_dir + "/../data")
+        return os.path.abspath(self.server_dir + "/../data")
 
     def __init__(self):
         log.debug("Init config...")
-        conf_file = path.abspath(self.data_dir + "/config.yaml")
-        v1_conf_file = path.abspath(self.data_dir + "/config.json")
-        if path.exists(v1_conf_file):
+        conf_file = os.path.abspath(self.data_dir + "/config.yaml")
+        v1_conf_file = os.path.abspath(self.data_dir + "/config.json")
+        if os.path.exists(v1_conf_file):
             log.debug("Migrating v1 json configuration file...")
             self._load_v1_json(v1_conf_file)
             self.write()
-            # os.remove(v1_conf_file)
+            os.remove(v1_conf_file)
 
-        if not path.exists(conf_file):
+        if not os.path.exists(conf_file):
             raise Exception(
                 "Configuration file not found, please create a config.yaml file in the data directory."
             )
