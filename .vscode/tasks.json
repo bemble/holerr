@@ -6,7 +6,7 @@
     {
       "label": "Run server",
       "type": "shell",
-      "command": "nodemon --watch . --watch ../data -e go,yaml --exec go run main.go --signal SIGTERM",
+      "command": "source venv/bin/activate && nodemon --watch . --watch ../data -e py --exec python3 . --signal SIGTERM",
       "options": {
         "cwd": "${workspaceFolder}/server"
       },

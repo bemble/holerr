@@ -3,13 +3,19 @@
   "image": "mcr.microsoft.com/devcontainers/base:debian",
   "features": {
     "ghcr.io/devcontainers/features/node:1": {},
-    "ghcr.io/devcontainers/features/go:1": {}
+    "ghcr.io/devcontainers/features/go:1": {},
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.12"
+    }
   },
-  "postCreateCommand": "npm install -g nodemon && cd front && npm i && cd ..",
+  "postCreateCommand": "npm install -g nodemon && cd front && npm i && cd .. && python -m venv server/venv",
   "forwardPorts": [8781, 3000],
   "customizations": {
     "vscode": {
       "settings": {
+        "python.experiments.optOutFrom": ["pythonTestAdapter"],
+        "python.pythonPath": "/usr/local/bin/python",
+        "python.testing.pytestArgs": ["--no-cov"],
         "editor.formatOnPaste": false,
         "editor.formatOnSave": true,
         "editor.formatOnType": true,
@@ -17,9 +23,17 @@
         "[go]": {
           "editor.defaultFormatter": "golang.go"
         },
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff"
+        },
         "files.trimTrailingWhitespace": true
       },
-      "extensions": ["esbenp.prettier-vscode", "golang.go"]
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "golang.go",
+        "charliermarsh.ruff",
+        "ms-python.python"
+      ]
     }
   }
 }

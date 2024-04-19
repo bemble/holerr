@@ -1,0 +1,91 @@
+from .log import log
+from . import config_models
+
+from os import path
+import json
+import yaml
+
+
+class Config:
+    _conf: config_models.Config
+
+    @property
+    def file_path(self) -> str:
+        return path.abspath(self.data_dir + "/config.yaml")
+
+    @property
+    def server_dir(self) -> str:
+        return path.abspath(path.dirname(__file__) + "/..")
+
+    @property
+    def public_dir(self) -> str:
+        return path.abspath(self.server_dir + "/../public")
+
+    @property
+    def data_dir(self) -> str:
+        return path.abspath(self.server_dir + "/../data")
+
+    def __init__(self):
+        log.debug("Init config...")
+        conf_file = path.abspath(self.data_dir + "/config.yaml")
+        v1_conf_file = path.abspath(self.data_dir + "/config.json")
+        if path.exists(v1_conf_file):
+            log.debug("Migrating v1 json configuration file...")
+            self._load_v1_json(v1_conf_file)
+            self.write()
+            # os.remove(v1_conf_file)
+
+        if not path.exists(conf_file):
+            raise Exception(
+                "Configuration file not found, please create a config.yaml file in the data directory."
+            )
+
+        self._load()
+
+    def __getattr__(self, index):
+        return self._conf[index]
+
+    def _load(self):
+        content = yaml.load(open(self.file_path, "r"), Loader=yaml.FullLoader)
+
+        self._conf = config_models.Config(**content)
+
+    def _load_v1_json(self, json_path: str):
+        json_file = open(json_path, "r")
+        content = json.load(json_file)
+
+        if "debriders" in content:
+            content["debrider"] = content["debriders"]
+            del content["debriders"]
+        if "downloaders" in content:
+            content["downloader"] = content["downloaders"]
+            del content["downloaders"]
+        if "presets" in content:
+            for preset in content["presets"]:
+                # Convert min_file_size from bytes to human readable format
+                if "min_file_size" in preset and preset["min_file_size"] is not None:
+                    num = preset["min_file_size"]
+                    suffix = "B"
+                    for unit in ["", "K", "M", "G", "T", "P", "E", "Z"]:
+                        if abs(num) < 1024.0:
+                            preset["min_file_size"] = f"{num:3.1f}{unit}{suffix}"
+                            break
+                        num /= 1024.0
+
+        self._conf = config_models.Config(**content)
+
+    def _dump(self) -> str:
+        return yaml.dump(
+            self._conf.model_dump(),
+            default_flow_style=False,
+            allow_unicode=True,
+            sort_keys=False,
+        ).replace(": null\n", ":\n")
+
+    def write(self):
+        str_data = self._dump()
+        with open(self.file_path, "w", encoding="utf-8") as outfile:
+            outfile.write(str_data)
+
+
+config = Config()
