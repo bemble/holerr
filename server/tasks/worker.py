@@ -1,4 +1,4 @@
-from core.log import Log
+from server.core.log import Log
 from .task import Task
 
 import asyncio

@@ -1,13 +1,6 @@
-from core.config import config
-from tasks.worker import worker
-from tasks.task_torrent_files import TaskTorrentFiles
+from server.tasks.worker import worker
 
 import sys
-
-
-def _init():
-    config.load()
-    worker.add(TaskTorrentFiles())
 
 
 def main() -> int:
@@ -16,7 +9,6 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    _init()
     try:
         sys.exit(main())
     except KeyboardInterrupt:

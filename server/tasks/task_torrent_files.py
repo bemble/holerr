@@ -1,6 +1,6 @@
 from .task import Task
-from core.log import Log
-from core.config import config
+from server.core.log import Log
+from server.core.config import config
 
 import glob
 

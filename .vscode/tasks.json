@@ -6,9 +6,9 @@
     {
       "label": "Run server",
       "type": "shell",
-      "command": "source venv/bin/activate && nodemon --watch . --watch ../data -e py --exec python3 . --signal SIGTERM",
+      "command": "source server/venv/bin/activate && nodemon --watch server/ --watch data/ -e yaml,py --exec python3 -m server --signal SIGTERM",
       "options": {
-        "cwd": "${workspaceFolder}/server"
+        "cwd": "${workspaceFolder}"
       },
       "group": {
         "kind": "test",
