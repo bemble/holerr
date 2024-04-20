@@ -1,9 +1,11 @@
-from .log import Log, log
+from .log import Log
 from . import config_models
 
 import os
 import json
 import yaml
+
+log = Log.get_logger(__name__)
 
 
 class Config:
@@ -40,17 +42,15 @@ class Config:
                 "Configuration file not found, please create a config.yaml file in the data directory."
             )
 
-        self._load()
-        if self.debug:
-            Log.set_debug_regex(self.debug)
-
     def __getattr__(self, index):
         return self._conf[index]
 
-    def _load(self):
+    def load(self):
         content = yaml.load(open(self.file_path, "r"), Loader=yaml.FullLoader)
 
         self._conf = config_models.Config(**content)
+        if self.debug:
+            Log.set_debug_regex(self.debug)
 
     def _load_v1_json(self, json_path: str):
         json_file = open(json_path, "r")

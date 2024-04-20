@@ -31,6 +31,3 @@ class Log:
 
         logger.setLevel(log_level)
         return logger
-
-
-log = Log.get_logger("core")
