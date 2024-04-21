@@ -16,15 +16,17 @@ TABLE_DOWNLOADER_TASK = "downloader_task"
 
 DownloadStatus = {
     "TORRENT_FOUND": 0,
-    "TORRENT_SENT_TO_DEBRIDER": 1,
-    "DEBRIDER_DOWNLOADING": 2,
-    "DEBRIDER_DOWNLOADED": 3,
-    "SENT_TO_DOWNLOADER": 4,
-    "DOWNLOADER_DOWNLOADING": 5,
-    "DOWNLOADER_DOWNLOADED": 6,
+    "TORRENT_SENT_TO_DEBRIDER": 10,
+    "DEBRIDER_DOWNLOADING": 11,
+    "DEBRIDER_DOWNLOADED": 12,
+    "DEBRIDER_POST_DOWNLOAD": 13,
+    "SENT_TO_DOWNLOADER": 20,
+    "DOWNLOADER_DOWNLOADING": 21,
+    "DOWNLOADER_DOWNLOADED": 22,
     "ERROR_NO_FILES_FOUND": 100,
     "ERROR_DEBRIDER": 101,
     "ERROR_DOWNLOADER": 102,
+    "ERROR_DELETED_ON_DEBRIDER": 103,
 }
 
 DownloadStatusDetail = {
@@ -37,9 +39,12 @@ DownloadStatusDetail = {
     DownloadStatus["SENT_TO_DOWNLOADER"]: "Debrided files sent to downloader",
     DownloadStatus["DOWNLOADER_DOWNLOADING"]: "Downloader is downloading the files",
     DownloadStatus["DOWNLOADER_DOWNLOADED"]: "Downloader task is terminated",
-    DownloadStatus["ERROR_NO_FILES_FOUND"]: "No files found",
+    DownloadStatus["ERROR_NO_FILES_FOUND"]: "No file matching the preset rules found",
     DownloadStatus["ERROR_DEBRIDER"]: "Debrider error",
     DownloadStatus["ERROR_DOWNLOADER"]: "Downloader error",
+    DownloadStatus[
+        "ERROR_DELETED_ON_DEBRIDER"
+    ]: "Download is deleted on debrider, delete the download in holerr and retry",
 }
 
 
@@ -92,7 +97,7 @@ class DebriderInfoModel(Base):
 class DebriderFileModel(Base):
     __tablename__ = TABLE_DEBRIDER_FILE
 
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[str] = mapped_column(primary_key=True)
     download_id: Mapped[int] = mapped_column(ForeignKey(TABLE_DOWNLOAD + ".id"))
     path: Mapped[str]
     bytes: Mapped[int]

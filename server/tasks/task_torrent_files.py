@@ -1,7 +1,11 @@
 from .task import Task
 from server.core import config
 from server.core.log import Log
-from server.database.repositories import DownloadRepository, DebriderInfoRepository
+from server.database.repositories import (
+    DownloadRepository,
+    DebriderInfoRepository,
+    DebriderFileRepository,
+)
 from server.database.models import DownloadModel, DownloadStatus
 from server.util.torrent import Torrent
 from server.debriders import debrider
@@ -24,6 +28,8 @@ class TorrentFileHandler:
         self._download_repository.set_session(self._db_session)
         self._debrider_info_repository = DebriderInfoRepository()
         self._debrider_info_repository.set_session(self._db_session)
+        self._debrider_file_repository = DebriderFileRepository()
+        self._debrider_file_repository.set_session(self._db_session)
 
     def handle_file(self, path):
         if TorrentFileHandler._is_torrent_file(path):
@@ -48,6 +54,9 @@ class TorrentFileHandler:
         debrider_info = debrider.get_torrent_info(debrider_id)
         download.status = DownloadStatus["TORRENT_SENT_TO_DEBRIDER"]
         self._debrider_info_repository.create_model_from_torrent_info(
+            debrider_info, download
+        )
+        self._debrider_file_repository.create_models_from_torrent_info(
             debrider_info, download
         )
 

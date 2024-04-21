@@ -1,4 +1,4 @@
-from server.tasks.worker import worker
+from server.tasks import worker
 
 import sys
 

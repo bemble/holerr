@@ -37,6 +37,3 @@ class Worker:
             for task in self._tasks:
                 await task.run()
             await asyncio.sleep(5)
-
-
-worker = Worker()
