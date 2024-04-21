@@ -4,16 +4,26 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "Migrate DB",
+      "type": "shell",
+      "command": "source venv/bin/activate && alembic upgrade head",
+      "options": {
+        "cwd": "${workspaceFolder}/server"
+      },
+      "presentation": {
+        "reveal": "never",
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "Run server",
       "type": "shell",
       "command": "source server/venv/bin/activate && nodemon --watch server/ --watch data/ -e yaml,py --exec python3 -m server --signal SIGTERM",
       "options": {
         "cwd": "${workspaceFolder}"
       },
-      "group": {
-        "kind": "test",
-        "isDefault": true
-      },
+      "dependsOn": ["Migrate DB"],
       "presentation": {
         "reveal": "always",
         "panel": "new"
@@ -26,10 +36,6 @@
       "command": "npm run start",
       "options": {
         "cwd": "${workspaceFolder}/front"
-      },
-      "group": {
-        "kind": "test",
-        "isDefault": true
       },
       "presentation": {
         "reveal": "always",

@@ -12,6 +12,7 @@ class Worker:
     _tasks: list[Task] = []
 
     def add(self, task: Task):
+        log.debug(type(task).__name__ + " added")
         self._tasks.append(task)
 
     def start(self):
