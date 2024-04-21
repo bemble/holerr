@@ -34,3 +34,7 @@ class Debrider(ABC):
     @abstractmethod
     def delete_torrent(self, torrent_id: str):
         pass
+
+    @abstractmethod
+    def unrestricted_link(self, link: str) -> str | None:
+        pass

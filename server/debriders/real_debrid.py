@@ -1,6 +1,12 @@
 from .debrider import Debrider
 from server.core.config_models import RealDebrid as RealDebridConfig
-from .real_debrid_models import Profile, ActiveCount, Torrent, TorrentInfo
+from .real_debrid_models import (
+    Profile,
+    ActiveCount,
+    Torrent,
+    TorrentInfo,
+    UnrestrictedLink,
+)
 
 import requests
 
@@ -66,6 +72,9 @@ class RealDebrid(Debrider):
                 + res.text()
             )
 
+    def unrestricted_link(self, link: str) -> str | None:
+        return self._get_unrestricted_link(link).download
+
     def _call(self, method, url, **kwargs):
         if not kwargs.get("headers"):
             kwargs["headers"] = {}
@@ -76,11 +85,17 @@ class RealDebrid(Debrider):
     def _me(self) -> Profile | None:
         res = self._call("GET", "/user")
         if res.status_code != 200:
-            return None
+            raise Exception("Error while getting user info")
         return Profile(**res.json())
 
     def _get_torrent_active_count(self) -> ActiveCount:
         res = self._call("GET", "/torrents/activeCount")
         if res.status_code != 200:
-            return 0
+            raise Exception("Error while getting active count")
         return ActiveCount(**res.json())
+
+    def _get_unrestricted_link(self, link: str) -> str:
+        res = self._call("POST", "/unrestrict/link", data={"link": link})
+        if res.status_code != 200:
+            raise Exception("Error while unrestricting link")
+        return UnrestrictedLink(**res.json())

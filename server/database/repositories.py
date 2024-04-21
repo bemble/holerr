@@ -6,6 +6,7 @@ from .models import (
     DownloadStatus,
     DebriderInfoModel,
     DebriderFileModel,
+    DebriderLinkModel,
 )
 from server.util.torrent import Torrent
 from server.core.config_repositories import PresetRepository
@@ -13,6 +14,7 @@ from server.debriders.debrider_models import TorrentInfo
 
 import os
 from sqlalchemy import select
+import hashlib
 
 
 class Repository(ABC):
@@ -154,3 +156,43 @@ class DebriderFileRepository(Repository):
     @staticmethod
     def get_torrent_file_id(model: DebriderFileModel) -> int:
         return int(model.id.split(".")[-1])
+
+
+class DebriderLinkRepository(Repository):
+    def create_model(self, **kwargs) -> DebriderLinkModel:
+        model = DebriderLinkModel(**kwargs)
+        self.session.add(model)
+        self.session.commit()
+        return model
+
+    def get_model(self, id: str) -> DebriderLinkModel | None:
+        res = self.session.scalars(
+            select(DebriderLinkModel).where(DebriderLinkModel.id == id)
+        )
+        return res.one_or_none()
+
+    def get_all_models(self, condition) -> list[DebriderLinkModel]:
+        res = self.session.scalars(select(DebriderLinkModel).where(condition))
+        return res.all()
+
+    def create_models_from_torrent_info(
+        self, torrent_info: TorrentInfo, download: DownloadModel
+    ) -> list[DebriderLinkModel]:
+        links = []
+        for link in torrent_info.links:
+            links.append(link)
+        return self.create_models(links, False, download)
+
+    def create_models(
+        self, in_links: list[str], is_unrestricted: bool, download: DownloadModel
+    ):
+        links = []
+        for link in in_links:
+            links.append(
+                self.create_model(
+                    link=link,
+                    download=download,
+                    is_unrestricted=is_unrestricted,
+                )
+            )
+        return links

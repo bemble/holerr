@@ -3,7 +3,11 @@ from server.core.log import Log
 from server.core.db import db
 from server.core.config_repositories import PresetRepository
 from server.database.models import DownloadModel, DownloadStatus
-from server.database.repositories import DownloadRepository, DebriderFileRepository
+from server.database.repositories import (
+    DownloadRepository,
+    DebriderFileRepository,
+    DebriderLinkRepository,
+)
 from server.debriders import debrider
 from server.debriders.debrider_models import TorrentStatus
 from server.debriders.debrider_repositories import FileRepository
@@ -47,6 +51,14 @@ class DebriderDownloadHanlder:
 
         if download.debrider_info.status == TorrentStatus["DOWNLOADED"]:
             log.debug("Debrider downloaded " + download.id)
+            links_repo = DebriderLinkRepository()
+            links_repo.set_session(self._db_session)
+            links_repo.create_models_from_torrent_info(debrider_info, download)
+            unrestricted_links = []
+            for link in debrider_info.links:
+                unrestricted_link = debrider.unrestricted_link(link)
+                unrestricted_links.append(unrestricted_link)
+            links_repo.create_models(unrestricted_links, True, download)
             download.status = DownloadStatus["DEBRIDER_DOWNLOADED"]
 
         if (

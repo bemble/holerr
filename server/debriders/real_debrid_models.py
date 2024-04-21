@@ -39,3 +39,16 @@ class TorrentInfo(DebriderTorrentInfo):
     seeders: Optional[int] = (
         None  # Only present in "downloading", "magnet_conversion" status
     )
+
+
+class UnrestrictedLink(BaseModel):
+    id: str
+    filename: str
+    mimeType: str  # Mime Type of the file, guessed by the file extension
+    filesize: int  # Filesize in bytes, 0 if unknown
+    link: str  # Original link
+    host: str  # Host main domain
+    chunks: int  # Max Chunks allowed
+    crc: int  # Disable / enable CRC check
+    download: str  # Generated link
+    streamable: int  # Is the file streamable on website
