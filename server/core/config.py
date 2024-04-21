@@ -90,6 +90,3 @@ class Config:
         str_data = self._dump()
         with open(self.file_path, "w", encoding="utf-8") as outfile:
             outfile.write(str_data)
-
-
-config = Config()

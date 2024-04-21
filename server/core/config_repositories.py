@@ -1,4 +1,4 @@
-from .config import config
+from . import config
 from .log import Log
 from .config_models import Preset
 

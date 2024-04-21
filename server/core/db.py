@@ -1,5 +1,5 @@
 from server.core.log import Log
-from server.core.config import config
+from server.core import config
 
 import sqlalchemy
 from sqlalchemy.orm import Session, scoped_session, sessionmaker
@@ -19,7 +19,7 @@ class Database:
         return Session(self.engine)
 
     def new_scoped_session(self):
-        return scoped_session(self._scoped_session_factory)()
+        return scoped_session(self._scoped_session_factory)
 
 
 db = Database()
