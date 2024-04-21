@@ -1,8 +1,8 @@
 """Initial migration
 
-Revision ID: 044d0482ae03
+Revision ID: 54b8dfc0f4d8
 Revises: 
-Create Date: 2024-04-21 22:39:31.684056
+Create Date: 2024-04-21 23:57:35.521376
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '044d0482ae03'
+revision: str = '54b8dfc0f4d8'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -26,6 +26,8 @@ def upgrade() -> None:
     sa.Column('preset', sa.String(), nullable=False),
     sa.Column('status', sa.Integer(), nullable=False),
     sa.Column('total_bytes', sa.Integer(), nullable=False),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('debrider_file',
@@ -40,6 +42,8 @@ def upgrade() -> None:
     op.create_table('debrider_info',
     sa.Column('id', sa.String(), nullable=False),
     sa.Column('download_id', sa.String(), nullable=False),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.Column('filename', sa.String(), nullable=False),
     sa.Column('bytes', sa.Integer(), nullable=False),
     sa.Column('progress', sa.Integer(), nullable=False),
@@ -57,6 +61,8 @@ def upgrade() -> None:
     op.create_table('downloader_info',
     sa.Column('id', sa.String(), nullable=False),
     sa.Column('download_id', sa.String(), nullable=False),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.Column('progress', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['download_id'], ['download.id'], ),
     sa.PrimaryKeyConstraint('id')

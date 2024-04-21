@@ -1,11 +1,12 @@
 from typing import List
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, Column, DateTime
 from sqlalchemy.orm import (
     DeclarativeBase,
     Mapped,
     mapped_column,
     relationship,
 )
+from sqlalchemy.sql import func
 
 TABLE_DOWNLOAD = "download"
 TABLE_DEBRIDER_INFO = "debrider_info"
@@ -60,6 +61,8 @@ class DownloadModel(Base):
     preset: Mapped[str]
     status: Mapped[int]
     total_bytes: Mapped[int]
+    created_at = Column(DateTime, default=func.now())
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
     debrider_info: Mapped["DebriderInfoModel"] = relationship(
         back_populates="download", cascade="all, delete-orphan"
@@ -90,6 +93,8 @@ class DebriderInfoModel(Base):
     bytes: Mapped[int]
     progress: Mapped[int]
     status: Mapped[str]
+    created_at = Column(DateTime, default=func.now())
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
     download: Mapped["DownloadModel"] = relationship(back_populates="debrider_info")
 
@@ -122,6 +127,8 @@ class DownloaderInfoModel(Base):
     id: Mapped[str] = mapped_column(primary_key=True)
     download_id: Mapped[int] = mapped_column(ForeignKey(TABLE_DOWNLOAD + ".id"))
     progress: Mapped[int]
+    created_at = Column(DateTime, default=func.now())
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
     download: Mapped["DownloadModel"] = relationship(back_populates="downloader_info")
 
