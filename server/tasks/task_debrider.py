@@ -39,6 +39,11 @@ class DebriderDownloadHanlder:
             preset_files = FileRepository.get_preset_files(
                 download.debrider_files, preset
             )
+            if len(preset_files) == 0:
+                log.debug("No file that match preset rules found " + download.id)
+                download.status = DownloadStatus["ERROR_NO_FILES_FOUND"]
+                return
+
             files = []
             download.total_bytes = 0
             for file in preset_files:
