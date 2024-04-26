@@ -1,31 +1,22 @@
-import bencodepy
-import hashlib
-import base64
+from torf import Torrent as TorfTorrent
+
+from server.core.log import Log
+
+log = Log.get_logger(__name__)
 
 
 class Torrent:
     @staticmethod
-    def _get_torrent_metadata(path: str) -> dict:
-        return bencodepy.decode_from_file(path)
-
-    @staticmethod
-    def get_infohash(path: str) -> str:
-        subj = Torrent._get_torrent_metadata(path)[b"info"]
-        hashcontents = bencodepy.encode(subj)
-        digest = hashlib.sha1(hashcontents).digest()
-        b32hash = base64.b32encode(digest).decode()
-        return b32hash
+    def get_hash(path: str) -> str:
+        torrent = TorfTorrent.read(path)
+        return torrent.infohash_base32
 
     @staticmethod
     def get_name(path: str) -> str:
-        subj = Torrent._get_torrent_metadata(path)
-        return subj[b"info"][b"name"].decode()
+        torrent = TorfTorrent.read(path)
+        return torrent.metainfo["info"]["name"]
 
     @staticmethod
     def get_magnet_link(path: str) -> str:
-        metadata = Torrent._get_torrent_metadata(path)
-        infohash = Torrent.get_infohash(path)
-        dn = metadata[b"info"][b"name"].decode()
-        tr = metadata[b"announce"].decode()
-        xl = str(metadata[b"info"][b"length"])
-        return f"magnet:?xt=urn:btih:{infohash}&dn={dn}&tr={tr}&xl={xl}"
+        torrent = TorfTorrent.read(path)
+        return str(torrent.magnet())

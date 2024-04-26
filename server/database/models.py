@@ -19,8 +19,8 @@ DownloadStatus = {
     "TORRENT_FOUND": 0,
     "TORRENT_SENT_TO_DEBRIDER": 10,
     "DEBRIDER_DOWNLOADING": 11,
-    "DEBRIDER_DOWNLOADED": 12,
-    "DEBRIDER_POST_DOWNLOAD": 13,
+    "DEBRIDER_POST_DOWNLOAD": 12,
+    "DEBRIDER_DOWNLOADED": 13,
     "SENT_TO_DOWNLOADER": 20,
     "DOWNLOADER_DOWNLOADING": 21,
     "DOWNLOADER_DOWNLOADED": 22,
@@ -57,6 +57,7 @@ class DownloadModel(Base):
     __tablename__ = TABLE_DOWNLOAD
 
     id: Mapped[str] = mapped_column(primary_key=True)
+    magnet: Mapped[str]
     title: Mapped[str]
     preset: Mapped[str]
     status: Mapped[int]
@@ -124,8 +125,9 @@ class DebriderLinkModel(Base):
 class DownloaderInfoModel(Base):
     __tablename__ = TABLE_DOWNLOADER_INFO
 
-    id: Mapped[str] = mapped_column(primary_key=True)
-    download_id: Mapped[int] = mapped_column(ForeignKey(TABLE_DOWNLOAD + ".id"))
+    download_id: Mapped[int] = mapped_column(
+        ForeignKey(TABLE_DOWNLOAD + ".id"), primary_key=True
+    )
     progress: Mapped[int]
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())

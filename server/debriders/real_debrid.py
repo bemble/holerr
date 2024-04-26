@@ -66,21 +66,18 @@ class RealDebrid(Debrider):
         res = self._call("DELETE", "/torrents/delete/" + torrent_id)
         if res.status_code != 204:
             raise Exception(
-                "Error while deleting torrent, status code: "
-                + str(res.status_code)
-                + " "
-                + res.text()
+                "Error while deleting torrent, status code: " + str(res.status_code)
             )
 
     def unrestricted_link(self, link: str) -> str | None:
         return self._get_unrestricted_link(link).download
 
-    def _call(self, method, url, **kwargs):
+    def _call(self, method, path, **kwargs):
         if not kwargs.get("headers"):
             kwargs["headers"] = {}
 
         kwargs["headers"]["Authorization"] = "Bearer " + self.api_key
-        return requests.request(method, ENDPOINT + url, **kwargs)
+        return requests.request(method, ENDPOINT + path, **kwargs)
 
     def _me(self) -> Profile | None:
         res = self._call("GET", "/user")

@@ -1,5 +1,3 @@
-from abc import ABC, abstractmethod
-
 from .models import (
     Base,
     DownloadModel,
@@ -7,6 +5,8 @@ from .models import (
     DebriderInfoModel,
     DebriderFileModel,
     DebriderLinkModel,
+    DownloaderInfoModel,
+    DownloaderTaskModel,
 )
 from server.util.torrent import Torrent
 from server.core.config_repositories import PresetRepository
@@ -14,49 +14,40 @@ from server.debriders.debrider_models import TorrentInfo
 
 import os
 from sqlalchemy import select
-import hashlib
+from sqlalchemy.orm import Session
 
 
-class Repository(ABC):
-    def set_session(self, session):
+class Repository:
+    def __init__(self, session: Session, entity: Base):
         self.session = session
-        pass
+        self.entity = entity
 
-    @abstractmethod
     def get_model(self, id: any) -> Base | None:
-        pass
+        res = self.session.scalars(select(self.entity).where(self.entity.id == id))
+        return res.one_or_none()
 
-    @abstractmethod
     def get_all_models(self, conditions) -> list[Base]:
-        pass
+        res = self.session.scalars(select(self.entity).where(conditions))
+        return res.all()
 
-    @abstractmethod
     def create_model(self, **kwargs) -> Base:
-        pass
+        model = self.entity(**kwargs)
+        self.session.add(model)
+        self.session.commit()
+        return model
 
 
 class DownloadRepository(Repository):
+    def __init__(self, session: Session):
+        super().__init__(session, DownloadModel)
+
     @staticmethod
     def compute_id_from_torrent(path: str) -> str:
-        return Torrent.get_infohash(path)
+        return Torrent.get_hash(path)
 
     @staticmethod
     def get_name_from_torrent(path: str) -> str:
         return Torrent.get_name(path)
-
-    def get_model(self, id: str) -> DownloadModel | None:
-        res = self.session.scalars(select(DownloadModel).where(DownloadModel.id == id))
-        return res.one_or_none()
-
-    def get_all_models(self, condition) -> list[DownloadModel]:
-        res = self.session.scalars(select(DownloadModel).where(condition))
-        return res.all()
-
-    def create_model(self, **kwargs) -> DownloadModel:
-        model = DownloadModel(**kwargs)
-        self.session.add(model)
-        self.session.commit()
-        return model
 
     def create_model_from_torrent(self, path: str) -> DownloadModel:
         id = DownloadRepository.compute_id_from_torrent(path)
@@ -68,6 +59,7 @@ class DownloadRepository(Repository):
             raise Exception("Preset not found for {path}")
         return self.create_model(
             id=id,
+            magnet=Torrent.get_magnet_link(path),
             title=title,
             status=status,
             preset=preset.name,
@@ -81,6 +73,31 @@ class DownloadRepository(Repository):
                     [
                         DownloadStatus["TORRENT_SENT_TO_DEBRIDER"],
                         DownloadStatus["DEBRIDER_DOWNLOADING"],
+                        DownloadStatus["DEBRIDER_POST_DOWNLOAD"],
+                    ]
+                )
+            )
+        )
+
+    def get_all_handled_by_download_state_transition(self) -> list[DownloadModel]:
+        return self.get_all_models(
+            DownloadModel.status.in_(
+                tuple(
+                    [
+                        DownloadStatus["TORRENT_FOUND"],
+                        DownloadStatus["DEBRIDER_DOWNLOADED"],
+                    ]
+                )
+            )
+        )
+
+    def get_all_handled_by_downloader(self) -> list[DownloadModel]:
+        return self.get_all_models(
+            DownloadModel.status.in_(
+                tuple(
+                    [
+                        DownloadStatus["SENT_TO_DOWNLOADER"],
+                        DownloadStatus["DOWNLOADER_DOWNLOADING"],
                     ]
                 )
             )
@@ -88,11 +105,8 @@ class DownloadRepository(Repository):
 
 
 class DebriderInfoRepository(Repository):
-    def create_model(self, **kwargs) -> DebriderInfoModel:
-        model = DebriderInfoModel(**kwargs)
-        self.session.add(model)
-        self.session.commit()
-        return model
+    def __init__(self, session: Session):
+        super().__init__(session, DebriderInfoModel)
 
     def create_model_from_torrent_info(
         self, torrent_info: TorrentInfo, download: DownloadModel
@@ -106,23 +120,10 @@ class DebriderInfoRepository(Repository):
             status=torrent_info.status,
         )
 
-    def get_model(self, id: str) -> DebriderInfoModel | None:
-        res = self.session.scalars(
-            select(DebriderInfoModel).where(DebriderInfoModel.id == id)
-        )
-        return res.one_or_none()
-
-    def get_all_models(self, condition) -> list[DebriderInfoModel]:
-        res = self.session.scalars(select(DebriderInfoModel).where(condition))
-        return res.all()
-
 
 class DebriderFileRepository(Repository):
-    def create_model(self, **kwargs) -> DebriderFileModel:
-        model = DebriderFileModel(**kwargs)
-        self.session.add(model)
-        self.session.commit()
-        return model
+    def __init__(self, session: Session):
+        super().__init__(session, DebriderFileModel)
 
     def create_models_from_torrent_info(
         self, torrent_info: TorrentInfo, download: DownloadModel
@@ -139,16 +140,6 @@ class DebriderFileRepository(Repository):
                 )
             )
 
-    def get_model(self, id: str) -> DebriderFileModel | None:
-        res = self.session.scalars(
-            select(DebriderFileModel).where(DebriderFileModel.id == id)
-        )
-        return res.one_or_none()
-
-    def get_all_models(self, condition) -> list[DebriderFileModel]:
-        res = self.session.scalars(select(DebriderFileModel).where(condition))
-        return res.all()
-
     @staticmethod
     def compute_id(torrent_info: TorrentInfo, file_id: int) -> str:
         return torrent_info.id + "." + str(file_id)
@@ -159,21 +150,8 @@ class DebriderFileRepository(Repository):
 
 
 class DebriderLinkRepository(Repository):
-    def create_model(self, **kwargs) -> DebriderLinkModel:
-        model = DebriderLinkModel(**kwargs)
-        self.session.add(model)
-        self.session.commit()
-        return model
-
-    def get_model(self, id: str) -> DebriderLinkModel | None:
-        res = self.session.scalars(
-            select(DebriderLinkModel).where(DebriderLinkModel.id == id)
-        )
-        return res.one_or_none()
-
-    def get_all_models(self, condition) -> list[DebriderLinkModel]:
-        res = self.session.scalars(select(DebriderLinkModel).where(condition))
-        return res.all()
+    def __init__(self, session: Session):
+        super().__init__(session, DebriderLinkModel)
 
     def create_models_from_torrent_info(
         self, torrent_info: TorrentInfo, download: DownloadModel
@@ -196,3 +174,13 @@ class DebriderLinkRepository(Repository):
                 )
             )
         return links
+
+
+class DownloaderInfoRepository(Repository):
+    def __init__(self, session: Session):
+        super().__init__(session, DownloaderInfoModel)
+
+
+class DownloaderTaskRepository(Repository):
+    def __init__(self, session: Session):
+        super().__init__(session, DownloaderTaskModel)

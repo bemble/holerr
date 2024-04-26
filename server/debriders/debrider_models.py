@@ -26,7 +26,7 @@ class TorrentInfo(BaseModel):
     id: str
     filename: str
     bytes: int  # Size of selected files only
-    progress: int  # Possible values: 0 to 100
+    progress: float  # Possible values: 0 to 100
     status: str  # Current status of the torrent
     files: list[File]
     links: list[str]
