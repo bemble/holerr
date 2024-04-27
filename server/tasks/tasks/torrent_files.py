@@ -1,4 +1,4 @@
-from .task import Task
+from ..task import Task
 from server.core import config
 from server.core.log import Log
 from server.database.repositories import (

@@ -1,4 +1,4 @@
-from .task import Task
+from ..task import Task
 from server.core.log import Log
 from server.core.db import db
 from server.database.models import DownloadModel, DownloadStatus

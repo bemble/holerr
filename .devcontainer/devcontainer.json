@@ -9,7 +9,7 @@
     }
   },
   "postCreateCommand": "npm install -g nodemon && cd front && npm i && cd .. && python -m venv server/venv",
-  "forwardPorts": [8781, 3000],
+  "forwardPorts": [8765, 3000],
   "customizations": {
     "vscode": {
       "settings": {

@@ -1,13 +1,10 @@
 """Init file for workers module."""
 
 from .worker import Worker
-from .task_download_state_transitions import TaskDownloadStateTransition
-from .task_torrent_files import TaskTorrentFiles
-from .task_debrider import TaskDebrider
-from .task_downloader import TaskDownloader
+from .tasks import download_state_transitions, torrent_files, debrider, downloader
 
 worker = Worker()
-worker.add(TaskDownloadStateTransition())
-worker.add(TaskTorrentFiles())
-worker.add(TaskDebrider())
-worker.add(TaskDownloader())
+worker.add(download_state_transitions)
+worker.add(torrent_files)
+worker.add(debrider)
+worker.add(downloader)
