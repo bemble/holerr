@@ -45,6 +45,14 @@ class Config:
     def __getattr__(self, index):
         return self._conf[index]
 
+    @property
+    def raw(self):
+        return self._conf
+
+    @raw.setter
+    def raw(self, value: config_models.Config):
+        self._conf = value
+
     def load(self):
         content = yaml.load(open(self.file_path, "r"), Loader=yaml.FullLoader)
 

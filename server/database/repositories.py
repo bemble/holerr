@@ -8,7 +8,7 @@ from .models import (
     DownloaderInfoModel,
     DownloaderTaskModel,
 )
-from server.util.torrent import Torrent
+from server.utils import torrent
 from server.core.config_repositories import PresetRepository
 from server.debriders.debrider_models import TorrentInfo
 
@@ -26,7 +26,7 @@ class Repository:
         res = self.session.scalars(select(self.entity).where(self.entity.id == id))
         return res.one_or_none()
 
-    def get_all_models(self, conditions) -> list[Base]:
+    def get_all_models(self, conditions=True) -> list[Base]:
         res = self.session.scalars(select(self.entity).where(conditions))
         return res.all()
 
@@ -43,11 +43,11 @@ class DownloadRepository(Repository):
 
     @staticmethod
     def compute_id_from_torrent(path: str) -> str:
-        return Torrent.get_hash(path)
+        return torrent.get_hash(path)
 
     @staticmethod
     def get_name_from_torrent(path: str) -> str:
-        return Torrent.get_name(path)
+        return torrent.get_name(path)
 
     def create_model_from_torrent(self, path: str) -> DownloadModel:
         id = DownloadRepository.compute_id_from_torrent(path)
@@ -59,7 +59,7 @@ class DownloadRepository(Repository):
             raise Exception("Preset not found for {path}")
         return self.create_model(
             id=id,
-            magnet=Torrent.get_magnet_link(path),
+            magnet=torrent.get_magnet_link(path),
             title=title,
             status=status,
             preset=preset.name,

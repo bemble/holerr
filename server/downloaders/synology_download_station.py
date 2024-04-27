@@ -16,6 +16,9 @@ class SynologyDownloadStation(Downloader):
     def __init__(self, config):
         pass
 
+    def get_id(self) -> str:
+        return "synology_download_station"
+
     def get_name(self) -> str:
         return "Synology Download Station"
 
@@ -123,7 +126,9 @@ class SynologyDownloadStation(Downloader):
             )
 
         auth = Auth(**res.json())
-        return auth.data.sid or None
+        if not auth.success:
+            return None
+        return auth.data.sid
 
     def _get_download_id(self, uri: str) -> str:
         sid = self._connect("DownloadStation")

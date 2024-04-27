@@ -19,7 +19,7 @@
     {
       "label": "Run server",
       "type": "shell",
-      "command": "source server/venv/bin/activate && nodemon --watch server/ --watch data/ -e yaml,py --exec python3 -m server --signal SIGTERM",
+      "command": "source server/venv/bin/activate && nodemon --watch server/ --watch data/ -e py --exec python3 -m server --signal SIGTERM",
       "options": {
         "cwd": "${workspaceFolder}"
       },

@@ -18,6 +18,9 @@ class RealDebrid(Debrider):
     def __init__(self, conf: RealDebridConfig):
         self.api_key = conf.api_key
 
+    def get_id(self) -> str:
+        return "real_debrid"
+
     def get_name(self) -> str:
         return "Real-Debrid"
 

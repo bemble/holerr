@@ -4,6 +4,10 @@ from .debrider_models import TorrentInfo
 
 class Debrider(ABC):
     @abstractmethod
+    def get_id(self) -> str:
+        pass
+
+    @abstractmethod
     def get_name(self) -> str:
         pass
 

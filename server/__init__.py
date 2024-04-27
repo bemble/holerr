@@ -2,6 +2,10 @@ from server.core import config
 
 config.load()
 
+from server.core.log import Log
+
+log = Log.get_logger(__name__)
+
 from server.core.config_repositories import PresetRepository
 
 PresetRepository.create_directories()
@@ -9,9 +13,9 @@ PresetRepository.create_directories()
 from server.debriders import debrider
 
 if not debrider.is_connected():
-    raise Exception("Debrider not connected")
+    log.info("Debrider not connected")
 
 from server.downloaders import downloader
 
 if not downloader.is_connected():
-    raise Exception("Downloader not connected")
+    log.info("Downloader not connected")

@@ -4,6 +4,10 @@ from server.core.config_models import Preset
 
 class Downloader(ABC):
     @abstractmethod
+    def get_id(self) -> str:
+        pass
+
+    @abstractmethod
     def get_name(self) -> str:
         pass
 

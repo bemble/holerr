@@ -7,5 +7,5 @@ router = APIRouter(prefix="/constants")
 
 
 @router.get("/")
-async def root():
+async def get_constants():
     return {"download_status": DownloadStatus, "torrent_status": TorrentStatus}
