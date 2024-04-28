@@ -36,10 +36,17 @@ class DownloaderDownloadHanlder:
                 task.status < download_status or task_is_error
             ) and not download_is_error:
                 download_status = task.status
-        download.status = download_status
+
         download.downloader_info.progress = int(
             (total_bytes_downloaded * 100) / download.total_bytes
         )
+
+        if download_status == DownloadStatus["DOWNLOADER_DOWNLOADED"]:
+            download.status = DownloadStatus["DOWNLOADED"]
+            download.total_progress = 100
+        else:
+            download.status = download_status
+            download.total_progress = 50 + int(download.downloader_info.progress * 0.49)
 
 
 class TaskDownloader(Task):

@@ -35,6 +35,7 @@ class TransitionHanlder:
         debrider_id = debrider.add_magnet(download.magnet)
         debrider_info = debrider.get_torrent_info(debrider_id)
         download.status = DownloadStatus["TORRENT_SENT_TO_DEBRIDER"]
+        download.total_progress = 1
         DebriderInfoRepository(self._db_session).create_model_from_torrent_info(
             debrider_info, download
         )
@@ -53,6 +54,7 @@ class TransitionHanlder:
                     id=id, status=status, bytes_downloaded=0, download=download
                 )
         download.status = DownloadStatus["DOWNLOADER_DOWNLOADING"]
+        download.total_progress = 50
         DownloaderInfoRepository(self._db_session).create_model(
             download=download, progress=0
         )

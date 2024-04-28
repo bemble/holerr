@@ -24,6 +24,7 @@ DownloadStatus = {
     "SENT_TO_DOWNLOADER": 20,
     "DOWNLOADER_DOWNLOADING": 21,
     "DOWNLOADER_DOWNLOADED": 22,
+    "DOWNLOADED": 30,
     "ERROR_NO_FILES_FOUND": 100,
     "ERROR_DEBRIDER": 101,
     "ERROR_DOWNLOADER": 102,
@@ -62,6 +63,7 @@ class DownloadModel(Base):
     preset: Mapped[str]
     status: Mapped[int]
     total_bytes: Mapped[int]
+    total_progress: Mapped[int]
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 

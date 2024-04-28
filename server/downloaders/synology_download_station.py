@@ -38,16 +38,21 @@ class SynologyDownloadStation(Downloader):
             "uri": uri,
             "_sid": sid,
         }
+
+        params = urllib.parse.urlencode(params)
+
         if preset.output_dir is not None:
             destination = preset.output_dir
             if preset.create_sub_dir:
                 sub_folder = self.get_sub_folder_name(title)
                 self._create_output_dir(destination, sub_folder)
                 destination += "/" + sub_folder
-            params["destination"] = destination
 
-        # known bug in Synology Download Station API fails with "+" destination
-        params = urllib.parse.urlencode(params).replace("+", "%20")
+            # known bug in Synology Download Station API fails with "+" destination
+            params += "&destination=" + requests.utils.quote(destination).replace(
+                "+", "%20"
+            )
+
         res = self._call("/DownloadStation/task.cgi", params=params)
         if res.status_code != 200:
             raise Exception("Could not add download " + res)

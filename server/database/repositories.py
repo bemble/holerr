@@ -26,8 +26,11 @@ class Repository:
         res = self.session.scalars(select(self.entity).where(self.entity.id == id))
         return res.one_or_none()
 
-    def get_all_models(self, conditions=True) -> list[Base]:
-        res = self.session.scalars(select(self.entity).where(conditions))
+    def get_all_models(self, conditions=True, options=None) -> list[Base]:
+        query = select(self.entity).where(conditions)
+        if options:
+            query = query.options(options)
+        res = self.session.scalars(query)
         return res.all()
 
     def create_model(self, **kwargs) -> Base:
@@ -54,7 +57,6 @@ class DownloadRepository(Repository):
         title = DownloadRepository.get_name_from_torrent(path)
         status = DownloadStatus["TORRENT_FOUND"]
         preset = PresetRepository.get_preset_by_folder(os.path.dirname(path))
-        total_bytes = 0
         if preset is None:
             raise Exception("Preset not found for {path}")
         return self.create_model(
@@ -63,7 +65,8 @@ class DownloadRepository(Repository):
             title=title,
             status=status,
             preset=preset.name,
-            total_bytes=total_bytes,
+            total_bytes=0,
+            total_progress=0,
         )
 
     def get_all_handled_by_debrider(self) -> list[DownloadModel]:

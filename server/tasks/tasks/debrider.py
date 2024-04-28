@@ -48,8 +48,7 @@ class DebriderDownloadHanlder:
             download.debrider_info.status == TorrentStatus["COMPRESSING"]
             or download.debrider_info.status == TorrentStatus["UPLOADING"]
         ):
-            log.debug("Debrider is doing post download actions " + str(download.id))
-            download.status = DownloadStatus["DEBRIDER_POST_DOWNLOAD"]
+            self._on_post_download(download)
 
         if download.debrider_info.status == TorrentStatus["ERROR"]:
             log.debug("Debrider has torrent error " + download.id)
@@ -67,6 +66,7 @@ class DebriderDownloadHanlder:
         log.debug("Selecting files for " + str(download.id))
         preset = PresetRepository.get_preset(download.preset)
         preset_files = FileRepository.get_preset_files(download.debrider_files, preset)
+        download.total_progress = 2
         if len(preset_files) == 0:
             log.debug("No file that match preset rules found " + download.id)
             download.status = DownloadStatus["ERROR_NO_FILES_FOUND"]
@@ -79,11 +79,18 @@ class DebriderDownloadHanlder:
             file.selected = True
             download.total_bytes += file.bytes
         debrider.select_files(download.debrider_info.id, files)
+        download.total_progress = 3
 
     def _on_downloading(self, download: DownloadModel):
         if download.status != DownloadStatus["DEBRIDER_DOWNLOADING"]:
             download.status = DownloadStatus["DEBRIDER_DOWNLOADING"]
             log.debug("Debrider is downloading " + str(download.id))
+        download.total_progress = 3 + int((download.debrider_info.progress) * 0.44)
+
+    def _on_post_download(self, download: DownloadModel):
+        log.debug("Debrider is doing post download actions " + str(download.id))
+        download.status = DownloadStatus["DEBRIDER_POST_DOWNLOAD"]
+        download.total_progress = 48
 
     def _on_downloaded(self, download: DownloadModel, debrider_info: TorrentInfo):
         log.debug("Debrider downloaded " + str(download.id))
@@ -95,6 +102,7 @@ class DebriderDownloadHanlder:
             unrestricted_links.append(unrestricted_link)
         links_repo.create_models(unrestricted_links, True, download)
         download.status = DownloadStatus["DEBRIDER_DOWNLOADED"]
+        download.total_progress = 49
 
 
 class TaskDebrider(Task):
