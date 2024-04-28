@@ -39,8 +39,6 @@ class SynologyDownloadStation(Downloader):
             "_sid": sid,
         }
 
-        params = urllib.parse.urlencode(params)
-
         if preset.output_dir is not None:
             destination = preset.output_dir
             if preset.create_sub_dir:
@@ -48,6 +46,7 @@ class SynologyDownloadStation(Downloader):
                 self._create_output_dir(destination, sub_folder)
                 destination += "/" + sub_folder
 
+            params = urllib.parse.urlencode(params)
             # known bug in Synology Download Station API fails with "+" destination
             params += "&destination=" + requests.utils.quote(destination).replace(
                 "+", "%20"
