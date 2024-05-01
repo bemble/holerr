@@ -14,7 +14,7 @@
     "vscode": {
       "settings": {
         "python.experiments.optOutFrom": ["pythonTestAdapter"],
-        "python.pythonPath": "/usr/local/bin/python",
+        "python.defaultInterpreterPath": "${workspaceFolder}/server/venv/bin/python",
         "python.testing.pytestArgs": ["--no-cov"],
         "editor.formatOnPaste": false,
         "editor.formatOnSave": true,
