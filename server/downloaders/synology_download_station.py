@@ -119,7 +119,7 @@ class SynologyDownloadStation(Downloader):
             "version": "3",
             "session": session,
             "account": syno_cfg.username,
-            "passwd": syno_cfg.password,
+            "passwd": syno_cfg.password.get_secret_value(),
             "format": "sid",
             "method": "login",
         }

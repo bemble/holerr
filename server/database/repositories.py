@@ -1,12 +1,12 @@
 from .models import (
     Base,
-    DownloadModel,
+    Download,
     DownloadStatus,
-    DebriderInfoModel,
-    DebriderFileModel,
-    DebriderLinkModel,
-    DownloaderInfoModel,
-    DownloaderTaskModel,
+    DebriderInfo,
+    DebriderFile,
+    DebriderLink,
+    DownloaderInfo,
+    DownloaderTask,
 )
 from server.utils import torrent
 from server.core.config_repositories import PresetRepository
@@ -42,7 +42,7 @@ class Repository:
 
 class DownloadRepository(Repository):
     def __init__(self, session: Session):
-        super().__init__(session, DownloadModel)
+        super().__init__(session, Download)
 
     @staticmethod
     def compute_id_from_torrent(path: str) -> str:
@@ -52,7 +52,7 @@ class DownloadRepository(Repository):
     def get_name_from_torrent(path: str) -> str:
         return torrent.get_name(path)
 
-    def create_model_from_torrent(self, path: str) -> DownloadModel:
+    def create_model_from_torrent(self, path: str) -> Download:
         id = DownloadRepository.compute_id_from_torrent(path)
         title = DownloadRepository.get_name_from_torrent(path)
         status = DownloadStatus["TORRENT_FOUND"]
@@ -69,9 +69,9 @@ class DownloadRepository(Repository):
             total_progress=0,
         )
 
-    def get_all_handled_by_debrider(self) -> list[DownloadModel]:
+    def get_all_handled_by_debrider(self) -> list[Download]:
         return self.get_all_models(
-            DownloadModel.status.in_(
+            Download.status.in_(
                 tuple(
                     [
                         DownloadStatus["TORRENT_SENT_TO_DEBRIDER"],
@@ -82,9 +82,9 @@ class DownloadRepository(Repository):
             )
         )
 
-    def get_all_handled_by_download_state_transition(self) -> list[DownloadModel]:
+    def get_all_handled_by_download_state_transition(self) -> list[Download]:
         return self.get_all_models(
-            DownloadModel.status.in_(
+            Download.status.in_(
                 tuple(
                     [
                         DownloadStatus["TORRENT_FOUND"],
@@ -94,9 +94,9 @@ class DownloadRepository(Repository):
             )
         )
 
-    def get_all_handled_by_downloader(self) -> list[DownloadModel]:
+    def get_all_handled_by_downloader(self) -> list[Download]:
         return self.get_all_models(
-            DownloadModel.status.in_(
+            Download.status.in_(
                 tuple(
                     [
                         DownloadStatus["SENT_TO_DOWNLOADER"],
@@ -109,11 +109,11 @@ class DownloadRepository(Repository):
 
 class DebriderInfoRepository(Repository):
     def __init__(self, session: Session):
-        super().__init__(session, DebriderInfoModel)
+        super().__init__(session, DebriderInfo)
 
     def create_model_from_torrent_info(
-        self, torrent_info: TorrentInfo, download: DownloadModel
-    ) -> DebriderInfoModel:
+        self, torrent_info: TorrentInfo, download: Download
+    ) -> DebriderInfo:
         return self.create_model(
             id=torrent_info.id,
             download=download,
@@ -126,11 +126,11 @@ class DebriderInfoRepository(Repository):
 
 class DebriderFileRepository(Repository):
     def __init__(self, session: Session):
-        super().__init__(session, DebriderFileModel)
+        super().__init__(session, DebriderFile)
 
     def create_models_from_torrent_info(
-        self, torrent_info: TorrentInfo, download: DownloadModel
-    ) -> list[DebriderFileModel]:
+        self, torrent_info: TorrentInfo, download: Download
+    ) -> list[DebriderFile]:
         files = []
         for torrent_file in torrent_info.files:
             files.append(
@@ -148,24 +148,24 @@ class DebriderFileRepository(Repository):
         return torrent_info.id + "." + str(file_id)
 
     @staticmethod
-    def get_torrent_file_id(model: DebriderFileModel) -> int:
+    def get_torrent_file_id(model: DebriderFile) -> int:
         return int(model.id.split(".")[-1])
 
 
 class DebriderLinkRepository(Repository):
     def __init__(self, session: Session):
-        super().__init__(session, DebriderLinkModel)
+        super().__init__(session, DebriderLink)
 
     def create_models_from_torrent_info(
-        self, torrent_info: TorrentInfo, download: DownloadModel
-    ) -> list[DebriderLinkModel]:
+        self, torrent_info: TorrentInfo, download: Download
+    ) -> list[DebriderLink]:
         links = []
         for link in torrent_info.links:
             links.append(link)
         return self.create_models(links, False, download)
 
     def create_models(
-        self, in_links: list[str], is_unrestricted: bool, download: DownloadModel
+        self, in_links: list[str], is_unrestricted: bool, download: Download
     ):
         links = []
         for link in in_links:
@@ -181,9 +181,9 @@ class DebriderLinkRepository(Repository):
 
 class DownloaderInfoRepository(Repository):
     def __init__(self, session: Session):
-        super().__init__(session, DownloaderInfoModel)
+        super().__init__(session, DownloaderInfo)
 
 
 class DownloaderTaskRepository(Repository):
     def __init__(self, session: Session):
-        super().__init__(session, DownloaderTaskModel)
+        super().__init__(session, DownloaderTask)

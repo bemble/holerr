@@ -8,7 +8,7 @@ log = Log.get_logger(__name__)
 
 class Server:
     def __init__(self):
-        self._app = FastAPI()
+        self._app = FastAPI(title="Holerr")
 
     def start(self, port: int = 8765):
         log.debug(f"Starting server on port {port}")

@@ -49,9 +49,9 @@ class Config:
     def raw(self):
         return self._conf
 
-    @raw.setter
-    def raw(self, value: config_models.Config):
-        self._conf = value
+    def update(self, data: dict):
+        self._conf.update(data)
+        self.write()
 
     def load(self):
         content = yaml.load(open(self.file_path, "r"), Loader=yaml.FullLoader)

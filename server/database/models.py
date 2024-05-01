@@ -54,7 +54,7 @@ class Base(DeclarativeBase):
     pass
 
 
-class DownloadModel(Base):
+class Download(Base):
     __tablename__ = TABLE_DOWNLOAD
 
     id: Mapped[str] = mapped_column(primary_key=True)
@@ -67,19 +67,19 @@ class DownloadModel(Base):
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
-    debrider_info: Mapped["DebriderInfoModel"] = relationship(
+    debrider_info: Mapped["DebriderInfo"] = relationship(
         back_populates="download", cascade="all, delete-orphan"
     )
-    debrider_files: Mapped[List["DebriderFileModel"]] = relationship(
+    debrider_files: Mapped[List["DebriderFile"]] = relationship(
         back_populates="download", cascade="all, delete-orphan"
     )
-    debrider_links: Mapped[List["DebriderLinkModel"]] = relationship(
+    debrider_links: Mapped[List["DebriderLink"]] = relationship(
         back_populates="download", cascade="all, delete-orphan"
     )
-    downloader_info: Mapped["DownloaderInfoModel"] = relationship(
+    downloader_info: Mapped["DownloaderInfo"] = relationship(
         back_populates="download", cascade="all, delete-orphan"
     )
-    downloader_tasks: Mapped[List["DownloaderTaskModel"]] = relationship(
+    downloader_tasks: Mapped[List["DownloaderTask"]] = relationship(
         back_populates="download", cascade="all, delete-orphan"
     )
 
@@ -87,7 +87,7 @@ class DownloadModel(Base):
         return f"DownloadModel(id={self.id}, title={self.title}, status={self.status})"
 
 
-class DebriderInfoModel(Base):
+class DebriderInfo(Base):
     __tablename__ = TABLE_DEBRIDER_INFO
 
     id: Mapped[str] = mapped_column(primary_key=True)
@@ -99,10 +99,10 @@ class DebriderInfoModel(Base):
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
-    download: Mapped["DownloadModel"] = relationship(back_populates="debrider_info")
+    download: Mapped["Download"] = relationship(back_populates="debrider_info")
 
 
-class DebriderFileModel(Base):
+class DebriderFile(Base):
     __tablename__ = TABLE_DEBRIDER_FILE
 
     id: Mapped[str] = mapped_column(primary_key=True)
@@ -111,20 +111,20 @@ class DebriderFileModel(Base):
     bytes: Mapped[int]
     selected: Mapped[int]
 
-    download: Mapped["DownloadModel"] = relationship(back_populates="debrider_files")
+    download: Mapped["Download"] = relationship(back_populates="debrider_files")
 
 
-class DebriderLinkModel(Base):
+class DebriderLink(Base):
     __tablename__ = TABLE_DEBRIDER_LINK
 
     link: Mapped[str] = mapped_column(primary_key=True)
     download_id: Mapped[int] = mapped_column(ForeignKey(TABLE_DOWNLOAD + ".id"))
     is_unrestricted: Mapped[bool]
 
-    download: Mapped["DownloadModel"] = relationship(back_populates="debrider_links")
+    download: Mapped["Download"] = relationship(back_populates="debrider_links")
 
 
-class DownloaderInfoModel(Base):
+class DownloaderInfo(Base):
     __tablename__ = TABLE_DOWNLOADER_INFO
 
     download_id: Mapped[int] = mapped_column(
@@ -134,10 +134,10 @@ class DownloaderInfoModel(Base):
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
-    download: Mapped["DownloadModel"] = relationship(back_populates="downloader_info")
+    download: Mapped["Download"] = relationship(back_populates="downloader_info")
 
 
-class DownloaderTaskModel(Base):
+class DownloaderTask(Base):
     __tablename__ = TABLE_DOWNLOADER_TASK
 
     id: Mapped[str] = mapped_column(primary_key=True)
@@ -145,4 +145,4 @@ class DownloaderTaskModel(Base):
     status: Mapped[int]
     bytes_downloaded: Mapped[int]
 
-    download: Mapped["DownloadModel"] = relationship(back_populates="downloader_tasks")
+    download: Mapped["Download"] = relationship(back_populates="downloader_tasks")

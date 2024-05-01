@@ -2,7 +2,7 @@ from ..task import Task
 from server.core.log import Log
 from server.core.db import db
 from server.core.config_repositories import PresetRepository
-from server.database.models import DownloadModel, DownloadStatus
+from server.database.models import Download, DownloadStatus
 from server.database.repositories import (
     DownloadRepository,
     DebriderFileRepository,
@@ -21,7 +21,7 @@ class DebriderDownloadHanlder:
     def __init__(self, session: Session):
         self._db_session = session
 
-    def handle_download(self, download: DownloadModel):
+    def handle_download(self, download: Download):
         debrider_info = debrider.get_torrent_info(download.debrider_info.id)
 
         if debrider_info == None:
@@ -62,7 +62,7 @@ class DebriderDownloadHanlder:
             log.debug("Debrider download is dead " + download.id)
             download.status = DownloadStatus["ERROR_DEBRIDER"]
 
-    def _on_waiting_file_selection(self, download: DownloadModel):
+    def _on_waiting_file_selection(self, download: Download):
         log.debug("Selecting files for " + str(download.id))
         preset = PresetRepository.get_preset(download.preset)
         preset_files = FileRepository.get_preset_files(download.debrider_files, preset)
@@ -81,18 +81,18 @@ class DebriderDownloadHanlder:
         debrider.select_files(download.debrider_info.id, files)
         download.total_progress = 3
 
-    def _on_downloading(self, download: DownloadModel):
+    def _on_downloading(self, download: Download):
         if download.status != DownloadStatus["DEBRIDER_DOWNLOADING"]:
             download.status = DownloadStatus["DEBRIDER_DOWNLOADING"]
             log.debug("Debrider is downloading " + str(download.id))
         download.total_progress = 3 + int((download.debrider_info.progress) * 0.44)
 
-    def _on_post_download(self, download: DownloadModel):
+    def _on_post_download(self, download: Download):
         log.debug("Debrider is doing post download actions " + str(download.id))
         download.status = DownloadStatus["DEBRIDER_POST_DOWNLOAD"]
         download.total_progress = 48
 
-    def _on_downloaded(self, download: DownloadModel, debrider_info: TorrentInfo):
+    def _on_downloaded(self, download: Download, debrider_info: TorrentInfo):
         log.debug("Debrider downloaded " + str(download.id))
         links_repo = DebriderLinkRepository(self._db_session)
         links_repo.create_models_from_torrent_info(debrider_info, download)
@@ -115,6 +115,6 @@ class TaskDebrider(Task):
         self._db_session.commit()
         self._db_session.remove()
 
-    def get_downloads(self) -> list[DownloadModel]:
+    def get_downloads(self) -> list[Download]:
         rep = DownloadRepository(self._db_session)
         return rep.get_all_handled_by_debrider()

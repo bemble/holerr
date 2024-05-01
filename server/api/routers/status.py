@@ -6,7 +6,7 @@ from fastapi import APIRouter
 router = APIRouter(prefix="/status")
 
 
-@router.get("/")
+@router.get("/", tags=["Status"])
 async def get_status():
     return {
         "debrider": {

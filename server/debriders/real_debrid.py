@@ -79,7 +79,7 @@ class RealDebrid(Debrider):
         if not kwargs.get("headers"):
             kwargs["headers"] = {}
 
-        kwargs["headers"]["Authorization"] = "Bearer " + self.api_key
+        kwargs["headers"]["Authorization"] = "Bearer " + self.api_key.get_secret_value()
         return requests.request(method, ENDPOINT + path, **kwargs)
 
     def _me(self) -> Profile | None:

@@ -1,7 +1,7 @@
 from ..task import Task
 from server.core.log import Log
 from server.core.db import db
-from server.database.models import DownloadModel, DownloadStatus
+from server.database.models import Download, DownloadStatus
 from server.database.repositories import (
     DownloadRepository,
 )
@@ -15,7 +15,7 @@ class DownloaderDownloadHanlder:
     def __init__(self, session):
         self._db_session = session
 
-    def handle_download(self, download: DownloadModel):
+    def handle_download(self, download: Download):
         total_bytes_downloaded = 0
         for task in download.downloader_tasks:
             try:
@@ -59,6 +59,6 @@ class TaskDownloader(Task):
         self._db_session.commit()
         self._db_session.remove()
 
-    def get_downloads(self) -> list[DownloadModel]:
+    def get_downloads(self) -> list[Download]:
         rep = DownloadRepository(self._db_session)
         return rep.get_all_handled_by_downloader()

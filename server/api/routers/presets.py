@@ -5,6 +5,6 @@ from fastapi import APIRouter
 router = APIRouter(prefix="/presets")
 
 
-@router.get("/")
-async def list():
+@router.get("/", tags=["Presets"])
+async def list_presets():
     return config.presets

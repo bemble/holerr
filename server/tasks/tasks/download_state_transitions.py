@@ -2,7 +2,7 @@ from ..task import Task
 from server.core.log import Log
 from server.core.db import db
 from server.core.config_repositories import PresetRepository
-from server.database.models import DownloadModel, DownloadStatus
+from server.database.models import Download, DownloadStatus
 from server.database.repositories import DownloadRepository
 from server.downloaders import downloader
 from server.database.repositories import (
@@ -22,7 +22,7 @@ class TransitionHanlder:
     def __init__(self, session: Session):
         self._db_session = session
 
-    def handle_transition(self, download: DownloadModel):
+    def handle_transition(self, download: Download):
         if download.status == DownloadStatus["TORRENT_FOUND"]:
             log.debug("Sending torrent " + str(download.id) + " to debrider")
             self._send_to_debrider(download)
@@ -31,7 +31,7 @@ class TransitionHanlder:
             log.debug(f"Sending torrent {download.id} to downloader")
             self._send_to_downloader(download)
 
-    def _send_to_debrider(self, download: DownloadModel):
+    def _send_to_debrider(self, download: Download):
         debrider_id = debrider.add_magnet(download.magnet)
         debrider_info = debrider.get_torrent_info(debrider_id)
         download.status = DownloadStatus["TORRENT_SENT_TO_DEBRIDER"]
@@ -43,7 +43,7 @@ class TransitionHanlder:
             debrider_info, download
         )
 
-    def _send_to_downloader(self, download: DownloadModel):
+    def _send_to_downloader(self, download: Download):
         preset = PresetRepository.get_preset(download.preset)
         downloader_task_repo = DownloaderTaskRepository(self._db_session)
         for link in download.debrider_links:
@@ -71,6 +71,6 @@ class TaskDownloadStateTransition(Task):
         self._db_session.commit()
         self._db_session.remove()
 
-    def get_downloads(self) -> list[DownloadModel]:
+    def get_downloads(self) -> list[Download]:
         rep = DownloadRepository(self._db_session)
         return rep.get_all_handled_by_download_state_transition()

@@ -1,10 +1,41 @@
+from .log import Log
+
 from typing import Optional
-from pydantic import BaseModel, model_validator, ValidationError
+from pydantic import (
+    SecretStr,
+    BaseModel,
+    model_validator,
+    ValidationError,
+    field_serializer,
+)
 
 import re
 
+log = Log.get_logger(__name__)
 
-class Preset(BaseModel):
+
+class Model(BaseModel):
+    def update(self, data: dict):
+        cur_update = {}
+        for k, v in data.items():
+            if isinstance(v, dict):
+                log.debug(f"updating {k} is dict, {v}")
+                getattr(self, k).update(v)
+            else:
+                cur_update[k] = v
+
+        # validate
+        self.copy(update=cur_update)
+        for k, v in cur_update.items():
+            if isinstance(v, list):
+                self[k].clear()
+                for item in v:
+                    self[k].append(item)
+            else:
+                setattr(self, k, v)
+
+
+class Preset(Model):
     name: str
     watch_dir: str
     output_dir: str
@@ -25,11 +56,17 @@ class Preset(BaseModel):
         return int(float(number) * units[unit])
 
 
-class RealDebrid(BaseModel):
-    api_key: str
+class RealDebrid(Model):
+    api_key: SecretStr
+
+    @field_serializer("api_key")
+    def dump_secret(self, v, info):
+        if info.mode == "python":
+            return v.get_secret_value()
+        return "****************"
 
 
-class Debrider(BaseModel):
+class Debrider(Model):
     real_debrid: Optional[RealDebrid] = None
 
     @model_validator(mode="after")
@@ -39,13 +76,19 @@ class Debrider(BaseModel):
         return self
 
 
-class SynologyDownloadStation(BaseModel):
+class SynologyDownloadStation(Model):
     endpoint: str
     username: str
-    password: str
+    password: SecretStr
+
+    @field_serializer("password")
+    def dump_secret(self, v, info):
+        if info.mode == "python":
+            return v.get_secret_value()
+        return "****************"
 
 
-class Downloader(BaseModel):
+class Downloader(Model):
     synology_download_station: Optional[SynologyDownloadStation] = None
 
     @model_validator(mode="after")
@@ -55,13 +98,19 @@ class Downloader(BaseModel):
         return self
 
 
-class Config(BaseModel):
+class Config(Model):
     debug: Optional[list[str]] = None
-    api_key: Optional[str] = None
+    api_key: Optional[SecretStr] = None
     base_path: Optional[str] = None
     debrider: Debrider = None
     downloader: Downloader = None
     presets: Optional[list[Preset]] = None
+
+    @field_serializer("api_key")
+    def dump_secret(self, v, info):
+        if info.mode == "python":
+            return v.get_secret_value()
+        return "****************"
 
     def __getitem__(self, index):
         return getattr(self, index)
