@@ -1,7 +1,7 @@
 from server.core import config
 from server.core.config_models import Config
 from server.core.log import Log
-from .routers_models import InputConfig
+from .routers_models import PartialConfig
 
 from fastapi import APIRouter, status
 
@@ -16,7 +16,7 @@ async def get_configuration():
 
 
 @router.patch("/", response_model=Config, tags=["Configuration"])
-async def update_configuration(cfg: InputConfig):
+async def update_configuration(cfg: PartialConfig):
     update_data = cfg.dict(exclude_unset=True)
     config.update(update_data)
 

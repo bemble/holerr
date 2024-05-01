@@ -15,7 +15,7 @@ class Constants(BaseModel):
 # ------------------------------------------------------------
 # CONFIGURATION
 # ------------------------------------------------------------
-class InputPreset(BaseModel):
+class PartialPreset(BaseModel):
     name: Optional[str] = None
     watch_dir: Optional[str] = None
     output_dir: Optional[str] = None
@@ -24,29 +24,29 @@ class InputPreset(BaseModel):
     min_file_size: Optional[str] = None
 
 
-class InputRealDebrid(BaseModel):
+class PartialRealDebrid(BaseModel):
     api_key: Optional[str] = None
 
 
-class InputDebrider(BaseModel):
-    real_debrid: Optional[InputRealDebrid] = None
+class PartialDebrider(BaseModel):
+    real_debrid: Optional[PartialRealDebrid] = None
 
 
-class InputSynologyDownloadStation(BaseModel):
+class PartialSynologyDownloadStation(BaseModel):
     endpoint: Optional[str] = None
     username: Optional[str] = None
     password: Optional[str] = None
 
 
-class InputDownloader(BaseModel):
-    synology_download_station: Optional[InputSynologyDownloadStation] = None
+class PartialDownloader(BaseModel):
+    synology_download_station: Optional[PartialSynologyDownloadStation] = None
 
 
-class InputConfig(BaseModel):
+class PartialConfig(BaseModel):
     debug: list[str] = None
-    debrider: Optional[InputDebrider] = None
-    downloader: Optional[InputDownloader] = None
-    presets: list[InputPreset] = None
+    debrider: Optional[PartialDebrider] = None
+    downloader: Optional[PartialDownloader] = None
+    presets: list[PartialPreset] = None
 
 
 # ------------------------------------------------------------

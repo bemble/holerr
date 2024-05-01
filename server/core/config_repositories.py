@@ -12,15 +12,18 @@ class PresetRepository:
     def get_watch_directory(preset: Preset) -> str:
         return config.data_dir + "/" + preset.watch_dir
 
+    def create_watch_directory(preset: Preset):
+        path = PresetRepository.get_watch_directory(preset)
+        if not os.path.exists(path):
+            os.makedirs(path)
+            log.debug(f"Created directory {path}")
+        else:
+            log.debug(f"Preset directory {path} already exists, skipping...")
+
     @staticmethod
     def create_watch_directories():
         for preset in config.presets:
-            path = PresetRepository.get_watch_directory(preset)
-            if not os.path.exists(path):
-                os.makedirs(path)
-                log.debug(f"Created directory {path}")
-            else:
-                log.debug(f"Preset directory {path} already exists, skipping...")
+            PresetRepository.create_watch_directory(preset)
 
     @staticmethod
     def get_preset(name: str) -> Preset | None:
@@ -38,6 +41,16 @@ class PresetRepository:
         return None
 
     @staticmethod
+    def add_preset(preset: Preset) -> Preset:
+        p = PresetRepository.get_preset(preset.name)
+        if p is not None:
+            raise Exception(f"Preset {preset.name} already exists")
+        config.presets.append(preset)
+        PresetRepository.create_watch_directory(preset)
+        config.write()
+        return preset
+
+    @staticmethod
     def delete_preset(name: str) -> bool:
         for index, preset in enumerate(config.presets):
             if preset.name == name:
@@ -46,5 +59,6 @@ class PresetRepository:
                 if os.path.exists(path):
                     os.rmdir(path)
                 config.presets.pop(index)
+                config.write()
                 return True
         return False
