@@ -3,7 +3,7 @@ from server.core.config_models import Config
 from server.core.log import Log
 from .routers_models import PartialConfig
 
-from fastapi import APIRouter, status
+from fastapi import APIRouter
 
 router = APIRouter(prefix="/configuration")
 

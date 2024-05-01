@@ -1,7 +1,7 @@
 from server.core import config
 from server.core.config_models import Preset
 from server.core.config_repositories import PresetRepository
-from server.core.exceptions import NotFoundException, AlreadyExistsException
+from server.core.exceptions import NotFoundException
 from .routers_models import PartialPreset
 
 from fastapi import APIRouter, HTTPException, status
