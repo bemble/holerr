@@ -1,4 +1,5 @@
 from .log import Log
+from server.utils import secrets
 
 from typing import Optional
 from pydantic import (
@@ -34,6 +35,12 @@ class Model(BaseModel):
             else:
                 setattr(self, k, v)
 
+    def _dump_secret(self, v, info):
+        value = v.get_secret_value()
+        if info.mode == "python":
+            return value
+        return secrets.hide(value)
+
 
 class Preset(Model):
     name: str
@@ -61,9 +68,7 @@ class RealDebrid(Model):
 
     @field_serializer("api_key")
     def dump_secret(self, v, info):
-        if info.mode == "python":
-            return v.get_secret_value()
-        return "****************"
+        return self._dump_secret(v, info)
 
 
 class Debrider(Model):
@@ -83,9 +88,7 @@ class SynologyDownloadStation(Model):
 
     @field_serializer("password")
     def dump_secret(self, v, info):
-        if info.mode == "python":
-            return v.get_secret_value()
-        return "****************"
+        return self._dump_secret(v, info)
 
 
 class Downloader(Model):
@@ -108,9 +111,7 @@ class Config(Model):
 
     @field_serializer("api_key")
     def dump_secret(self, v, info):
-        if info.mode == "python":
-            return v.get_secret_value()
-        return "****************"
+        return self._dump_secret(v, info)
 
     def __getitem__(self, index):
         return getattr(self, index)
