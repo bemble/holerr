@@ -16,15 +16,20 @@ class Constants(BaseModel):
 # CONFIGURATION
 # ------------------------------------------------------------
 class InputPreset(BaseModel):
-    pass
+    name: Optional[str] = None
+    watch_dir: Optional[str] = None
+    output_dir: Optional[str] = None
+    create_sub_dir: Optional[bool] = None
+    file_extensions: Optional[list[str]] = None
+    min_file_size: Optional[str] = None
 
 
 class InputRealDebrid(BaseModel):
-    pass
+    api_key: Optional[str] = None
 
 
 class InputDebrider(BaseModel):
-    pass
+    real_debrid: Optional[InputRealDebrid] = None
 
 
 class InputSynologyDownloadStation(BaseModel):

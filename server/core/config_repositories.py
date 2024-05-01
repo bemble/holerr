@@ -9,10 +9,13 @@ log = Log.get_logger(__name__)
 
 class PresetRepository:
     @staticmethod
-    def create_directories():
-        data_dir = config.data_dir
+    def get_watch_directory(preset: Preset) -> str:
+        return config.data_dir + "/" + preset.watch_dir
+
+    @staticmethod
+    def create_watch_directories():
         for preset in config.presets:
-            path = data_dir + "/" + preset.watch_dir
+            path = PresetRepository.get_watch_directory(preset)
             if not os.path.exists(path):
                 os.makedirs(path)
                 log.debug(f"Created directory {path}")
@@ -33,3 +36,15 @@ class PresetRepository:
             if data_dir + "/" + preset.watch_dir == folder:
                 return preset
         return None
+
+    @staticmethod
+    def delete_preset(name: str) -> bool:
+        for index, preset in enumerate(config.presets):
+            if preset.name == name:
+                # delete watch directory
+                path = PresetRepository.get_watch_directory(preset)
+                if os.path.exists(path):
+                    os.rmdir(path)
+                config.presets.pop(index)
+                return True
+        return False

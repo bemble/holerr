@@ -8,7 +8,7 @@ log = Log.get_logger(__name__)
 
 from server.core.config_repositories import PresetRepository
 
-PresetRepository.create_directories()
+PresetRepository.create_watch_directories()
 
 from server.debriders import debrider
 
