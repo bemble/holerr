@@ -1,12 +1,13 @@
 from server.debriders import debrider
 from server.downloaders import downloader
+from .routers_models import Status
 
 from fastapi import APIRouter
 
 router = APIRouter(prefix="/status")
 
 
-@router.get("/", tags=["Status"])
+@router.get("/", response_model=Status, tags=["Status"])
 async def get_status():
     return {
         "debrider": {

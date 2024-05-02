@@ -4,7 +4,6 @@ from server.core.log import Log
 from server.database.repositories import (
     DownloadRepository,
 )
-from server.database.models import DownloadStatus
 from server.core.db import db
 
 import glob

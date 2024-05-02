@@ -62,3 +62,16 @@ class Download(BaseModel):
     total_progress: int
     created_at: datetime
     updated_at: datetime
+
+
+# ------------------------------------------------------------
+# STATUS
+# ------------------------------------------------------------
+class StatusElement(BaseModel):
+    id: str
+    name: str
+    connected: bool
+
+class Status(BaseModel):
+    debrider: StatusElement
+    downloader: StatusElement

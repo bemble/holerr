@@ -106,6 +106,15 @@ class DownloadRepository(Repository):
             )
         )
 
+    def clean_downloaded(self) -> list[str]:
+        deleted_ids = []
+        downloads = self.get_all_models(Download.status == DownloadStatus["DOWNLOADED"])
+        for download in downloads:
+            deleted_ids.append(download.id)
+            self.session.delete(download)
+        self.session.commit()
+        return deleted_ids
+
 
 class DebriderInfoRepository(Repository):
     def __init__(self, session: Session):

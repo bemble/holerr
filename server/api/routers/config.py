@@ -17,7 +17,7 @@ async def get_configuration():
 
 @router.patch("/", response_model=Config, tags=["Configuration"])
 async def update_configuration(cfg: PartialConfig):
-    update_data = cfg.dict(exclude_unset=True)
+    update_data = cfg.model_dump(exclude_unset=True)
     config.update(update_data)
 
     return config.raw

@@ -27,7 +27,7 @@ async def add_preset(preset: Preset):
 @router.patch("/{preset_name}", response_model=Preset, tags=["Presets"])
 async def update_preset(preset_name: str, preset: PartialPreset):
     try:
-        update_data = preset.dict(exclude_unset=True)
+        update_data = preset.model_dump(exclude_unset=True)
         return PresetRepository.update_preset(preset_name, update_data)
     except NotFoundException as e:
         raise HTTPException(
