@@ -13,5 +13,5 @@ front/build
 !front/.env
 
 
-server/venv
+server/.venv
 __pycache__

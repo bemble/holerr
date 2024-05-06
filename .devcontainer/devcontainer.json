@@ -8,13 +8,11 @@
       "version": "3.12"
     }
   },
-  "postCreateCommand": "npm install -g nodemon && cd front && npm i && cd .. && python -m venv server/venv",
+  "postCreateCommand": "npm install -g nodemon && cd front && npm i && cd ../server && python -m venv .venv",
   "forwardPorts": [8765, 3000],
   "customizations": {
     "vscode": {
       "settings": {
-        "python.experiments.optOutFrom": ["pythonTestAdapter"],
-        "python.defaultInterpreterPath": "${workspaceFolder}/server/venv/bin/python",
         "python.testing.pytestArgs": ["--no-cov"],
         "editor.formatOnPaste": false,
         "editor.formatOnSave": true,

@@ -1,0 +1,29 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Migrate DB",
+      "type": "shell",
+      "command": "source .venv/bin/activate && alembic upgrade head",
+      "options": {},
+      "presentation": {
+        "reveal": "never",
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Run",
+      "type": "shell",
+      "command": "source .venv/bin/activate && nodemon --watch holerr/ -e py --exec python -m holerr --signal SIGTERM",
+      "dependsOn": ["Migrate DB"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    }
+  ]
+}
