@@ -1,14 +1,12 @@
 from holerr.core import config
 from .server import Server
 from .routers import api_router
-from .middlewares import ApiKey
 
 from fastapi import HTTPException
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from fastapi.staticfiles import StaticFiles
 
 server = Server()
-server.app.add_middleware(ApiKey, api_key=config.api_key.get_secret_value(), private_paths=[f"/api"])
 server.app.include_router(api_router)
 
 # Serve the frontend

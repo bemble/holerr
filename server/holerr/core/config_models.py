@@ -107,15 +107,10 @@ class Downloader(Model):
 
 class Config(Model):
     debug: Optional[list[str]] = None
-    api_key: Optional[SecretStr] = None
     base_path: Optional[str] = None
     debrider: Debrider = None
     downloader: Downloader = None
     presets: Optional[list[Preset]] = None
-
-    @field_serializer("api_key")
-    def dump_secret(self, v, info):
-        return self._dump_secret(v, info)
 
     def __getitem__(self, index):
         return getattr(self, index)

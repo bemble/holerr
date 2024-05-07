@@ -52,7 +52,6 @@
     "configuration_subtitle": "Configuration",
     "configuration_debug": "Debug",
     "configuration_base_path": "Base path",
-    "configuration_api_key": "API key",
     "retrieve_real_debrid_token": "Retrieve your API key here:",
     "real_debrid_website": "Real-debrid website",
     "configuration_endpoint": "Endpoint",

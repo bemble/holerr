@@ -18,10 +18,6 @@ class Socket {
 
   connect() {
     let url = window.location.origin.replace("http", "ws") + this.path;
-    const apiKey = store.getState().appConfig.apiKey;
-    if (apiKey && apiKey.length && !apiKey.startsWith("%holerr-api-key-")) {
-      url += `?x-api-key=${apiKey}`;
-    }
     this.ws = new WebSocket(url);
 
     this.ws.onopen = () => {

@@ -16,7 +16,6 @@ import AppTopBar from "../../layouts/AppTopBar";
 import { ChangeEvent, useEffect, useState } from "react";
 import httpApi from "../../api/http";
 import { Configuration } from "../../models/configuration.type";
-import { useAppDispatch } from "../../store";
 
 const Settings = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -29,8 +28,6 @@ const Settings = () => {
   const languages = (i18n.options.supportedLngs || []).filter(
     (l) => l !== "cimode"
   );
-
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
     (async () => {
@@ -46,19 +43,6 @@ const Settings = () => {
       setHasChange(true);
     }
   }, [newConfig]);
-
-  const handleChangeApiKey = ({ target }: ChangeEvent<HTMLInputElement>) => {
-    if (config) {
-      const tmpConf = Object.assign({}, config);
-      tmpConf.api_key = target.value;
-
-      const tmpNewConfig = Object.assign({}, newConfig);
-      tmpNewConfig.api_key = tmpConf.api_key;
-
-      setConfig(tmpConf);
-      setNewConfig(tmpNewConfig);
-    }
-  };
 
   const handleChangeBasePath = ({ target }: ChangeEvent<HTMLInputElement>) => {
     if (config) {
@@ -185,9 +169,6 @@ const Settings = () => {
       newConfig
     );
     setConfig(data);
-    if (data.api_key.length) {
-      dispatch({ type: "appConfig/set", payload: { apiKey: data.api_key } });
-    }
     setIsLoading(false);
   };
 
@@ -231,11 +212,6 @@ const Settings = () => {
                     <h2>{t("settings.configuration_subtitle")}</h2>
                     {config ? (
                       <>
-                        <TextField
-                          value={config.api_key}
-                          label={t("settings.configuration_api_key")}
-                          onChange={handleChangeApiKey}
-                        />
                         <TextField
                           value={config.base_path}
                           label={t("settings.configuration_base_path")}

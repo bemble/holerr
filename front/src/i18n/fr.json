@@ -51,7 +51,6 @@
     "configuration_subtitle": "Configuration",
     "configuration_debug": "Debug",
     "configuration_base_path": "Chemin de base",
-    "configuration_api_key": "Clé API",
     "retrieve_real_debrid_token": "Retrouvez votre clé API ici :",
     "real_debrid_website": "site de Real-debrid",
     "configuration_endpoint": "Endpoint",

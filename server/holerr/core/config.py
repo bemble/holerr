@@ -64,6 +64,8 @@ class Config:
         json_file = open(json_path, "r")
         content = json.load(json_file)
 
+        if "api_key" in content:
+            del content["api_key"]
         if "debug" in content:
             content["debug"] = ["holerr.*"]
         if "debriders" in content:
