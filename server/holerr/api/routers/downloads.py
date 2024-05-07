@@ -24,6 +24,6 @@ async def delete_download(download_id: str):
     session.commit()
     session.refresh(download)
 
-    await manager.broadcast(Actions["DOWNLOAD_UPDATE"], download)
+    await manager.broadcast(Actions["DOWNLOADS_UPDATE"], download)
 
     return download

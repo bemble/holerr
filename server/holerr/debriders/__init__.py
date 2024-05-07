@@ -1,12 +1,20 @@
 from holerr.core import config
-from .debrider import Debrider
 
-debrider: Debrider | None = None
+class WrappedDebrider():
+    def __init__(self) -> None:
+        self.update()
 
-if config.debrider.real_debrid:
-    from .real_debrid import RealDebrid
+    def update(self):
+        if config.debrider.real_debrid:
+            from .real_debrid import RealDebrid
 
-    debrider = RealDebrid(config.debrider.real_debrid)
+            self._debrider = RealDebrid(config.debrider.real_debrid)
+        else:
+            self._debrider = None
 
-if debrider is None:
-    raise Exception("No debrider found")
+    def __getattr__(self, name):
+        if self._debrider is None:
+            raise Exception("No debrider found")
+        return getattr(self._debrider, name)
+
+debrider = WrappedDebrider()

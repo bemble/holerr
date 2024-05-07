@@ -19,7 +19,7 @@ async def add_magnet(magnet: Magnet):
         download = DownloadRepository(session).create_model_from_magnet(magnet.uri, magnet.preset)
         session.refresh(download)
 
-        await manager.broadcast(Actions["DOWNLOAD_NEW"], download)
+        await manager.broadcast(Actions["DOWNLOADS_NEW"], download)
 
         return download
     except NotFoundException as e:
@@ -42,7 +42,7 @@ async def add_torrent(file: Annotated[bytes, File()], preset: Annotated[str, For
         download = DownloadRepository(session).create_model_from_magnet(magnet_uri, preset)
         session.refresh(download)
 
-        await manager.broadcast(Actions["DOWNLOAD_NEW"], download)
+        await manager.broadcast(Actions["DOWNLOADS_NEW"], download)
 
         return download
     except NotFoundException as e:
@@ -59,5 +59,5 @@ async def clean_downloaded():
     session = db.new_session()
     cleaned = DownloadRepository(session).clean_downloaded()
     for download in cleaned:
-        manager.broadcast(Actions["DOWNLOAD_DELETE"], download)
+        manager.broadcast(Actions["DOWNLOADS_DELETE"], download)
     return cleaned

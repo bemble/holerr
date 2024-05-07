@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, SecretStr
 
 from typing import Optional
 from datetime import datetime
@@ -25,7 +25,7 @@ class PartialPreset(BaseModel):
 
 
 class PartialRealDebrid(BaseModel):
-    api_key: Optional[str] = None
+    api_key: Optional[SecretStr] = None
 
 
 class PartialDebrider(BaseModel):
@@ -35,7 +35,7 @@ class PartialDebrider(BaseModel):
 class PartialSynologyDownloadStation(BaseModel):
     endpoint: Optional[str] = None
     username: Optional[str] = None
-    password: Optional[str] = None
+    password: Optional[SecretStr] = None
 
 
 class PartialDownloader(BaseModel):
@@ -73,7 +73,11 @@ class StatusElement(BaseModel):
     name: str
     connected: bool
 
+class StatusApp(BaseModel):
+    version: str
+
 class Status(BaseModel):
+    app: StatusApp
     debrider: StatusElement
     downloader: StatusElement
 

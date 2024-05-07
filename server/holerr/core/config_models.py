@@ -29,9 +29,13 @@ class Model(BaseModel):
         self.model_copy(update=cur_update)
         for k, v in cur_update.items():
             if isinstance(v, list):
-                self[k].clear()
+                cur = getattr(self, k)
+                if not isinstance(cur, list):
+                    setattr(self, k, [])
+                else:
+                    getattr(self, k).clear()
                 for item in v:
-                    self[k].append(item)
+                    getattr(self, k).append(item)
             else:
                 setattr(self, k, v)
 

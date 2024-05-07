@@ -1,6 +1,7 @@
 from holerr.debriders import debrider
 from holerr.downloaders import downloader
 from .routers_models import Status
+from holerr.utils import info
 
 from fastapi import APIRouter
 
@@ -10,6 +11,9 @@ router = APIRouter(prefix="/status")
 @router.get("", response_model=Status, tags=["Status"])
 async def get_status():
     return {
+        "app": {
+            "version": info.get_app_version(),
+        },
         "debrider": {
             "id": debrider.get_id(),
             "name": debrider.get_name(),

@@ -1,19 +1,19 @@
-@import "src/theme";
+@use "theme";
 
 .root {
-  padding: spacing(4);
+  padding: theme.spacing(4);
 }
 
 .spacer {
-  height: spacing(4);
+  height: theme.spacing(4);
   width: 100%;
 }
 
 .separator {
   border: none;
-  border-top: 1px solid $grey-400;
+  border-top: 1px solid theme.$grey-400;
 }
 
 .pending {
-  @include pending;
+  @include theme.pending;
 }

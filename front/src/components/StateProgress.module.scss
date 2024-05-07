@@ -1,4 +1,4 @@
-@import "src/theme";
+@use "theme";
 
 .root {
   width: 32px;
@@ -11,18 +11,18 @@
 
 .torrent,
 .download {
-  color: $grey-300 !important;
+  color: theme.$grey-300 !important;
 
   &.progress {
-    color: $blue-500 !important;
+    color: theme.$blue-500 !important;
   }
 
   &.done {
-    color: $green-200 !important;
+    color: theme.$green-200 !important;
   }
 
   &.error {
-    color: $red-500 !important;
+    color: theme.$red-500 !important;
   }
 }
 
@@ -44,7 +44,7 @@
 
 .torrentBottom,
 .downloadBottom {
-  color: $grey-200 !important;
+  color: theme.$grey-200 !important;
 }
 
 .icon {
@@ -53,17 +53,17 @@
   position: absolute;
   top: 11px;
   left: 11px;
-  color: $grey-400 !important;
+  color: theme.$grey-400 !important;
 
   &.done {
-    color: $green-200 !important;
+    color: theme.$green-200 !important;
   }
 
   &.error {
-    color: $red-500 !important;
+    color: theme.$red-500 !important;
   }
 
   &.animated {
-    @include flicker;
+    @include theme.flicker;
   }
 }

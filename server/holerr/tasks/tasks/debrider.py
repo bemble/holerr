@@ -115,7 +115,7 @@ class TaskDebrider(Task):
             handler.handle_download(download)
             if before_hash != download.hash:
                 log.debug("Hash changed, updating download")
-                await manager.broadcast(Actions["DOWNLOAD_UPDATE"], download)
+                await manager.broadcast(Actions["DOWNLOADS_UPDATE"], download)
 
         self._db_session.commit()
         self._db_session.remove()

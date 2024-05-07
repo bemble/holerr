@@ -17,6 +17,7 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
+  TextField,
 } from "@material-ui/core";
 import { TransitionProps } from "@material-ui/core/transitions/transition";
 import ClearIcon from "@material-ui/icons/Clear";
@@ -27,7 +28,7 @@ import { FC, forwardRef, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useTranslation } from "react-i18next";
 import httpApi from "../../api/http";
-import {DropZone, FilesInput} from "../../components";
+import { DropZone, FilesInput } from "../../components";
 import { useAppSelector } from "../../store";
 import { presetsSelector } from "../../store/presets/presets.selectors";
 
@@ -86,13 +87,19 @@ const uploadTorrent = async (file: File, preset: string) => {
   if (file && preset) {
     const body = new FormData();
     body.append("preset", preset);
-    body.append("torrent_file", file, file.name);
+    body.append("file", file, file.name);
 
-    await httpApi.post("/downloads", body, {
+    await httpApi.post("/actions/add_torrent", body, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
+  }
+};
+
+const addMagnet = async (magnet: string, preset: string) => {
+  if (magnet && preset) {
+    await httpApi.post("/actions/add_magnet", { uri: magnet, preset });
   }
 };
 
@@ -134,6 +141,9 @@ const AddDownloadsDialog: FC<AddDownloadsDialogProps> = ({ open, onClose }) => {
     setPresetName(allPresets[0]?.name);
   }, [allPresets]);
 
+  // Magnets
+  const [magnets, setMagnets] = useState<string>();
+
   // Drop actions
   const { getInputProps, getRootProps, isDragActive } = useDropzone({
     onDrop: addFiles,
@@ -143,7 +153,8 @@ const AddDownloadsDialog: FC<AddDownloadsDialogProps> = ({ open, onClose }) => {
   });
 
   // Submit
-  const isValid = presetName && files.length > 0;
+  const isValid =
+    presetName && (files.length > 0 || (magnets?.split("\n").length || 0) > 0);
   const [isLoading, setLoading] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -152,9 +163,13 @@ const AddDownloadsDialog: FC<AddDownloadsDialogProps> = ({ open, onClose }) => {
     for (let f of files) {
       await uploadTorrent(f, presetName as string);
     }
+    for (let magnet of magnets?.split("\n") || []) {
+      await addMagnet(magnet, presetName as string);
+    }
     onClose();
     setFiles([]);
     setLoading(false);
+    setMagnets("");
   };
 
   return (
@@ -213,6 +228,15 @@ const AddDownloadsDialog: FC<AddDownloadsDialogProps> = ({ open, onClose }) => {
               {t("downloads_add_torrents_browse")}
             </FilesInput>
           </DropZone>
+          <FormControl variant="outlined" className={classes.presetSelector}>
+            <TextField
+              multiline={true}
+              id="magnets"
+              value={magnets || ""}
+              onChange={(e) => setMagnets(e.currentTarget.value as string)}
+              label={t("downloads_magnets")}
+            ></TextField>
+          </FormControl>
           {files.length > 0 && (
             <List dense className={classes.fileList}>
               {files.map((f, index) => (
@@ -229,7 +253,9 @@ const AddDownloadsDialog: FC<AddDownloadsDialogProps> = ({ open, onClose }) => {
             variant="contained"
             disabled={!isValid || isLoading}
           >
-            {t("downloads_add_torrents_action", { count: files.length })}
+            {t("downloads_add_torrents_action", {
+              count: files.length + (magnets?.split("\n").length || 0),
+            })}
           </Button>
         </div>
       </form>

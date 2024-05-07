@@ -13,6 +13,8 @@
   "downloads_refresh": "Refresh",
   "downloads_clear_all": "Clear all",
   "downloads_delete": "Delete",
+  "downloads_preset": "Preset",
+  "downloads_magnets": "Magnet links",
   "downloads_add_torrents": "Add torrents",
   "downloads_add_torrents_title": "Add torrents",
   "downloads_add_torrents_action": "Download",

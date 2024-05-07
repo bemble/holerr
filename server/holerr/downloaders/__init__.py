@@ -1,12 +1,21 @@
 from holerr.core import config
-from .downloader import Downloader
 
-downloader: Downloader | None = None
+class WrappedDownloader():
+    def __init__(self) -> None:
+        self.update()
 
-if config.downloader.synology_download_station:
-    from .synology_download_station import SynologyDownloadStation
+    def update(self):
+        if config.downloader.synology_download_station:
+            from .synology_download_station import SynologyDownloadStation
 
-    downloader = SynologyDownloadStation(config.downloader.synology_download_station)
+            self._downloader = SynologyDownloadStation(config.downloader.synology_download_station)
+        else:
+            self._downloader = None
 
-if downloader is None:
-    raise Exception("No downloader found")
+    def __getattr__(self, name):
+        if self._downloader is None:
+            raise Exception("No downloader found")
+        return getattr(self._downloader, name)
+
+downloader = WrappedDownloader()
+

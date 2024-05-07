@@ -3,9 +3,9 @@ from typing import Any
 from fastapi.encoders import jsonable_encoder
 
 Actions = {
-    "DOWNLOAD_NEW": "download/new",
-    "DOWNLOAD_UPDATE": "download/update",
-    "DOWNLOAD_DELETE": "download/delete"
+    "DOWNLOADS_NEW": "downloads/new",
+    "DOWNLOADS_UPDATE": "downloads/update",
+    "DOWNLOADS_DELETE": "downloads/delete"
 }
 
 class ConnectionManager:

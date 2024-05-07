@@ -15,7 +15,7 @@ async def list_presets():
 
 
 @router.post(
-    "/", response_model=Preset, tags=["Presets"], status_code=status.HTTP_201_CREATED
+    "", response_model=Preset, tags=["Presets"], status_code=status.HTTP_201_CREATED
 )
 async def add_preset(preset: Preset):
     try:

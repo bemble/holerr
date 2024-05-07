@@ -1,22 +1,22 @@
-@import "src/theme";
+@use "theme";
 
 .root {
   display: inline-block;
   width: 12px;
   height: 12px;
   border-radius: 6px;
-  background: $grey-500;
+  background: theme.$grey-500;
   transition: background-color 250ms ease-in-out;
 }
 
 .success {
-  background-color: $green-400;
+  background-color: theme.$green-400;
 }
 
 .error {
-  background-color: $red-400;
+  background-color: theme.$red-400;
 }
 
 .pending {
-  @include pending;
+  @include theme.pending;
 }

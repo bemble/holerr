@@ -59,7 +59,7 @@ class TaskDeleteDownloads(Task):
         for download in self.get_downloads():
             handler = DeleteDownloadsdHanlder(self._db_session)
             handler.handle_download(download)
-            await manager.broadcast(Actions["DOWNLOAD_DELETE"], download)
+            await manager.broadcast(Actions["DOWNLOADS_DELETE"], download)
 
         self._db_session.commit()
         self._db_session.remove()
