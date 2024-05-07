@@ -11,7 +11,7 @@ import { Download } from "./models/downloads.type";
 import webSocket from "./api/websocket";
 import useSocketMessage from "./hooks/useSocketMessage";
 import AppBottomBar from "./layouts/AppBottomBar";
-import {Downloads, Presets, Settings, Status} from "./pages";
+import { Downloads, Presets, Settings, Status } from "./pages";
 
 import {
   addDownload,
@@ -54,7 +54,7 @@ const Main = () => {
 
   return (
     <div className={classes.layout}>
-      <Router basename={process.env.PUBLIC_URL}>
+      <Router basename={(window as any).base_path}>
         <Switch>
           <Route path="/downloads" component={Downloads} />
           <Route path="/presets" component={Presets} />

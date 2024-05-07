@@ -3,8 +3,7 @@ test
 .env
 .DS_Store
 data
-server/build
-server/main
+server_go
 
 front/.eslintcache
 front/node_modules
@@ -12,3 +11,7 @@ front/node_modules
 front/build
 
 !front/.env
+
+
+server/.venv
+__pycache__

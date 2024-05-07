@@ -1,4 +1,15 @@
 export type Status = {
-    debrider_connected: boolean,
-    downloader_connected: boolean
+  app: {
+    version: string;
+  };
+  debrider: {
+    id: string;
+    name: string;
+    connected: boolean;
+  };
+  downloader: {
+    id: string;
+    name: string;
+    connected: boolean;
+  };
 };

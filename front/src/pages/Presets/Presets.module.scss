@@ -1,12 +1,12 @@
-@import "src/theme";
+@use "theme";
 
 .root {
-  padding: spacing(2);
+  padding: theme.spacing(2);
   margin-bottom: 56px !important;
 }
 
 .floatingButton {
   position: absolute !important;
-  bottom: spacing(2);
-  right: spacing(2);
+  bottom: theme.spacing(2);
+  right: theme.spacing(2);
 }

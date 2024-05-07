@@ -2,7 +2,7 @@
   "name": "holerr-front",
   "version": "0.1.0",
   "private": true,
-  "homepage": "%holerr-base-path-placeholder%",
+  "homepage": ".",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
@@ -28,7 +28,6 @@
     "i18next": "^21.2.0",
     "i18next-browser-languagedetector": "^6.1.2",
     "luxon": "^2.0.2",
-    "node-sass": "^7.0.1",
     "pretty-bytes": "^5.6.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -39,10 +38,11 @@
     "react-router-dom": "^5.3.0",
     "react-scripts": "^5.0.1",
     "redux-persist": "^6.0.0",
+    "sass": "^1.76.0",
     "typescript": "^4.6.3"
   },
   "scripts": {
-    "start": "PUBLIC_URL=. react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "build:docker": "INLINE_RUNTIME_CHUNK=false react-scripts build",
     "postbuild:docker": "rm -rf ../public && mv build ../public",

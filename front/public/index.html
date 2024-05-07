@@ -1,19 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <script>
+      // Before any logic, set the base path for the app
+      window.base_path = window.location.pathname
+        .replace(/(\/[^/]+)$/, "")
+        .replace(/\/$/, "");
+    </script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="%PUBLIC_URL%/favicon-16x16.png">
-    <link rel="manifest" href="%PUBLIC_URL%/site.webmanifest">
-    <link rel="mask-icon" href="%PUBLIC_URL%/safari-pinned-tab.svg" color="#da532c">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="theme-color" content="#da532c">
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="%PUBLIC_URL%/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="%PUBLIC_URL%/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="%PUBLIC_URL%/favicon-16x16.png"
+    />
+    <link rel="manifest" href="%PUBLIC_URL%/site.webmanifest" />
+    <link
+      rel="mask-icon"
+      href="%PUBLIC_URL%/safari-pinned-tab.svg"
+      color="#da532c"
+    />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="theme-color" content="#da532c" />
 
     <title>Holerr</title>
-    <meta name="description" content="Download torrents using Real-Debrid and a downloader" />
+    <meta
+      name="description"
+      content="Download torrents using Real-Debrid and a downloader"
+    />
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
