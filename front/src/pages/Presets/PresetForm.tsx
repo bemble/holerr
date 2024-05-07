@@ -43,7 +43,6 @@ const PresetForm: React.FC<PresetProps> = ({ preset, onUpdate }) => {
   const cleanMinFileSize = () => {
     setMinFileSizeStr("" + (parseFloat(preset.min_file_size || "") || 0));
     const unit = (preset.min_file_size || "0").replace(/[0-9.]/g, "") || "B";
-    console.log(unit);
     setMinFileSizeUnit(unit);
   };
 

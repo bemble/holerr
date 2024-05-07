@@ -54,7 +54,7 @@ const Main = () => {
 
   return (
     <div className={classes.layout}>
-      <Router basename={process.env.PUBLIC_URL}>
+      <Router basename={(window as any).base_path}>
         <Switch>
           <Route path="/downloads" component={Downloads} />
           <Route path="/presets" component={Presets} />

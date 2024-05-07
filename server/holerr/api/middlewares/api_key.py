@@ -1,15 +1,55 @@
-from holerr.core import config
+from holerr.core.log import Log
 
-from fastapi import Security, HTTPException, status
-from fastapi.security import APIKeyHeader
+from fastapi import FastAPI, status
+import re
 
-api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
+from starlette.requests import HTTPConnection
+from starlette.responses import JSONResponse
+from starlette.types import Receive, Scope, Send
+
+log = Log.get_logger(__name__)
 
 
-def check_api_key(api_key_header: str = Security(api_key_header)):
-    api_key = config.api_key.get_secret_value()
-    if not (api_key == "" or api_key_header == api_key):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Missing or invalid API key",
-        )
+class ApiKey():
+    def __init__(self, app: FastAPI, api_key: str, public_paths: list[str] = [], private_paths: list[str] = []):
+        self.app = app
+        self._api_key = api_key
+        self._public_paths = public_paths
+        self._private_paths = private_paths
+
+    async def __call__(self, scope: Scope, receive: Receive, send:Send):
+        if self._api_key == "":
+            await self.app(scope, receive, send)
+            return
+
+        if scope.get("type") not in ["http", "websocket"]:
+            await self.app(scope, receive, send)
+            return
+
+        if len(self._public_paths) > 0 :
+            for path in self._public_paths:
+                if re.match(path, scope.get("path")):
+                    await self.app(scope, receive, send)
+                    return
+
+        if len(self._private_paths) > 0 :
+            is_private = False
+            for path in self._private_paths:
+                if re.match(path, scope.get("path")):
+                    is_private = True
+                    break
+            if not is_private:
+                await self.app(scope, receive, send)
+                return
+
+        log.debug(f"APiKey middleware called for {scope.get('type')}")
+        conn = HTTPConnection(scope)
+        if not self._is_http_valid(conn):
+            response = JSONResponse({"detail": "Missing or invalid API key"}, status_code=status.HTTP_401_UNAUTHORIZED)
+            return await response(scope, receive, send)
+
+        await self.app(scope, receive, send)
+
+    def _is_http_valid(self, conn: HTTPConnection):
+        return conn.headers.get("x-api-key") == self._api_key or conn.query_params.get("x_api_key") == self._api_key
+
