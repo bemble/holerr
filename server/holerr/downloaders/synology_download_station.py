@@ -3,6 +3,7 @@ from holerr.core import config
 from holerr.core.log import Log
 from .synology_download_station_models import Auth, Tasks, Status
 from holerr.core.config_models import Preset
+from holerr.core.exceptions import HttpRequestException
 
 
 import requests
@@ -54,7 +55,7 @@ class SynologyDownloadStation(Downloader):
 
         res = self._call("/DownloadStation/task.cgi", params=params)
         if res.status_code != 200:
-            raise Exception("Could not add download " + res)
+            raise HttpRequestException("Could not add download " + res, res.status_code)
         obj = Status(**res.json())
         if not obj.success:
             log.debug(res.request.url)
@@ -76,7 +77,7 @@ class SynologyDownloadStation(Downloader):
         }
         res = self._call("/DownloadStation/task.cgi", params=params)
         if res.status_code != 200:
-            raise Exception("Could not get task status " + str(res.status_code))
+            raise HttpRequestException("Could not get task status", res.status_code)
 
         obj = Tasks(**res.json())
         if not obj.success:
@@ -102,9 +103,7 @@ class SynologyDownloadStation(Downloader):
         }
         res = self._call("/DownloadStation/task.cgi", params=params)
         if res.status_code != 200:
-            raise Exception(
-                "Could not delete download " + id + " " + str(res.status_code)
-            )
+            raise HttpRequestException(f"Could not delete download {id}", res.status_code)
 
     def _call(self, path, **kwargs):
         return requests.request("GET", self._get_api_url(path), **kwargs)
@@ -125,9 +124,7 @@ class SynologyDownloadStation(Downloader):
         }
         res = self._call("/auth.cgi", params=params)
         if res.status_code != 200:
-            raise Exception(
-                "Could not login to " + session + " " + str(res.status_code)
-            )
+            raise HttpRequestException(f"Could not login to {session}", res.status_code)
 
         auth = Auth(**res.json())
         if not auth.success:
@@ -150,7 +147,7 @@ class SynologyDownloadStation(Downloader):
 
         res = self._call("/DownloadStation/task.cgi", params=params)
         if res.status_code != 200:
-            raise Exception("Could not list downloads, " + str(res.status_code))
+            raise HttpRequestException(f"Could not list downloads", res.status_code)
         obj = Tasks(**res.json())
         if not obj.success:
             raise Exception(
@@ -182,7 +179,7 @@ class SynologyDownloadStation(Downloader):
         }
         res = self._call("/entry.cgi", params=params)
         if res.status_code != 200:
-            raise Exception("Could not create folder " + str(res.status_code))
+            raise HttpRequestException(f"Could not create folder", res.status_code)
         obj = Status(**res.json())
         if not obj.success and obj.error.code != 109:  # 109 = folder already exists
             log.debug(res.request.url)

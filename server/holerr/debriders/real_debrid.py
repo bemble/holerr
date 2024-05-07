@@ -7,6 +7,7 @@ from .real_debrid_models import (
     TorrentInfo,
     UnrestrictedLink,
 )
+from holerr.core.exceptions import HttpRequestException
 
 import requests
 
@@ -42,8 +43,8 @@ class RealDebrid(Debrider):
     def add_magnet(self, magnet: str) -> str:
         res = self._call("POST", "/torrents/addMagnet", data={"magnet": magnet})
         if res.status_code != 201:
-            raise Exception(
-                "Error while adding magnet, status code: " + str(res.status_code)
+            raise HttpRequestException(
+                "Error while adding magnet", res.status_code
             )
         torrent_info = Torrent(**res.json())
         return torrent_info.id
@@ -61,15 +62,15 @@ class RealDebrid(Debrider):
             data={"files": ",".join(files)},
         )
         if res.status_code != 204:
-            raise Exception(
-                "Error while deleting torrent, status code: " + str(res.status_code)
+            raise HttpRequestException(
+                "Error while deleting torrent", res.status_code
             )
 
     def delete_torrent(self, torrent_id: str):
         res = self._call("DELETE", "/torrents/delete/" + torrent_id)
         if res.status_code != 204:
-            raise Exception(
-                "Error while deleting torrent, status code: " + str(res.status_code)
+            raise HttpRequestException(
+                "Error while deleting torrent", res.status_code
             )
 
     def unrestricted_link(self, link: str) -> str | None:
@@ -85,7 +86,9 @@ class RealDebrid(Debrider):
     def _me(self) -> Profile | None:
         res = self._call("GET", "/user")
         if res.status_code != 200:
-            raise Exception("Error while getting user info")
+            raise HttpRequestException(
+                "Error while getting user info", res.status_code
+            )
         return Profile(**res.json())
 
     def _get_torrent_active_count(self) -> ActiveCount:
@@ -97,5 +100,7 @@ class RealDebrid(Debrider):
     def _get_unrestricted_link(self, link: str) -> str:
         res = self._call("POST", "/unrestrict/link", data={"link": link})
         if res.status_code != 200:
-            raise Exception("Error while unrestricting link")
+            raise HttpRequestException(
+                "Error while unrestricting link", res.status_code
+            )
         return UnrestrictedLink(**res.json())

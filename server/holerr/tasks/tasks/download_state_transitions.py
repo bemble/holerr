@@ -12,6 +12,7 @@ from holerr.database.repositories import (
     DownloaderTaskRepository,
 )
 from holerr.debriders import debrider
+from holerr.core.websockets import manager, Actions
 
 from sqlalchemy.orm import Session
 
@@ -67,6 +68,7 @@ class TaskDownloadStateTransition(Task):
         for download in self.get_downloads():
             handler = TransitionHanlder(self._db_session)
             handler.handle_transition(download)
+            await manager.broadcast(Actions["DOWNLOAD_UPDATE"], download)
 
         self._db_session.commit()
         self._db_session.remove()

@@ -5,6 +5,7 @@ from holerr.database.repositories import (
     DownloadRepository,
 )
 from holerr.core.db import db
+from holerr.core.websockets import manager, Actions
 
 import glob
 import os
@@ -31,6 +32,7 @@ class TorrentFileHandler:
             if model is None:
                 log.debug(f"Adding {id} to database")
                 model = self._download_repository.create_model_from_torrent(path)
+                manager.broadcast(Actions["DOWNLOAD_NEW"], model)
             else:
                 log.debug(f"{id} already in database")
             self._delete_torrent_file(path)

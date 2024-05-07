@@ -1,6 +1,7 @@
 from holerr.core.db import db
 from .routers_models import Download
 from holerr.database.repositories import DownloadRepository
+from holerr.core.websockets import manager, Actions
 
 from fastapi import APIRouter, HTTPException
 
@@ -22,4 +23,7 @@ async def delete_download(download_id: str):
     download.to_delete = True
     session.commit()
     session.refresh(download)
+
+    await manager.broadcast(Actions["DOWNLOAD_UPDATE"], download)
+
     return download

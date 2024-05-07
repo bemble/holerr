@@ -3,6 +3,7 @@ from holerr.database.repositories import DownloadRepository
 from holerr.core.exceptions import NotFoundException
 from .routers_models import Download, Magnet
 from holerr.utils import torrent
+from holerr.core.websockets import manager, Actions
 
 from typing import Annotated
 from fastapi import APIRouter, HTTPException, status, File, Form
@@ -17,6 +18,9 @@ async def add_magnet(magnet: Magnet):
         session = db.new_session()
         download = DownloadRepository(session).create_model_from_magnet(magnet.uri, magnet.preset)
         session.refresh(download)
+
+        await manager.broadcast(Actions["DOWNLOAD_NEW"], download)
+
         return download
     except NotFoundException as e:
         raise HTTPException(
@@ -37,6 +41,9 @@ async def add_torrent(file: Annotated[bytes, File()], preset: Annotated[str, For
         session = db.new_session()
         download = DownloadRepository(session).create_model_from_magnet(magnet_uri, preset)
         session.refresh(download)
+
+        await manager.broadcast(Actions["DOWNLOAD_NEW"], download)
+
         return download
     except NotFoundException as e:
         raise HTTPException(
@@ -50,4 +57,7 @@ async def add_torrent(file: Annotated[bytes, File()], preset: Annotated[str, For
 @router.post("/clean_downloaded", response_model=list[str], tags=["Actions"])
 async def clean_downloaded():
     session = db.new_session()
-    return DownloadRepository(session).clean_downloaded()
+    cleaned = DownloadRepository(session).clean_downloaded()
+    for download in cleaned:
+        manager.broadcast(Actions["DOWNLOAD_DELETE"], download)
+    return cleaned

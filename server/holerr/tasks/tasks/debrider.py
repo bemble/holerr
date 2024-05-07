@@ -11,6 +11,7 @@ from holerr.database.repositories import (
 from holerr.debriders import debrider
 from holerr.debriders.debrider_models import TorrentStatus, TorrentInfo
 from holerr.debriders.debrider_repositories import FileRepository
+from holerr.core.websockets import manager, Actions
 
 from sqlalchemy.orm import Session
 
@@ -110,7 +111,11 @@ class TaskDebrider(Task):
         self._db_session = db.new_scoped_session()
         for download in self.get_downloads():
             handler = DebriderDownloadHanlder(self._db_session)
+            before_hash = download.hash
             handler.handle_download(download)
+            if before_hash != download.hash:
+                log.debug("Hash changed, updating download")
+                await manager.broadcast(Actions["DOWNLOAD_UPDATE"], download)
 
         self._db_session.commit()
         self._db_session.remove()

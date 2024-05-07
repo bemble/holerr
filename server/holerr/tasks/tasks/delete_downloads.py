@@ -7,6 +7,7 @@ from holerr.database.repositories import (
 )
 from holerr.debriders import debrider
 from holerr.downloaders import downloader
+from holerr.core.websockets import manager, Actions
 
 from sqlalchemy.orm import Session
 
@@ -37,7 +38,13 @@ class DeleteDownloadsdHanlder:
 
     def _delete_debrider_download(self, download: Download):
         log.debug(f"Delete debrider download {download.debrider_info.id}")
-        debrider.delete_torrent(download.debrider_info.id)
+        try:
+            debrider.delete_torrent(download.debrider_info.id)
+        except Exception as e:
+            if (e.status_code == 404):
+                log.debug(f"Debrider torrent {download.debrider_info.id} already deleted")
+            else:
+                raise e
 
     def _delete_downloader_download(self, download: Download):
         downloader_ids = [task.id for task in download.downloader_tasks]
@@ -52,6 +59,7 @@ class TaskDeleteDownloads(Task):
         for download in self.get_downloads():
             handler = DeleteDownloadsdHanlder(self._db_session)
             handler.handle_download(download)
+            await manager.broadcast(Actions["DOWNLOAD_DELETE"], download)
 
         self._db_session.commit()
         self._db_session.remove()

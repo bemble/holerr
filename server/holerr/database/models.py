@@ -53,6 +53,10 @@ class Download(Base):
         default=func.now(), onupdate=func.now()
     )
 
+    @property
+    def hash(self):
+        return f"{self.id}.{str(self.status)}.{str(self.total_progress)}"
+
     debrider_info: Mapped["DebriderInfo"] = relationship(
         back_populates="download", cascade="all, delete-orphan"
     )

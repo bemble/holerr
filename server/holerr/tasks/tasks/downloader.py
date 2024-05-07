@@ -7,6 +7,7 @@ from holerr.database.repositories import (
 )
 from holerr.downloaders import downloader
 from holerr.downloaders.downloader_repositories import DownloaderRepository
+from holerr.core.websockets import manager, Actions
 
 log = Log.get_logger(__name__)
 
@@ -54,7 +55,11 @@ class TaskDownloader(Task):
         self._db_session = db.new_scoped_session()
         for download in self.get_downloads():
             handler = DownloaderDownloadHanlder(self._db_session)
+            before_hash = download.hash
             handler.handle_download(download)
+            if before_hash != download.hash:
+                log.debug("Hash changed, updating download")
+                await manager.broadcast(Actions["DOWNLOAD_UPDATE"], download)
 
         self._db_session.commit()
         self._db_session.remove()
