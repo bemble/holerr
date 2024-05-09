@@ -18,9 +18,10 @@ COPY --from=front-builder /app/public /app/public
 
 # copy server files
 COPY ./server /app/server
+RUN chmod +x /app/server/entrypoint.sh
 
 WORKDIR /app/server
 RUN pip install -r requirements.txt
-CMD ["python", "-m", "holerr"]
+ENTRYPOINT ["/app/server/entrypoint.sh"]
 
 EXPOSE 8765
