@@ -182,6 +182,5 @@ class SynologyDownloadStation(Downloader):
             log.debug(res.request.url)
             raise Exception("Error while creating folder, code: " + str(obj.error.code))
 
-    @staticmethod
-    def get_sub_folder_name(name: str) -> str:
-        return Path(name).stem
+    def to_download_status(self, status: str) -> str:
+        return status
