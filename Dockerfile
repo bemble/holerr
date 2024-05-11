@@ -22,6 +22,9 @@ RUN chmod +x /app/server/entrypoint.sh
 
 WORKDIR /app/server
 RUN pip install -r requirements.txt
-ENTRYPOINT ["/app/server/entrypoint.sh"]
+
+WORKDIR /app
+COPY entrypoint.sh /app/entrypoint.sh
+ENTRYPOINT ["/app/entrypoint.sh"]
 
 EXPOSE 8765

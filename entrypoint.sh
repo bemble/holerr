@@ -1,5 +1,7 @@
 #!/bin/sh
 
+cd server
+
 if [ -d ".venv" ]
 then
     source ".venv/bin/activate"
