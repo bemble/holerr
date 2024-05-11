@@ -94,13 +94,22 @@ class SynologyDownloadStation(Model):
     def dump_secret(self, v, info):
         return self._dump_secret(v, info)
 
+class Aria2JsonRpc(Model):
+    endpoint: str
+    secret: Optional[SecretStr]
+
+    @field_serializer("secret")
+    def dump_secret(self, v, info):
+        return self._dump_secret(v, info)
+
 
 class Downloader(Model):
     synology_download_station: Optional[SynologyDownloadStation] = None
+    aria2_jsonrpc: Optional[Aria2JsonRpc] = None
 
     @model_validator(mode="after")
     def verify_any_of(self):
-        if not self.synology_download_station:
+        if not (self.synology_download_station or self.aria2_jsonrpc):
             raise ValidationError("A downloader needs to be set.")
         return self
 

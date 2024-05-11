@@ -14,9 +14,6 @@ log = Log.get_logger(__name__)
 
 
 class SynologyDownloadStation(Downloader):
-    def __init__(self, config):
-        pass
-
     def get_id(self) -> str:
         return "synology_download_station"
 
