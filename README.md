@@ -42,6 +42,7 @@ holerr:
 **Downloaders:**
 
 - Synology Download Station
+- Aria2 (using JSON-RPC over HTTP)
 
 ## Migrate from v1
 
