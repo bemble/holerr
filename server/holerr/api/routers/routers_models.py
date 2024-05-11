@@ -37,9 +37,14 @@ class PartialSynologyDownloadStation(BaseModel):
     username: Optional[str] = None
     password: Optional[SecretStr] = None
 
+class PartialAria2JsonRpc(BaseModel):
+    endpoint: Optional[str] = None
+    secret: Optional[SecretStr] = None
+
 
 class PartialDownloader(BaseModel):
     synology_download_station: Optional[PartialSynologyDownloadStation] = None
+    aria2_jsonrpc: Optional[PartialAria2JsonRpc] = None
 
 
 class PartialConfig(BaseModel):

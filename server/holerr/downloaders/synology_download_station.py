@@ -40,7 +40,7 @@ class SynologyDownloadStation(Downloader):
         if preset.output_dir is not None:
             destination = preset.output_dir
             if preset.create_sub_dir:
-                sub_folder = self.get_sub_folder_name(title)
+                sub_folder = Downloader.get_sub_folder_name(title)
                 self._create_output_dir(destination, sub_folder)
                 destination += "/" + sub_folder
 
