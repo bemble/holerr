@@ -20,13 +20,15 @@ class DownloaderDownloadHanlder:
         total_bytes_downloaded = 0
         for task in download.downloader_tasks:
             try:
-                [status, size_downloaded] = downloader.get_task_status(task.id)
+                [raw_status, size_downloaded] = downloader.get_task_status(task.id)
+                status = downloader.to_download_status(raw_status)
                 task.status = DownloaderRepository.downloader_status_to_download_status(
                     status
                 )
                 task.bytes_downloaded = size_downloaded
                 total_bytes_downloaded += size_downloaded
-            except Exception:
+            except Exception as e:
+                log.debug(f"Error while getting task status, {e}")
                 task.status = DownloadStatus["ERROR_DOWNLOADER"]
 
         download_status = download.downloader_tasks[0].status

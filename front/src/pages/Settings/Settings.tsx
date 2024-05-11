@@ -81,7 +81,10 @@ const Settings = () => {
   }: ChangeEvent<HTMLInputElement>) => {
     if (config) {
       const tmpConf = Object.assign({}, config);
-      if (!tmpConf.downloader) {
+      if (
+        !tmpConf.downloader ||
+        !tmpConf.downloader.synology_download_station
+      ) {
         tmpConf.downloader = {
           synology_download_station: {
             endpoint: "",
@@ -90,6 +93,8 @@ const Settings = () => {
           },
         };
       }
+
+      // @ts-ignore
       tmpConf.downloader.synology_download_station.endpoint = target.value;
 
       const tmpNewConfig = Object.assign({}, newConfig);
@@ -97,6 +102,7 @@ const Settings = () => {
         tmpNewConfig.downloader = { synology_download_station: {} };
       }
       tmpNewConfig.downloader.synology_download_station.endpoint =
+        // @ts-ignore
         tmpConf.downloader.synology_download_station.endpoint;
 
       setConfig(tmpConf);
@@ -109,7 +115,10 @@ const Settings = () => {
   }: ChangeEvent<HTMLInputElement>) => {
     if (config) {
       const tmpConf = Object.assign({}, config);
-      if (!tmpConf.downloader) {
+      if (
+        !tmpConf.downloader ||
+        !tmpConf.downloader.synology_download_station
+      ) {
         tmpConf.downloader = {
           synology_download_station: {
             endpoint: "",
@@ -118,13 +127,16 @@ const Settings = () => {
           },
         };
       }
+      // @ts-ignore
       tmpConf.downloader.synology_download_station.username = target.value;
 
       const tmpNewConfig = Object.assign({}, newConfig);
       if (!tmpNewConfig.downloader) {
         tmpNewConfig.downloader = { synology_download_station: {} };
       }
+
       tmpNewConfig.downloader.synology_download_station.username =
+        // @ts-ignore
         tmpConf.downloader.synology_download_station.username;
 
       setConfig(tmpConf);
@@ -137,7 +149,10 @@ const Settings = () => {
   }: ChangeEvent<HTMLInputElement>) => {
     if (config) {
       const tmpConf = Object.assign({}, config);
-      if (!tmpConf.downloader) {
+      if (
+        !tmpConf.downloader ||
+        !tmpConf.downloader.synology_download_station
+      ) {
         tmpConf.downloader = {
           synology_download_station: {
             endpoint: "",
@@ -146,6 +161,7 @@ const Settings = () => {
           },
         };
       }
+      // @ts-ignore
       tmpConf.downloader.synology_download_station.password = target.value;
 
       const tmpNewConfig = Object.assign({}, newConfig);
@@ -153,7 +169,67 @@ const Settings = () => {
         tmpNewConfig.downloader = { synology_download_station: {} };
       }
       tmpNewConfig.downloader.synology_download_station.password =
+        // @ts-ignore
         tmpConf.downloader.synology_download_station.password;
+
+      setConfig(tmpConf);
+      setNewConfig(tmpNewConfig);
+    }
+  };
+
+  const handleChangeAria2Endpoint = ({
+    target,
+  }: ChangeEvent<HTMLInputElement>) => {
+    if (config) {
+      const tmpConf = Object.assign({}, config);
+      if (!tmpConf.downloader || !tmpConf.downloader.aria2_jsonrpc) {
+        tmpConf.downloader = {
+          aria2_jsonrpc: {
+            endpoint: "",
+          },
+        };
+      }
+
+      // @ts-ignore
+      tmpConf.downloader.aria2_jsonrpc.endpoint = target.value;
+
+      const tmpNewConfig = Object.assign({}, newConfig);
+      if (!tmpNewConfig.downloader) {
+        tmpNewConfig.downloader = { aria2_jsonrpc: {} };
+      }
+      tmpNewConfig.downloader.aria2_jsonrpc.endpoint =
+        // @ts-ignore
+        tmpConf.downloader.aria2_jsonrpc.endpoint;
+
+      setConfig(tmpConf);
+      setNewConfig(tmpNewConfig);
+    }
+  };
+
+  const handleChangeAria2Secret = ({
+    target,
+  }: ChangeEvent<HTMLInputElement>) => {
+    if (config) {
+      const tmpConf = Object.assign({}, config);
+      if (!tmpConf.downloader || !tmpConf.downloader.aria2_jsonrpc) {
+        tmpConf.downloader = {
+          aria2_jsonrpc: {
+            endpoint: "",
+            secret: "",
+          },
+        };
+      }
+
+      // @ts-ignore
+      tmpConf.downloader.aria2_jsonrpc.secret = target.value;
+
+      const tmpNewConfig = Object.assign({}, newConfig);
+      if (!tmpNewConfig.downloader) {
+        tmpNewConfig.downloader = { aria2_jsonrpc: {} };
+      }
+      tmpNewConfig.downloader.aria2_jsonrpc.secret =
+        // @ts-ignore
+        tmpConf.downloader.aria2_jsonrpc.secret;
 
       setConfig(tmpConf);
       setNewConfig(tmpNewConfig);
@@ -233,11 +309,12 @@ const Settings = () => {
                             {t("settings.real_debrid_website")}
                           </a>
                         </div>
-                        <h3>Synology Download Station</h3>
+                        <h3>{t("settings.configuration_downloader")}</h3>
+                        <h4>Synology Download Station</h4>
                         <TextField
                           value={
                             config.downloader?.synology_download_station
-                              .endpoint
+                              ?.endpoint
                           }
                           onChange={handleChangeSynoEndpoint}
                           label={t("settings.configuration_endpoint")}
@@ -245,7 +322,7 @@ const Settings = () => {
                         <TextField
                           value={
                             config.downloader?.synology_download_station
-                              .username
+                              ?.username
                           }
                           onChange={handleChangeSynoUsername}
                           label={t("settings.configuration_username")}
@@ -253,10 +330,21 @@ const Settings = () => {
                         <TextField
                           value={
                             config.downloader?.synology_download_station
-                              .password
+                              ?.password
                           }
                           onChange={handleChangeSynoPassword}
                           label={t("settings.configuration_password")}
+                        />
+                        <h4>Aria2 JSON-RPC</h4>
+                        <TextField
+                          value={config.downloader?.aria2_jsonrpc?.endpoint}
+                          onChange={handleChangeAria2Endpoint}
+                          label={t("settings.configuration_endpoint")}
+                        />
+                        <TextField
+                          value={config.downloader?.aria2_jsonrpc?.secret}
+                          onChange={handleChangeAria2Secret}
+                          label={t("settings.configuration_secret")}
                         />
                         <div className={classes.spacer} />
                         <Button

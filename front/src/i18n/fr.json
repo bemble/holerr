@@ -48,6 +48,7 @@
   "settings": {
     "title": "Paramètres",
     "language": "Langue",
+    "configuration_downloader": "Downloader",
     "configuration_subtitle": "Configuration",
     "configuration_debug": "Debug",
     "configuration_base_path": "Chemin de base",
@@ -56,6 +57,7 @@
     "configuration_endpoint": "Endpoint",
     "configuration_username": "Nom d'utilisateur",
     "configuration_password": "Mot de passe",
+    "configuration_secret": "Secret",
     "configuration_save": "Enregistrer",
     "configuration_restart_required": "Un redémarrage sera nécessaire pour que les changements soient effectifs."
   },
