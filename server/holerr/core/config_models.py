@@ -40,8 +40,10 @@ class Model(BaseModel):
                 setattr(self, k, v)
 
     def _dump_secret(self, v, info):
+        if v is None:
+            return None
         value = v.get_secret_value()
-        if info.mode == "python":
+        if info.mode == "python" or value is None:
             return value
         return secrets.hide(value)
 
@@ -96,7 +98,7 @@ class SynologyDownloadStation(Model):
 
 class Aria2JsonRpc(Model):
     endpoint: str
-    secret: Optional[SecretStr]
+    secret: Optional[SecretStr] = None
 
     @field_serializer("secret")
     def dump_secret(self, v, info):
