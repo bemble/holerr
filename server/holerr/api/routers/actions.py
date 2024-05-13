@@ -1,3 +1,4 @@
+from holerr.core.log import Log
 from holerr.core.db import db
 from holerr.database.repositories import DownloadRepository
 from holerr.core.exceptions import NotFoundException
@@ -10,6 +11,8 @@ from fastapi import APIRouter, HTTPException, status, File, Form
 import tempfile
 
 router = APIRouter(prefix="/actions")
+
+log = Log.get_logger(__name__)
 
 
 @router.post("/add_magnet", response_model=Download, tags=["Actions"])
@@ -59,5 +62,5 @@ async def clean_downloaded():
     session = db.new_session()
     cleaned = DownloadRepository(session).clean_downloaded()
     for download in cleaned:
-        manager.broadcast(Actions["DOWNLOADS_DELETE"], download)
+        await manager.broadcast(Actions["DOWNLOADS_DELETE"], download)
     return cleaned
