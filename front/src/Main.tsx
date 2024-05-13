@@ -46,8 +46,8 @@ const Main = () => {
     dispatch(addDownload(data));
   });
 
-  useSocketMessage<Download>("downloads/delete", (data) => {
-    dispatch(removeDownload(data.id));
+  useSocketMessage<string>("downloads/delete", (data) => {
+    dispatch(removeDownload(data));
   });
 
   const classes = useAppStyles();
