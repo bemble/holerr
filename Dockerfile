@@ -26,6 +26,8 @@ WORKDIR /app
 COPY entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 
+ENV TZ=UTC
+
 ENTRYPOINT ["/app/entrypoint.sh"]
 
 EXPOSE 8765
