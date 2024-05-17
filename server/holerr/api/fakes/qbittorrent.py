@@ -1,9 +1,16 @@
 from holerr.core import config
+from holerr.core.db import db
+from holerr.core.config_repositories import PresetRepository
+from holerr.database.repositories import DownloadRepository
+from holerr.database.models import DownloadStatus
+from .qbittorrent_models import Torrent
+from .qbittorrent_repositories import QBittorrentTorrentRepository
 
 import random
 import string
+from datetime import datetime
 
-from fastapi import APIRouter, Response, status
+from fastapi import APIRouter, Request, Response, status, HTTPException
 from fastapi.responses import PlainTextResponse
 
 router = APIRouter(prefix="/api/v2")
@@ -44,6 +51,17 @@ async def torrents_categories():
         categories[preset.name] = {"name":preset.name, "savePath":preset.output_dir}
     return categories
 
-@router.get("/torrents/info", tags=["QBittorrent"])
-async def torrents_info():
-    return []
+@router.get("/torrents/info", response_model=list[Torrent], tags=["QBittorrent"])
+async def torrents_info(request:Request):
+    preset_name = request.query_params.get("category")
+    preset = PresetRepository().get_preset(preset_name)
+    if preset is None:
+        raise HTTPException(status_code=404, detail=f"Preset {preset_name} not found")
+    session = db.new_session()
+    downloads = DownloadRepository(session).get_all_for_preset(preset_name)
+
+    response_torrents = []
+    for download in downloads:
+        torrent = QBittorrentTorrentRepository.torrent_from_download(download)
+        response_torrents.append(torrent)
+    return response_torrents
