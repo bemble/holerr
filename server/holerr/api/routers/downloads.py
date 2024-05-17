@@ -17,7 +17,7 @@ async def list_downloads():
 @router.delete("/{download_id}", response_model=Download, tags=["Downloads"])
 async def delete_download(download_id: str):
     session = db.new_session()
-    download = DownloadRepository(session).get_model(download_id)
+    download = DownloadRepository(session).get_model(download_id.encode('UTF-8'))
     if download is None:
         raise HTTPException(status_code=404, detail=f"Download {download_id} not found")
     download.to_delete = True

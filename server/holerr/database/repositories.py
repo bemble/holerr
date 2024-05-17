@@ -24,8 +24,8 @@ class Repository:
         self.entity = entity
 
     def get_model(self, id: any) -> Base | None:
-        res = self.session.scalars(select(self.entity).where(self.entity.id == id))
-        return res.one_or_none()
+        res = self.get_all_models(self.entity.id == id)
+        return res[0] if len(res) > 0 else None
 
     def get_all_models(self, conditions=True, options=None) -> list[Base]:
         query = select(self.entity).where(conditions)
