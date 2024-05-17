@@ -25,12 +25,13 @@ holerr:
   image: ghcr.io/bemble/holerr:latest
   container_name: holerr
   restart: unless-stopped
+  user: "${DOCKER_UID}:${DOCKER_GID}"
   ports:
     - ${PORT_HOLERR}:8765
+  environment:
+    - TZ=${TIMEZONE}
   volumes:
     - "${PWD}/holerr/data:/app/data"
-    - /usr/share/zoneinfo:/usr/share/zoneinfo:ro
-    - /etc/localtime:/etc/localtime:ro
 ```
 
 ## Supported debriders & downloaders
