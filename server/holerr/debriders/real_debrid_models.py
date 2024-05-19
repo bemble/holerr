@@ -44,7 +44,7 @@ class TorrentInfo(DebriderTorrentInfo):
 class UnrestrictedLink(BaseModel):
     id: str
     filename: str
-    mimeType: str  # Mime Type of the file, guessed by the file extension
+    mimeType: Optional[str] = None  # Mime Type of the file, guessed by the file extension
     filesize: int  # Filesize in bytes, 0 if unknown
     link: str  # Original link
     host: str  # Host main domain
