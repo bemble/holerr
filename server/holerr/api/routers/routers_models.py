@@ -78,8 +78,12 @@ class StatusElement(BaseModel):
     name: str
     connected: bool
 
+class WorkerElement(BaseModel):
+    last_run: datetime | None
+
 class StatusApp(BaseModel):
     version: str
+    worker: WorkerElement
 
 class Status(BaseModel):
     app: StatusApp

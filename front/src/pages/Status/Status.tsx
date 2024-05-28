@@ -52,6 +52,20 @@ const Status = () => {
                     {isLoading ? t("loading") : status?.app.version}
                   </code>
                 </div>
+                <div>
+                  {t("status.worker_last_run")}{" "}
+                  <code
+                    className={classNames(classes.code, {
+                      [classes.pending]: isLoading,
+                    })}
+                  >
+                    {isLoading
+                      ? t("loading")
+                      : new Date(
+                          status?.app.worker.last_run as any
+                        ).toLocaleString()}
+                  </code>
+                </div>
                 <div className={classes.spacer} />
                 <hr className={classes.separator} />
                 <div className={classes.spacer} />

@@ -2,6 +2,7 @@ from holerr.debriders import debrider
 from holerr.downloaders import downloader
 from .routers_models import Status
 from holerr.utils import info
+from holerr.tasks import worker
 
 from fastapi import APIRouter
 
@@ -13,6 +14,9 @@ async def get_status():
     return {
         "app": {
             "version": info.get_app_version(),
+            "worker": {
+                "last_run": worker.last_run,
+            }
         },
         "debrider": {
             "id": debrider.get_id(),
