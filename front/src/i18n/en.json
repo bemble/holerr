@@ -66,6 +66,7 @@
     "title": "Status",
     "websocket": "Websocket",
     "app_version": "Application version: ",
+    "worker_last_run": "Worker last run",
     "debrider": "Debrider",
     "downloader": "Downloader",
     "restart": "Restart",

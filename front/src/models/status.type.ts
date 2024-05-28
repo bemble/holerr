@@ -1,6 +1,9 @@
 export type Status = {
   app: {
     version: string;
+    worker: {
+      last_run: string;
+    };
   };
   debrider: {
     id: string;

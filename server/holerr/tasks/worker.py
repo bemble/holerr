@@ -3,6 +3,7 @@ from .task import Task
 
 import asyncio
 import threading
+from datetime import datetime
 
 log = Log.get_logger(__name__)
 
@@ -10,6 +11,7 @@ log = Log.get_logger(__name__)
 class Worker:
     _worker: threading.Thread = None
     _tasks: list[Task] = []
+    last_run: datetime = None
 
     def add(self, task: Task):
         log.debug(type(task).__name__ + " added")
@@ -35,5 +37,9 @@ class Worker:
         log.debug("Starting workers")
         while True:
             for task in self._tasks:
-                await task.run()
+                try:
+                    await task.run()
+                except Exception as e:
+                    log.error(f"Error while running task, {e}")
+                self.last_run = datetime.now()
             await asyncio.sleep(5)

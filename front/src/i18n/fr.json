@@ -65,6 +65,7 @@
     "title": "États",
     "websocket": "Websocket",
     "app_version": "Version de l'application : ",
+    "worker_last_run": "Dernière exécution du worker :",
     "debrider": "Débrideur",
     "downloader": "Téléchargeur",
     "restart": "Redémarrer",
