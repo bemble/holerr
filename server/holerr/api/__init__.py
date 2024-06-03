@@ -1,6 +1,7 @@
 from holerr.core import config
 from .server import Server
 from .routers import api_router
+from .fakes import fakes_router
 
 from fastapi import HTTPException
 from starlette.exceptions import HTTPException as StarletteHTTPException
@@ -8,6 +9,7 @@ from fastapi.staticfiles import StaticFiles
 
 server = Server()
 server.app.include_router(api_router)
+server.app.include_router(fakes_router)
 
 # Serve the frontend
 # https://stackoverflow.com/a/73552966

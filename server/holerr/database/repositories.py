@@ -136,6 +136,9 @@ class DownloadRepository(Repository):
             Download.to_delete,
         )
 
+    def get_all_for_preset(self, preset_name: str) -> list[Download]:
+        return self.get_all_models(Download.preset == preset_name)
+
     def clean_downloaded(self) -> list[str]:
         deleted_ids = []
         downloads = self.get_all_models(Download.status == DownloadStatus["DOWNLOADED"])
